@@ -202,6 +202,149 @@ class AlloDebarrasAPITester:
             return self.run_test(f"Get Quote {quote_id}", "GET", f"quotes/{quote_id}", 200)
         return False, {}
 
+    def get_admin_auth_headers(self):
+        """Get Basic Auth headers for admin endpoints"""
+        credentials = "labbelefranc@gmail.com:admin06"
+        encoded_credentials = base64.b64encode(credentials.encode()).decode()
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic {encoded_credentials}'
+        }
+
+    def test_admin_authentication(self):
+        """Test admin authentication with correct credentials"""
+        headers = self.get_admin_auth_headers()
+        return self.run_test("Admin Authentication", "GET", "admin/photos", 200, headers=headers)
+
+    def test_admin_authentication_invalid(self):
+        """Test admin authentication with invalid credentials"""
+        invalid_credentials = "invalid@email.com:wrongpass"
+        encoded_credentials = base64.b64encode(invalid_credentials.encode()).decode()
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic {encoded_credentials}'
+        }
+        return self.run_test("Admin Authentication (Invalid)", "GET", "admin/photos", 401, headers=headers)
+
+    def test_get_admin_photos(self):
+        """Test GET /api/admin/photos - List all available photos"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test("Get Admin Photos", "GET", "admin/photos", 200, headers=headers)
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} photos")
+            assigned_count = sum(1 for photo in response if photo.get('is_assigned', False))
+            print(f"   Assigned photos: {assigned_count}/{len(response)}")
+            
+            # Show sample photos
+            for photo in response[:3]:
+                status = "✅ Assigned" if photo.get('is_assigned') else "⚪ Unassigned"
+                article_name = photo.get('assigned_to_article_name', 'N/A')
+                print(f"   - {photo.get('filename', 'Unknown')} - {status} to {article_name}")
+        return success, response
+
+    def test_get_admin_articles_for_photos(self):
+        """Test GET /api/admin/articles-for-photos - Get all articles for photo assignment"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test("Get Articles for Photo Assignment", "GET", "admin/articles-for-photos", 200, headers=headers)
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} articles available for photo assignment")
+            for article in response[:3]:
+                print(f"   - {article.get('name', 'Unknown')} (ID: {article.get('id', 'Unknown')})")
+        return success, response
+
+    def test_assign_photo_to_article(self, photo_filename, article_id):
+        """Test POST /api/admin/photos/assign - Assign a photo to an article"""
+        headers = self.get_admin_auth_headers()
+        assignment_data = {
+            "photo_filename": photo_filename,
+            "article_id": article_id
+        }
+        success, response = self.run_test(
+            f"Assign Photo {photo_filename} to Article {article_id}", 
+            "POST", 
+            "admin/photos/assign", 
+            200, 
+            data=assignment_data,
+            headers=headers
+        )
+        if success:
+            article_name = response.get('article_name', 'Unknown')
+            print(f"   Successfully assigned to article: {article_name}")
+        return success, response
+
+    def test_unassign_photo(self, photo_filename):
+        """Test DELETE /api/admin/photos/{photo_filename}/assignment - Unassign a photo"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            f"Unassign Photo {photo_filename}", 
+            "DELETE", 
+            f"admin/photos/{photo_filename}/assignment", 
+            200, 
+            headers=headers
+        )
+        return success, response
+
+    def test_serve_static_photo(self, photo_filename):
+        """Test GET /photos/{filename} - Serve static photo files"""
+        # Note: This endpoint is not under /api prefix
+        url = f"{self.base_url}/photos/{photo_filename}"
+        print(f"\n🔍 Testing Serve Static Photo {photo_filename}...")
+        print(f"   URL: {url}")
+        
+        self.tests_run += 1
+        try:
+            response = requests.get(url, timeout=10)
+            success = response.status_code == 200
+            
+            if success:
+                self.tests_passed += 1
+                content_type = response.headers.get('content-type', 'unknown')
+                content_length = len(response.content)
+                print(f"✅ Passed - Status: {response.status_code}")
+                print(f"   Content-Type: {content_type}")
+                print(f"   Content-Length: {content_length} bytes")
+            else:
+                print(f"❌ Failed - Expected 200, got {response.status_code}")
+                print(f"   Response: {response.text[:200]}...")
+            
+            return success, response.status_code
+            
+        except Exception as e:
+            print(f"❌ Failed - Error: {str(e)}")
+            return False, 0
+
+    def test_assign_nonexistent_photo(self):
+        """Test assigning a non-existent photo (error handling)"""
+        headers = self.get_admin_auth_headers()
+        assignment_data = {
+            "photo_filename": "nonexistent_photo.jpg",
+            "article_id": "chaise_bureau"
+        }
+        return self.run_test(
+            "Assign Non-existent Photo (Error Test)", 
+            "POST", 
+            "admin/photos/assign", 
+            404, 
+            data=assignment_data,
+            headers=headers
+        )
+
+    def test_assign_photo_to_nonexistent_article(self, photo_filename):
+        """Test assigning a photo to non-existent article (error handling)"""
+        headers = self.get_admin_auth_headers()
+        assignment_data = {
+            "photo_filename": photo_filename,
+            "article_id": "nonexistent_article_id"
+        }
+        return self.run_test(
+            "Assign Photo to Non-existent Article (Error Test)", 
+            "POST", 
+            "admin/photos/assign", 
+            404, 
+            data=assignment_data,
+            headers=headers
+        )
+
 def main():
     print("🚀 Starting Allo Débarras Express API Tests - New Advanced Version")
     print("=" * 70)
