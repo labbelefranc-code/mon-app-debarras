@@ -1286,12 +1286,12 @@ function App() {
               required
             />
             
-            <Select value={formData.parent_id} onValueChange={updateField('parent_id')}>
+            <Select value={formData.parent_id || undefined} onValueChange={updateField('parent_id')}>
               <SelectTrigger>
                 <SelectValue placeholder="Catégorie parent (optionnel)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Aucune (catégorie racine)</SelectItem>
+                <SelectItem value="none">Aucune (catégorie racine)</SelectItem>
                 {allCategories.map(cat => (
                   <SelectItem key={cat.id} value={cat.id} disabled={cat.id === category?.id}>
                     {cat.name}
