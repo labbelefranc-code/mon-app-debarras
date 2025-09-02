@@ -519,6 +519,153 @@ async def get_articles_for_photo_assignment(username: str = Depends(authenticate
     articles = await db.articles.find().to_list(1000)
     return [Article(**art) for art in articles]
 
+# Routes d'administration - Gestion des catégories
+@api_router.post("/admin/categories", response_model=Category)
+async def create_category(category_data: CategoryCreate, username: str = Depends(authenticate_admin)):
+    """Crée une nouvelle catégorie"""
+    category_dict = category_data.dict()
+    category_dict['id'] = str(uuid.uuid4())
+    
+    # Vérifier que le parent existe si spécifié
+    if category_dict.get('parent_id'):
+        parent = await db.categories.find_one({"id": category_dict['parent_id']})
+        if not parent:
+            raise HTTPException(status_code=404, detail="Catégorie parent non trouvée")
+    
+    category = Category(**category_dict)
+    await db.categories.insert_one(category.dict())
+    
+    return category
+
+@api_router.put("/admin/categories/{category_id}", response_model=Category)
+async def update_category(category_id: str, category_data: CategoryUpdate, username: str = Depends(authenticate_admin)):
+    """Met à jour une catégorie"""
+    # Vérifier que la catégorie existe
+    existing_category = await db.categories.find_one({"id": category_id})
+    if not existing_category:
+        raise HTTPException(status_code=404, detail="Catégorie non trouvée")
+    
+    # Vérifier que le nouveau parent existe si spécifié
+    update_data = {k: v for k, v in category_data.dict().items() if v is not None}
+    if 'parent_id' in update_data and update_data['parent_id']:
+        parent = await db.categories.find_one({"id": update_data['parent_id']})
+        if not parent:
+            raise HTTPException(status_code=404, detail="Catégorie parent non trouvée")
+        
+        # Empêcher les boucles (une catégorie ne peut pas être son propre parent)
+        if update_data['parent_id'] == category_id:
+            raise HTTPException(status_code=400, detail="Une catégorie ne peut pas être son propre parent")
+    
+    # Mettre à jour
+    await db.categories.update_one({"id": category_id}, {"$set": update_data})
+    
+    # Retourner la catégorie mise à jour
+    updated_category = await db.categories.find_one({"id": category_id})
+    return Category(**updated_category)
+
+@api_router.delete("/admin/categories/{category_id}")
+async def delete_category(category_id: str, username: str = Depends(authenticate_admin)):
+    """Supprime une catégorie"""
+    # Vérifier que la catégorie existe
+    category = await db.categories.find_one({"id": category_id})
+    if not category:
+        raise HTTPException(status_code=404, detail="Catégorie non trouvée")
+    
+    # Vérifier qu'elle n'a pas de sous-catégories
+    subcategories = await db.categories.find({"parent_id": category_id}).to_list(10)
+    if subcategories:
+        raise HTTPException(status_code=400, detail="Impossible de supprimer une catégorie qui a des sous-catégories")
+    
+    # Vérifier qu'elle n'a pas d'articles
+    articles = await db.articles.find({"category_id": category_id}).to_list(10)
+    if articles:
+        raise HTTPException(status_code=400, detail="Impossible de supprimer une catégorie qui contient des articles")
+    
+    # Supprimer
+    await db.categories.delete_one({"id": category_id})
+    
+    return {"message": "Catégorie supprimée avec succès"}
+
+# Routes d'administration - Gestion des articles
+@api_router.post("/admin/articles", response_model=Article)
+async def create_article(article_data: ArticleCreate, username: str = Depends(authenticate_admin)):
+    """Crée un nouvel article"""
+    # Vérifier que la catégorie existe
+    category = await db.categories.find_one({"id": article_data.category_id})
+    if not category:
+        raise HTTPException(status_code=404, detail="Catégorie non trouvée")
+    
+    article_dict = article_data.dict()
+    article_dict['id'] = str(uuid.uuid4())
+    
+    article = Article(**article_dict)
+    await db.articles.insert_one(article.dict())
+    
+    return article
+
+@api_router.put("/admin/articles/{article_id}", response_model=Article)
+async def update_article(article_id: str, article_data: ArticleUpdate, username: str = Depends(authenticate_admin)):
+    """Met à jour un article"""
+    # Vérifier que l'article existe
+    existing_article = await db.articles.find_one({"id": article_id})
+    if not existing_article:
+        raise HTTPException(status_code=404, detail="Article non trouvé")
+    
+    # Vérifier que la nouvelle catégorie existe si spécifiée
+    update_data = {k: v for k, v in article_data.dict().items() if v is not None}
+    if 'category_id' in update_data:
+        category = await db.categories.find_one({"id": update_data['category_id']})
+        if not category:
+            raise HTTPException(status_code=404, detail="Catégorie non trouvée")
+    
+    # Mettre à jour
+    await db.articles.update_one({"id": article_id}, {"$set": update_data})
+    
+    # Retourner l'article mis à jour
+    updated_article = await db.articles.find_one({"id": article_id})
+    return Article(**updated_article)
+
+@api_router.delete("/admin/articles/{article_id}")
+async def delete_article(article_id: str, username: str = Depends(authenticate_admin)):
+    """Supprime un article"""
+    # Vérifier que l'article existe
+    article = await db.articles.find_one({"id": article_id})
+    if not article:
+        raise HTTPException(status_code=404, detail="Article non trouvé")
+    
+    # Supprimer les assignations de photos associées
+    await db.photo_assignments.delete_many({"article_id": article_id})
+    
+    # Supprimer l'article
+    await db.articles.delete_one({"id": article_id})
+    
+    return {"message": "Article supprimé avec succès"}
+
+@api_router.get("/admin/categories-tree")
+async def get_categories_tree(username: str = Depends(authenticate_admin)):
+    """Récupère l'arbre complet des catégories avec leurs articles"""
+    categories = await db.categories.find().to_list(1000)
+    articles = await db.articles.find().to_list(1000)
+    
+    # Organiser en arbre
+    categories_dict = {cat['id']: {**cat, 'children': [], 'articles': []} for cat in categories}
+    
+    # Ajouter les articles aux catégories
+    for article in articles:
+        if article['category_id'] in categories_dict:
+            categories_dict[article['category_id']]['articles'].append(article)
+    
+    # Construire l'arbre hiérarchique
+    root_categories = []
+    for cat in categories:
+        if cat.get('parent_id'):
+            if cat['parent_id'] in categories_dict:
+                categories_dict[cat['parent_id']]['children'].append(categories_dict[cat['id']])
+        else:
+            root_categories.append(categories_dict[cat['id']])
+    
+    return root_categories
+
 # Routes d'administration - Devis
 @api_router.get("/admin/quotes", response_model=List[Quote])
 async def get_admin_quotes(username: str = Depends(authenticate_admin)):
