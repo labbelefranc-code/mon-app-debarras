@@ -434,24 +434,34 @@ function App() {
                     <CardTitle className="text-center text-lg">{article.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    {/* Photo d'exemple avec placeholder */}
+                    {/* Photos réelles */}
                     <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                      {/* Ajouter quelques photos d'exemple basées sur l'article */}
-                      {article.id === 'chaise_bureau' ? (
-                        <img 
-                          src="/placeholder-chaise-bureau.jpg" 
-                          alt={article.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                      ) : null}
-                      <span className="text-gray-500 text-sm">Photo {article.name}</span>
+                      {(() => {
+                        let photoSrc = null;
+                        if (article.id === 'chaise_bureau') photoSrc = '/photos/chaise-bureau.png';
+                        else if (article.id === 'fauteuil_salon') photoSrc = '/photos/fauteuil-salon.png';
+                        else if (article.id === 'lave_linge') photoSrc = '/photos/lave-linge.png';
+                        else if (article.id === 'lit_double') photoSrc = '/photos/lit-double.png';
+                        else if (article.id === 'bureau_moderne') photoSrc = '/photos/bureau-moderne.png';
+                        
+                        return photoSrc ? (
+                          <img 
+                            src={photoSrc} 
+                            alt={article.name}
+                            className="w-full h-full object-cover rounded-lg"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : (
+                          <span className="text-gray-500 text-sm">Photo {article.name}</span>
+                        );
+                      })()}
+                      <span className="text-gray-500 text-sm hidden">Photo {article.name}</span>
                     </div>
                     
-                    {/* MASQUER LE PRIX - il sera affiché uniquement dans le récapitulatif final */}
+                    {/* PRIX MASQUÉ - sera affiché dans le récapitulatif final */}
                     
                     {article.materials && article.materials.length > 0 ? (
                       <div>
