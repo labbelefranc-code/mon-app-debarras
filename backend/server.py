@@ -336,6 +336,17 @@ async def init_base_data():
     
     return {"message": "Données de base initialisées avec succès"}
 
+@api_router.post("/reset-data")
+async def reset_base_data():
+    # Nettoyer toutes les collections
+    await db.categories.delete_many({})
+    await db.articles.delete_many({})
+    await db.quotes.delete_many({})
+    
+    # Réinitialiser avec les nouvelles données
+    result = await init_base_data()
+    return {"message": "Données réinitialisées avec succès", "init_result": result}
+
 # Include the router in the main app
 app.include_router(api_router)
 
