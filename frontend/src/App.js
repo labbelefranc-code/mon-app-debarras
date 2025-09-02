@@ -1319,7 +1319,7 @@ function App() {
         </DialogContent>
       </Dialog>
     );
-  };
+  });
 
   const AdminPhotosPage = () => (
     <div className="min-h-screen bg-gray-50">
