@@ -434,15 +434,19 @@ function App() {
                     <CardTitle className="text-center text-lg">{article.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    {/* Photos réelles */}
+                    {/* Photos réelles correctement correspondantes */}
                     <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                       {(() => {
                         let photoSrc = null;
-                        if (article.id === 'chaise_bureau') photoSrc = '/photos/chaise-bureau.png';
-                        else if (article.id === 'fauteuil_salon') photoSrc = '/photos/fauteuil-salon.png';
-                        else if (article.id === 'lave_linge') photoSrc = '/photos/lave-linge.png';
-                        else if (article.id === 'lit_double') photoSrc = '/photos/lit-double.png';
-                        else if (article.id === 'bureau_moderne') photoSrc = '/photos/bureau-moderne.png';
+                        // Correspondances correctes des photos aux articles
+                        if (article.id === 'chaise_bureau') photoSrc = '/photos/chaise-moderne.png';
+                        else if (article.id === 'fauteuil_salon') photoSrc = '/photos/fauteuil-gris.png';
+                        else if (article.id === 'lave_linge') photoSrc = '/photos/lave-linge-blanc.png';
+                        else if (article.id === 'lit_double') photoSrc = '/photos/lit-simple.png';
+                        else if (article.id === 'bureau_moderne') photoSrc = '/photos/table-ronde.png';
+                        else if (article.id === 'table_salle_manger') photoSrc = '/photos/table-ronde.png';
+                        else if (article.id === 'lit_double_medicalise') photoSrc = '/photos/lit-double.png';
+                        else if (article.id === 'canape_2_places') photoSrc = '/photos/fauteuil-salon.png';
                         
                         return photoSrc ? (
                           <img 
