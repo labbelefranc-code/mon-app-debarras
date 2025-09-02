@@ -220,6 +220,26 @@ function App() {
     urgent: false
   });
 
+  // Optimized form field updaters
+  const updateQuoteFormField = useCallback((field) => (value) => {
+    setQuoteForm(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const quoteFormUpdaters = useMemo(() => ({
+    client_name: updateQuoteFormField('client_name'),
+    client_email: updateQuoteFormField('client_email'),
+    client_phone: updateQuoteFormField('client_phone'),
+    address: updateQuoteFormField('address'),
+    parking: updateQuoteFormField('parking'),
+    floor: updateQuoteFormField('floor'),
+    elevator: updateQuoteFormField('elevator'),
+    additional_info: updateQuoteFormField('additional_info'),
+    zone: updateQuoteFormField('zone'),
+    preferred_date: updateQuoteFormField('preferred_date'),
+    preferred_time_slot: updateQuoteFormField('preferred_time_slot'),
+    urgent: updateQuoteFormField('urgent')
+  }), [updateQuoteFormField]);
+
   // Initialiser les données de base
   useEffect(() => {
     initializeData();
