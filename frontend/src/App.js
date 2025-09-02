@@ -1381,7 +1381,7 @@ function App() {
               required
             />
             
-            <Select value={formData.category_id} onValueChange={updateField('category_id')}>
+            <Select value={formData.category_id || undefined} onValueChange={updateField('category_id')}>
               <SelectTrigger>
                 <SelectValue placeholder="Choisir une catégorie" />
               </SelectTrigger>
