@@ -1677,16 +1677,16 @@ function App() {
               article={editingArticle}
               allCategories={categoriesTree}
               onSave={(data) => {
-                if (selectedCategory && !editingArticle) {
+                if (selectedAdminCategory && !editingArticle) {
                   // Creating article in specific category
-                  data.category_id = selectedCategory.id;
+                  data.category_id = selectedAdminCategory.id;
                 }
                 editingArticle ? updateArticle(editingArticle.id, data) : createArticle(data);
               }}
               onCancel={() => {
                 setShowArticleForm(false); 
                 setEditingArticle(null);
-                setSelectedCategory(null);
+                setSelectedAdminCategory(null);
               }}
             />
           )}
