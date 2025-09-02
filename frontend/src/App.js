@@ -1211,7 +1211,7 @@ function App() {
         </DialogContent>
       </Dialog>
     );
-  };
+  });
 
   // Article Form Component
   const ArticleForm = ({ article, allCategories, onSave, onCancel }) => {
