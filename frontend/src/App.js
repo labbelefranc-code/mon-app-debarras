@@ -318,6 +318,110 @@ function App() {
     }
   };
 
+  // Category management functions
+  const createCategory = async (categoryData) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.post(`${API}/admin/categories`, categoryData, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      loadAdminData();
+      setShowCategoryForm(false);
+      setEditingCategory(null);
+      alert('Catégorie créée avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la création:', error);
+      alert('Erreur lors de la création de la catégorie');
+    }
+  };
+
+  const updateCategory = async (categoryId, categoryData) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.put(`${API}/admin/categories/${categoryId}`, categoryData, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      loadAdminData();
+      setShowCategoryForm(false);
+      setEditingCategory(null);
+      alert('Catégorie mise à jour avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+      alert('Erreur lors de la mise à jour de la catégorie');
+    }
+  };
+
+  const deleteCategory = async (categoryId) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
+      try {
+        const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+        await axios.delete(`${API}/admin/categories/${categoryId}`, {
+          headers: { Authorization: `Basic ${auth}` }
+        });
+        
+        loadAdminData();
+        alert('Catégorie supprimée avec succès !');
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        alert(error.response?.data?.detail || 'Erreur lors de la suppression de la catégorie');
+      }
+    }
+  };
+
+  // Article management functions
+  const createArticle = async (articleData) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.post(`${API}/admin/articles`, articleData, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      loadAdminData();
+      setShowArticleForm(false);
+      setEditingArticle(null);
+      alert('Article créé avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la création:', error);
+      alert('Erreur lors de la création de l\'article');
+    }
+  };
+
+  const updateArticle = async (articleId, articleData) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.put(`${API}/admin/articles/${articleId}`, articleData, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      loadAdminData();
+      setShowArticleForm(false);
+      setEditingArticle(null);
+      alert('Article mis à jour avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+      alert('Erreur lors de la mise à jour de l\'article');
+    }
+  };
+
+  const deleteArticle = async (articleId) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+      try {
+        const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+        await axios.delete(`${API}/admin/articles/${articleId}`, {
+          headers: { Authorization: `Basic ${auth}` }
+        });
+        
+        loadAdminData();
+        alert('Article supprimé avec succès !');
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        alert('Erreur lors de la suppression de l\'article');
+      }
+    }
+  };
+
   const HomePage = () => (
     <div className="min-h-screen bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600">
       <div className="container mx-auto px-4 py-8">
