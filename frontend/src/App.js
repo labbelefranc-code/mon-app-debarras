@@ -184,11 +184,13 @@ function App() {
     });
   }, []);
 
-  const toggleDismantling = (index) => {
-    const newItems = [...selectedItems];
-    newItems[index].is_dismantled = !newItems[index].is_dismantled;
-    setSelectedItems(newItems);
-  };
+  const toggleDismantling = React.useCallback((index) => {
+    setSelectedItems(prev => {
+      const newItems = [...prev];
+      newItems[index].is_dismantled = !newItems[index].is_dismantled;
+      return newItems;
+    });
+  }, []);
 
   const addCustomItem = React.useCallback(() => {
     const description = document.getElementById('custom-item-description').value.trim();
