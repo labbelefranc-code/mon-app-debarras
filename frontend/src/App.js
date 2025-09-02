@@ -1373,11 +1373,12 @@ function App() {
             <OptimizedInput
               placeholder="Nom de la catégorie"
               value={formData.name}
-              onChange={updateField('name')}
+              onChange={fieldUpdaters.name}
               required
+              autoFocus
             />
             
-            <Select value={formData.parent_id || undefined} onValueChange={updateField('parent_id')}>
+            <Select value={formData.parent_id || undefined} onValueChange={fieldUpdaters.parent_id}>
               <SelectTrigger>
                 <SelectValue placeholder="Catégorie parent (optionnel)" />
               </SelectTrigger>
@@ -1394,17 +1395,17 @@ function App() {
             <OptimizedInput
               placeholder="Icône (emoji)"
               value={formData.icon}
-              onChange={updateField('icon')}
+              onChange={fieldUpdaters.icon}
             />
             
             <OptimizedTextarea
               placeholder="Description (optionnelle)"
               value={formData.description}
-              onChange={updateField('description')}
+              onChange={fieldUpdaters.description}
             />
             
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" onClick={onCancel}>
+              <Button type="button" variant="outline" onClick={handleCancel}>
                 Annuler
               </Button>
               <Button type="submit" className="bg-teal-600 hover:bg-teal-700">
