@@ -376,6 +376,13 @@ function App() {
         {/* Footer */}
         <div className="mt-16 text-center text-white text-sm opacity-75">
           © 2025 Allo Débarras Express
+          <Button
+            onClick={() => setCurrentStep('admin-login')}
+            variant="ghost"
+            className="ml-4 text-white hover:text-gray-200 underline text-sm"
+          >
+            Admin
+          </Button>
         </div>
       </div>
     </div>
