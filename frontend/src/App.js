@@ -1053,10 +1053,10 @@ function App() {
                   </Select>
                 </div>
 
-                <Textarea
+                <OptimizedTextarea
                   placeholder="Détails importants (accès, contraintes particulières...)"
                   value={quoteForm.additional_info}
-                  onChange={(e) => setQuoteForm({...quoteForm, additional_info: e.target.value})}
+                  onChange={quoteFormUpdaters.additional_info}
                   rows={3}
                 />
 
