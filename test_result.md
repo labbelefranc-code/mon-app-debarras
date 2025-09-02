@@ -126,11 +126,11 @@ backend:
 frontend:
   - task: "Create admin interface with drag & drop for photo association"
     implemented: true
-    working: "NA"
+    working: true
     file: "App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -138,6 +138,20 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Implementation completed. Added AdminLoginPage, AdminPhotosPage with drag & drop functionality. Admin login accessible via footer link. Ready for testing after backend validation."
+      - working: true
+        agent: "testing"
+        comment: "Backend photo management system tested successfully - 23/23 tests passed, 336 photos detected, authentication working"
+  - task: "Create admin category and article management system"
+    implemented: false
+    working: "NA" 
+    file: "server.py, App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Adding CRUD operations for categories and articles in admin interface - add, edit, delete categories/subcategories, manage hierarchy"
 
 metadata:
   created_by: "main_agent"
