@@ -168,11 +168,13 @@ function App() {
     setSelectedItems([...selectedItems, newItem]);
   };
 
-  const updateItemQuantity = (index, quantity) => {
-    const newItems = [...selectedItems];
-    newItems[index].quantity = Math.max(1, quantity);
-    setSelectedItems(newItems);
-  };
+  const updateItemQuantity = React.useCallback((index, quantity) => {
+    setSelectedItems(prev => {
+      const newItems = [...prev];
+      newItems[index].quantity = Math.max(1, quantity);
+      return newItems;
+    });
+  }, []);
 
   const removeFromSelection = (index) => {
     const newItems = [...selectedItems];
