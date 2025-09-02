@@ -1172,6 +1172,10 @@ function App() {
         return <QuoteFormPage />;
       case 'photo-quote':
         return <PhotoQuotePage />;
+      case 'admin-login':
+        return <AdminLoginPage />;
+      case 'admin-photos':
+        return <AdminPhotosPage />;
       case 'whole-home':
       case 'garage-cave':
         return (
