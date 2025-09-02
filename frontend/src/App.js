@@ -386,11 +386,7 @@ function App() {
             <Card
               key={`subcategory-${subcategory.id}-${index}`}
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
-              onClick={() => {
-                setSelectedSubcategory(subcategory);
-                setCurrentStep('articles');
-                loadArticles(subcategory.id);
-              }}
+              onClick={() => handleSubcategoryClick(subcategory)}
             >
               <CardContent className="p-8 text-center bg-gradient-to-r from-orange-400 to-orange-500">
                 <h3 className="text-xl font-bold text-black">
