@@ -203,11 +203,13 @@ function App() {
     }
   }, []);
 
-  const removeCustomItem = (index) => {
-    const newItems = [...customItems];
-    newItems.splice(index, 1);
-    setCustomItems(newItems);
-  };
+  const removeCustomItem = React.useCallback((index) => {
+    setCustomItems(prev => {
+      const newItems = [...prev];
+      newItems.splice(index, 1);
+      return newItems;
+    });
+  }, []);
 
   const calculateTotal = () => {
     const itemsTotal = selectedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0);
