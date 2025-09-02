@@ -93,14 +93,28 @@ class AlloDebarrasAPITester:
                 print(f"   - {art.get('name', 'Unknown')} - {art.get('base_price', 0)}€")
         return success, response
 
-    def test_get_articles_by_category(self, category_id):
-        """Test getting articles by category"""
-        return self.run_test(
-            f"Get Articles for Category {category_id}", 
+    def test_get_zones(self):
+        """Test getting geographic zones (new feature)"""
+        success, response = self.run_test("Get Geographic Zones", "GET", "zones", 200)
+        if success and isinstance(response, dict):
+            print(f"   Found {len(response)} zones")
+            for zone_key, zone_data in response.items():
+                print(f"   - {zone_data.get('name', 'Unknown')}: {zone_data.get('description', 'No description')}")
+        return success, response
+
+    def test_get_available_slots(self, test_date="2025-02-18", zone="zone_1"):
+        """Test getting available time slots (new feature)"""
+        success, response = self.run_test(
+            f"Get Available Slots for {test_date} in {zone}", 
             "GET", 
-            f"categories/{category_id}/articles", 
+            f"available-slots?date={test_date}&zone={zone}", 
             200
         )
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} time slots")
+            available_count = sum(1 for slot in response if slot.get('available', False))
+            print(f"   Available slots: {available_count}/{len(response)}")
+        return success, response
 
     def test_create_quote(self):
         """Test creating a quote with the exact flow from the request"""
