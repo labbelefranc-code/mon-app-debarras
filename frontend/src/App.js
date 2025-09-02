@@ -1374,14 +1374,14 @@ function App() {
             <DialogTitle>{article ? 'Modifier l\'article' : 'Nouvel article'}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
+            <OptimizedInput
               placeholder="Nom de l'article"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={updateField('name')}
               required
             />
             
-            <Select value={formData.category_id} onValueChange={(value) => setFormData({...formData, category_id: value})}>
+            <Select value={formData.category_id} onValueChange={updateField('category_id')}>
               <SelectTrigger>
                 <SelectValue placeholder="Choisir une catégorie" />
               </SelectTrigger>
@@ -1394,32 +1394,32 @@ function App() {
               </SelectContent>
             </Select>
             
-            <Input
+            <OptimizedInput
               type="number"
               step="0.01"
               placeholder="Prix de base"
               value={formData.base_price}
-              onChange={(e) => setFormData({...formData, base_price: e.target.value})}
+              onChange={updateField('base_price')}
               required
             />
             
-            <Input
+            <OptimizedInput
               placeholder="Matériaux (séparés par des virgules)"
               value={formData.materials}
-              onChange={(e) => setFormData({...formData, materials: e.target.value})}
+              onChange={updateField('materials')}
             />
             
-            <Textarea
+            <OptimizedTextarea
               placeholder="Description (optionnelle)"
               value={formData.description}
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              onChange={updateField('description')}
             />
             
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="requires_dismantling"
                 checked={formData.requires_dismantling}
-                onCheckedChange={(checked) => setFormData({...formData, requires_dismantling: checked})}
+                onCheckedChange={updateField('requires_dismantling')}
               />
               <label htmlFor="requires_dismantling">Nécessite démontage/débranchement</label>
             </div>
