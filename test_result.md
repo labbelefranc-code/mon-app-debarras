@@ -106,7 +106,7 @@ user_problem_statement: "Créer une interface admin avec glisser-déposer pour a
 
 backend:
   - task: "Create admin photo management endpoints"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "server.py"
     stuck_count: 0
@@ -116,6 +116,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Starting implementation of admin endpoints for photo management - list all photos, associate photos to articles"
+      - working: "NA"
+        agent: "main"
+        comment: "Implementation completed. Added endpoints: GET /admin/photos, POST /admin/photos/assign, DELETE /admin/photos/{filename}/assignment, GET /admin/articles-for-photos, GET /photos/{filename}. Ready for testing."
 
 frontend:
   - task: "Create admin interface with drag & drop for photo association"
