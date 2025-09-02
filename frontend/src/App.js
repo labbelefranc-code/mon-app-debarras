@@ -1141,7 +1141,7 @@ function App() {
   );
 
   // Category Form Component
-  const CategoryForm = ({ category, allCategories, onSave, onCancel }) => {
+  const CategoryForm = React.memo(({ category, allCategories, onSave, onCancel }) => {
     const [formData, setFormData] = React.useState({
       name: category?.name || '',
       parent_id: category?.parent_id || '',
