@@ -167,7 +167,7 @@ class AlloDebarrasAPITester:
 
 def main():
     print("🚀 Starting Allo Débarras Express API Tests")
-    print("=" * 50)
+    print("=" * 60)
     
     tester = AlloDebarrasAPITester()
     
@@ -179,42 +179,78 @@ def main():
     
     # Test 3: Get categories
     success, categories = tester.test_get_categories()
+    if not success:
+        print("❌ Cannot proceed without categories")
+        return 1
     
-    # Test 4: Get subcategories (if we have categories)
-    if success and categories:
-        # Test with mobilier category
-        mobilier_cat = next((cat for cat in categories if cat.get('name') == 'MOBILIER'), None)
-        if mobilier_cat:
-            tester.test_get_subcategories(mobilier_cat['id'])
+    # Test 4: Test specific categories mentioned in the flow
+    mobilier_found = False
+    electromenager_found = False
     
-    # Test 5: Get all articles
+    for category in categories:
+        if category.get('name') == 'MOBILIER':
+            mobilier_found = True
+            print(f"\n📁 Testing MOBILIER category flow...")
+            # Test MOBILIER subcategories
+            success_sub, subcats = tester.test_get_subcategories('mobilier')
+            if success_sub:
+                # Test LITERIE articles
+                tester.test_get_articles_by_category('literie')
+                # Test TABLES & BUREAUX articles
+                tester.test_get_articles_by_category('tables_bureaux')
+            
+        elif category.get('name') == 'ÉLECTROMÉNAGER':
+            electromenager_found = True
+            print(f"\n🔌 Testing ÉLECTROMÉNAGER category flow...")
+            # Test ÉLECTROMÉNAGER articles
+            tester.test_get_articles_by_category('electromenager')
+    
+    if not mobilier_found:
+        print("❌ MOBILIER category not found")
+    if not electromenager_found:
+        print("❌ ÉLECTROMÉNAGER category not found")
+    
+    # Test 5: Get all articles to verify specific ones exist
+    print(f"\n📦 Testing specific articles...")
     success, articles = tester.test_get_articles()
+    if success:
+        required_articles = [
+            ("lit_double_medicalise", "Lit double médicalisé", 150.0),
+            ("congelateur_coffre", "Congélateur coffre", 80.0),
+            ("secretaire_ancien", "Secrétaire ancien", 120.0)
+        ]
+        
+        for article_id, article_name, expected_price in required_articles:
+            found_article = next((art for art in articles if art.get('id') == article_id), None)
+            if found_article:
+                actual_price = found_article.get('base_price', 0)
+                if actual_price == expected_price:
+                    print(f"✅ {article_name}: Found with correct price {actual_price}€")
+                else:
+                    print(f"❌ {article_name}: Price mismatch - expected {expected_price}€, got {actual_price}€")
+            else:
+                print(f"❌ {article_name}: Not found in articles")
     
-    # Test 6: Get articles by category (if we have categories)
-    if success and categories:
-        mobilier_cat = next((cat for cat in categories if cat.get('name') == 'MOBILIER'), None)
-        if mobilier_cat:
-            tester.test_get_articles_by_category(mobilier_cat['id'])
-    
-    # Test 7: Create a quote
+    # Test 6: Create quote with exact flow items
+    print(f"\n💰 Testing complete quote flow...")
     success, quote_id = tester.test_create_quote()
     
-    # Test 8: Get all quotes
+    # Test 7: Get all quotes
     tester.test_get_quotes()
     
-    # Test 9: Get specific quote (if created)
+    # Test 8: Get specific quote
     if quote_id:
         tester.test_get_quote_by_id(quote_id)
     
     # Print final results
-    print("\n" + "=" * 50)
-    print(f"📊 Test Results: {tester.tests_passed}/{tester.tests_run} tests passed")
+    print("\n" + "=" * 60)
+    print(f"📊 API Test Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All tests passed! Backend API is working correctly.")
+        print("🎉 All API tests passed! Backend is ready for frontend testing.")
         return 0
     else:
-        print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check the issues above.")
+        print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check backend implementation.")
         return 1
 
 if __name__ == "__main__":
