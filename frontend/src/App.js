@@ -794,7 +794,7 @@ function App() {
                     
                     {/* Custom Items */}
                     {customItems.map((item, index) => (
-                      <div key={`custom-${index}`} className="border rounded-lg p-3 border-orange-200 bg-orange-50">
+                      <div key={`custom-${item.description}-${index}`} className="border rounded-lg p-3 border-orange-200 bg-orange-50">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-medium text-sm">{item.description}</h4>
                           <Button
