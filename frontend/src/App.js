@@ -606,15 +606,10 @@ function App() {
                     ))}
                     
                     <div className="border-t pt-4">
-                      <div className="flex justify-between items-center font-bold">
-                        <span>Total estimé :</span>
-                        <span className="text-orange-600">{calculateTotal()}€</span>
+                      {/* Total masqué pendant la sélection - sera visible dans le récapitulatif final */}
+                      <div className="text-center text-gray-600">
+                        <span>Prix calculé après validation des informations</span>
                       </div>
-                      {customItems.length > 0 && (
-                        <p className="text-xs text-gray-600 mt-1">
-                          + supplément à confirmer
-                        </p>
-                      )}
                     </div>
                     
                     <Button
