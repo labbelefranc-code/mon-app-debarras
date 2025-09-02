@@ -176,11 +176,13 @@ function App() {
     });
   }, []);
 
-  const removeFromSelection = (index) => {
-    const newItems = [...selectedItems];
-    newItems.splice(index, 1);
-    setSelectedItems(newItems);
-  };
+  const removeFromSelection = React.useCallback((index) => {
+    setSelectedItems(prev => {
+      const newItems = [...prev];
+      newItems.splice(index, 1);
+      return newItems;
+    });
+  }, []);
 
   const toggleDismantling = (index) => {
     const newItems = [...selectedItems];
