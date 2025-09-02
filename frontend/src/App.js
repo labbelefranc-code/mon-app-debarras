@@ -735,7 +735,7 @@ function App() {
                   <div className="space-y-4">
                     {/* Selected Items */}
                     {selectedItems.map((item, index) => (
-                      <div key={index} className="border rounded-lg p-3">
+                      <div key={`selected-${item.article_id}-${index}`} className="border rounded-lg p-3">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-medium text-sm">{item.article_name}</h4>
                           <Button
