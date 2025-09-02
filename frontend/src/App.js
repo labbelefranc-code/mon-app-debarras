@@ -27,6 +27,11 @@ function App() {
   const [customItems, setCustomItems] = useState([]);
   const [zones, setZones] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [adminAuth, setAdminAuth] = useState({ username: '', password: '' });
+  const [allPhotos, setAllPhotos] = useState([]);
+  const [allArticles, setAllArticles] = useState([]);
+  const [draggedPhoto, setDraggedPhoto] = useState(null);
   const [quoteForm, setQuoteForm] = useState({
     client_name: '',
     client_email: '',
