@@ -1714,6 +1714,8 @@ function App() {
         return <AdminLoginPage />;
       case 'admin-photos':
         return <AdminPhotosPage />;
+      case 'admin-categories':
+        return <AdminCategoriesPage />;
       case 'whole-home':
       case 'garage-cave':
         return (
