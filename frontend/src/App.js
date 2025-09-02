@@ -567,7 +567,7 @@ function App() {
                               <Plus className="h-3 w-3" />
                             </Button>
                           </div>
-                          <span className="font-bold text-sm">{item.unit_price * item.quantity}€</span>
+                          {/* Prix masqué pendant la sélection - visible uniquement dans le récapitulatif final */}
                         </div>
                         
                         {item.requires_dismantling && (
