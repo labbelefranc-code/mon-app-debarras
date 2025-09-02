@@ -863,81 +863,24 @@ function App() {
                   <div className="space-y-4">
                     {/* Selected Items */}
                     {selectedItems.map((item, index) => (
-                      <div key={`selected-${item.article_id}-${index}`} className="border rounded-lg p-3">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium text-sm">{item.article_name}</h4>
-                          <Button
-                            onClick={() => removeFromSelection(index)}
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 text-red-500"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        
-                        {item.material && (
-                          <Badge variant="secondary" className="text-xs mb-2">
-                            {item.material}
-                          </Badge>
-                        )}
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              onClick={() => updateItemQuantity(index, item.quantity - 1)}
-                              variant="outline"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                            >
-                              <Minus className="h-3 w-3" />
-                            </Button>
-                            <span className="text-sm font-medium">{item.quantity}</span>
-                            <Button
-                              onClick={() => updateItemQuantity(index, item.quantity + 1)}
-                              variant="outline"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                            >
-                              <Plus className="h-3 w-3" />
-                            </Button>
-                          </div>
-                          {/* Prix masqué pendant la sélection - visible uniquement dans le récapitulatif final */}
-                        </div>
-                        
-                        {item.requires_dismantling && (
-                          <div className="mt-2 flex items-center space-x-2">
-                            <Checkbox
-                              id={`dismantled-${index}`}
-                              checked={item.is_dismantled}
-                              onCheckedChange={() => toggleDismantling(index)}
-                            />
-                            <label htmlFor={`dismantled-${index}`} className="text-xs text-gray-600">
-                              Déjà démonté/débranché
-                            </label>
-                          </div>
-                        )}
-                      </div>
+                      <SelectionItem
+                        key={`selected-${item.article_id}-${index}`}
+                        item={item}
+                        index={index}
+                        onUpdateQuantity={updateItemQuantity}
+                        onRemove={removeFromSelection}
+                        onToggleDismantling={toggleDismantling}
+                      />
                     ))}
                     
                     {/* Custom Items */}
                     {customItems.map((item, index) => (
-                      <div key={`custom-${item.description}-${index}`} className="border rounded-lg p-3 border-orange-200 bg-orange-50">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium text-sm">{item.description}</h4>
-                          <Button
-                            onClick={() => removeCustomItem(index)}
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 text-red-500"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <Badge variant="outline" className="text-xs">
-                          Supplément à confirmer
-                        </Badge>
-                      </div>
+                      <CustomItemCard
+                        key={`custom-${item.description}-${index}`}
+                        item={item}
+                        index={index}
+                        onRemove={removeCustomItem}
+                      />
                     ))}
                     
                     <div className="border-t pt-4">
