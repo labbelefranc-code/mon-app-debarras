@@ -192,23 +192,75 @@ const CustomItemCard = React.memo(({ item, index, onRemove }) => {
   );
 });
 
-// Isolated form input component
-const OptimizedInput = React.memo(({ value, onChange, ...props }) => {
+// Ultra-isolated form input component with ref stability
+const OptimizedInput = React.memo(React.forwardRef(({ value, onChange, ...props }, ref) => {
+  const internalRef = React.useRef(null);
+  const finalRef = ref || internalRef;
+  
   const handleChange = useCallback((e) => {
+    e.stopPropagation();
     onChange(e.target.value);
   }, [onChange]);
 
-  return <Input value={value} onChange={handleChange} {...props} />;
-});
+  const handleKeyDown = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
 
-// Isolated textarea component
-const OptimizedTextarea = React.memo(({ value, onChange, ...props }) => {
+  const handleFocus = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleBlur = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  return (
+    <Input 
+      ref={finalRef}
+      value={value} 
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      {...props} 
+    />
+  );
+}));
+
+// Ultra-isolated textarea component with ref stability
+const OptimizedTextarea = React.memo(React.forwardRef(({ value, onChange, ...props }, ref) => {
+  const internalRef = React.useRef(null);
+  const finalRef = ref || internalRef;
+  
   const handleChange = useCallback((e) => {
+    e.stopPropagation();
     onChange(e.target.value);
   }, [onChange]);
 
-  return <Textarea value={value} onChange={handleChange} {...props} />;
-});
+  const handleKeyDown = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleFocus = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleBlur = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  return (
+    <Textarea 
+      ref={finalRef}
+      value={value} 
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      {...props} 
+    />
+  );
+}));
 
 function App() {
   const [currentStep, setCurrentStep] = useState('home');
