@@ -63,6 +63,108 @@ const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   );
 });
 
+// Isolated selection item component
+const SelectionItem = React.memo(({ item, index, onUpdateQuantity, onRemove, onToggleDismantling }) => {
+  const handleQuantityDecrease = useCallback(() => {
+    onUpdateQuantity(index, item.quantity - 1);
+  }, [index, item.quantity, onUpdateQuantity]);
+
+  const handleQuantityIncrease = useCallback(() => {
+    onUpdateQuantity(index, item.quantity + 1);
+  }, [index, item.quantity, onUpdateQuantity]);
+
+  const handleRemove = useCallback(() => {
+    onRemove(index);
+  }, [index, onRemove]);
+
+  const handleToggle = useCallback(() => {
+    onToggleDismantling(index);
+  }, [index, onToggleDismantling]);
+
+  return (
+    <div className="border rounded-lg p-3">
+      <div className="flex justify-between items-start mb-2">
+        <h4 className="font-medium text-sm">{item.article_name}</h4>
+        <Button
+          onClick={handleRemove}
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6 p-0 text-red-500"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+      
+      {item.material && (
+        <Badge variant="secondary" className="text-xs mb-2">
+          {item.material}
+        </Badge>
+      )}
+      
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Button
+            onClick={handleQuantityDecrease}
+            variant="outline"
+            size="sm"
+            className="h-6 w-6 p-0"
+          >
+            <Minus className="h-3 w-3" />
+          </Button>
+          <span className="text-sm font-medium">{item.quantity}</span>
+          <Button
+            onClick={handleQuantityIncrease}
+            variant="outline"
+            size="sm"
+            className="h-6 w-6 p-0"
+          >
+            <Plus className="h-3 w-3" />
+          </Button>
+        </div>
+      </div>
+      
+      {item.requires_dismantling && (
+        <div className="mt-2 flex items-center space-x-2">
+          <Checkbox
+            id={`dismantled-${index}`}
+            checked={item.is_dismantled}
+            onCheckedChange={handleToggle}
+          />
+          <label htmlFor={`dismantled-${index}`} className="text-xs text-gray-600">
+            Déjà démonté/débranché
+          </label>
+        </div>
+      )}
+    </div>
+  );
+});
+
+// Isolated custom item component
+const CustomItemCard = React.memo(({ item, index, onRemove }) => {
+  const handleRemove = useCallback(() => {
+    onRemove(index);
+  }, [index, onRemove]);
+
+  return (
+    <div className="border rounded-lg p-3 border-orange-200 bg-orange-50">
+      <div className="flex justify-between items-start mb-2">
+        <h4 className="font-medium text-sm">{item.description}</h4>
+        <Button
+          onClick={handleRemove}
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6 p-0 text-red-500"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+      <Badge variant="outline" className="text-xs">
+        Supplément à confirmer
+      </Badge>
+    </div>
+  );
+});
+
 function App() {
   const [currentStep, setCurrentStep] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
