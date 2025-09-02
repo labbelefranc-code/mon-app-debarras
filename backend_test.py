@@ -469,6 +469,74 @@ def main():
     if quote_id:
         tester.test_get_quote_by_id(quote_id)
     
+    # Test 12: Admin Photo Management System
+    print(f"\n📸 Testing Admin Photo Management System...")
+    
+    # Test admin authentication
+    print(f"\n🔐 Testing admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ Admin authentication failed - cannot proceed with photo management tests")
+    else:
+        # Test invalid authentication
+        tester.test_admin_authentication_invalid()
+        
+        # Test getting all photos
+        success_photos, photos = tester.test_get_admin_photos()
+        
+        # Test getting articles for photo assignment
+        success_articles, articles = tester.test_get_admin_articles_for_photos()
+        
+        if success_photos and success_articles and photos and articles:
+            # Get a sample photo and article for testing
+            sample_photo = photos[0]['filename'] if photos else None
+            sample_article_id = articles[0]['id'] if articles else None
+            
+            if sample_photo and sample_article_id:
+                print(f"\n🔗 Testing photo assignment workflow...")
+                
+                # Test photo assignment
+                success_assign, _ = tester.test_assign_photo_to_article(sample_photo, sample_article_id)
+                
+                if success_assign:
+                    # Verify assignment by getting photos again
+                    print(f"\n🔍 Verifying photo assignment...")
+                    success_verify, updated_photos = tester.test_get_admin_photos()
+                    if success_verify:
+                        assigned_photo = next((p for p in updated_photos if p['filename'] == sample_photo), None)
+                        if assigned_photo and assigned_photo.get('is_assigned'):
+                            print(f"✅ Photo assignment verified - {sample_photo} is now assigned")
+                        else:
+                            print(f"❌ Photo assignment verification failed")
+                    
+                    # Test photo unassignment
+                    print(f"\n🔓 Testing photo unassignment...")
+                    success_unassign, _ = tester.test_unassign_photo(sample_photo)
+                    
+                    if success_unassign:
+                        # Verify unassignment
+                        print(f"\n🔍 Verifying photo unassignment...")
+                        success_verify2, updated_photos2 = tester.test_get_admin_photos()
+                        if success_verify2:
+                            unassigned_photo = next((p for p in updated_photos2 if p['filename'] == sample_photo), None)
+                            if unassigned_photo and not unassigned_photo.get('is_assigned'):
+                                print(f"✅ Photo unassignment verified - {sample_photo} is now unassigned")
+                            else:
+                                print(f"❌ Photo unassignment verification failed")
+                
+                # Test static photo serving
+                print(f"\n🖼️ Testing static photo serving...")
+                tester.test_serve_static_photo(sample_photo)
+                
+                # Test error handling
+                print(f"\n⚠️ Testing error handling...")
+                tester.test_assign_nonexistent_photo()
+                tester.test_assign_photo_to_nonexistent_article(sample_photo)
+            else:
+                print("❌ No photos or articles available for testing assignment workflow")
+        else:
+            print("❌ Could not retrieve photos or articles for assignment testing")
+    
     # Print final results
     print("\n" + "=" * 70)
     print(f"📊 API Test Results: {tester.tests_passed}/{tester.tests_run} tests passed")
