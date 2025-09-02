@@ -1582,7 +1582,7 @@ function App() {
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      setSelectedCategory(category);
+                      setSelectedAdminCategory(category);
                       setShowArticleForm(true);
                     }}
                     className="mt-2"
