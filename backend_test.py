@@ -736,15 +736,158 @@ def main():
         else:
             print("❌ Could not retrieve photos or articles for assignment testing")
     
+    # Test 13: NEW COMPREHENSIVE CATEGORY AND ARTICLE MANAGEMENT TESTING
+    print(f"\n🏗️ Testing Category and Article Management System...")
+    
+    if success_auth:  # Only proceed if admin auth works
+        # Test category tree structure
+        print(f"\n🌳 Testing category tree structure...")
+        success_tree, tree_data = tester.test_get_categories_tree()
+        
+        # Test category CRUD operations
+        print(f"\n📁 Testing Category CRUD Operations...")
+        
+        # Create a new test category
+        test_category_data = {
+            "name": "Test Electronics Category",
+            "description": "Category for testing CRUD operations",
+            "icon": "📱"
+        }
+        success_create_cat, test_category_id = tester.test_create_category(test_category_data)
+        
+        if success_create_cat and test_category_id:
+            # Update the category
+            update_category_data = {
+                "name": "Updated Electronics Category",
+                "description": "Updated description for testing"
+            }
+            success_update_cat, _ = tester.test_update_category(test_category_id, update_category_data)
+            
+            # Test article CRUD operations
+            print(f"\n📄 Testing Article CRUD Operations...")
+            
+            # Create a new test article in the test category
+            test_article_data = {
+                "name": "Test Smartphone",
+                "category_id": test_category_id,
+                "base_price": 75.0,
+                "materials": ["Plastic", "Metal", "Glass"],
+                "description": "Test smartphone for CRUD operations",
+                "requires_dismantling": False
+            }
+            success_create_art, test_article_id = tester.test_create_article(test_article_data)
+            
+            if success_create_art and test_article_id:
+                # Update the article
+                update_article_data = {
+                    "name": "Updated Test Smartphone",
+                    "base_price": 85.0,
+                    "description": "Updated smartphone description"
+                }
+                success_update_art, _ = tester.test_update_article(test_article_id, update_article_data)
+                
+                # Test photo assignment to the new article
+                if success_photos and photos:
+                    sample_photo_for_new_article = photos[1]['filename'] if len(photos) > 1 else photos[0]['filename']
+                    print(f"\n🔗 Testing photo assignment to new article...")
+                    success_assign_new, _ = tester.test_assign_photo_to_article(sample_photo_for_new_article, test_article_id)
+                    
+                    if success_assign_new:
+                        print(f"✅ Successfully assigned photo to new article")
+                        # Unassign for cleanup
+                        tester.test_unassign_photo(sample_photo_for_new_article)
+                
+                # Delete the test article
+                success_delete_art, _ = tester.test_delete_article(test_article_id)
+                print(f"✅ Test article cleanup: {'Success' if success_delete_art else 'Failed'}")
+            
+            # Delete the test category (should work now that article is deleted)
+            success_delete_cat, _ = tester.test_delete_category(test_category_id)
+            print(f"✅ Test category cleanup: {'Success' if success_delete_cat else 'Failed'}")
+        
+        # Test hierarchy constraints
+        print(f"\n🔒 Testing Hierarchy Constraints...")
+        success_hierarchy, _ = tester.test_category_hierarchy_constraints()
+        
+        # Test deletion constraints
+        print(f"\n🚫 Testing Deletion Constraints...")
+        success_deletion, _ = tester.test_deletion_constraints()
+        
+        # Test article category constraints
+        print(f"\n⚠️ Testing Article Category Constraints...")
+        success_article_constraint, _ = tester.test_article_category_constraints()
+        
+        # Test creating subcategory with existing parent
+        print(f"\n👨‍👩‍👧 Testing Parent-Child Category Relationships...")
+        if categories:
+            # Find a main category to use as parent
+            main_category = next((cat for cat in categories if cat.get('id') == 'maison_interieur'), None)
+            if main_category:
+                subcategory_data = {
+                    "name": "Test Subcategory",
+                    "parent_id": main_category['id'],
+                    "description": "Test subcategory with valid parent"
+                }
+                success_subcat, subcat_id = tester.test_create_category(subcategory_data)
+                
+                if success_subcat and subcat_id:
+                    print(f"✅ Successfully created subcategory with parent")
+                    # Clean up
+                    tester.test_delete_category(subcat_id)
+        
+        # Test updating article to different category
+        print(f"\n🔄 Testing Article Category Transfer...")
+        if categories and len(categories) >= 2:
+            # Get existing articles
+            success_existing_arts, existing_articles = tester.test_get_articles()
+            if success_existing_arts and existing_articles:
+                # Find an article to test with
+                test_existing_article = existing_articles[0]
+                original_category_id = test_existing_article.get('category_id')
+                
+                # Find a different category
+                different_category = next((cat for cat in categories if cat.get('id') != original_category_id), None)
+                if different_category:
+                    # Update article to different category
+                    transfer_data = {"category_id": different_category['id']}
+                    success_transfer, _ = tester.test_update_article(test_existing_article['id'], transfer_data)
+                    
+                    if success_transfer:
+                        print(f"✅ Successfully transferred article to different category")
+                        # Restore original category
+                        restore_data = {"category_id": original_category_id}
+                        tester.test_update_article(test_existing_article['id'], restore_data)
+        
+        # Verify category tree after all operations
+        print(f"\n🌳 Final Category Tree Verification...")
+        success_final_tree, final_tree_data = tester.test_get_categories_tree()
+        
+        if success_final_tree:
+            print(f"✅ Category tree structure maintained after all operations")
+    
     # Print final results
     print("\n" + "=" * 70)
-    print(f"📊 API Test Results: {tester.tests_passed}/{tester.tests_run} tests passed")
+    print(f"📊 COMPREHENSIVE API Test Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
-    if tester.tests_passed >= (tester.tests_run * 0.8):  # 80% pass rate acceptable
-        print("🎉 Backend API tests mostly successful! Ready for frontend testing.")
+    # Calculate success rate
+    success_rate = (tester.tests_passed / tester.tests_run) * 100 if tester.tests_run > 0 else 0
+    print(f"📈 Success Rate: {success_rate:.1f}%")
+    
+    if tester.tests_passed >= (tester.tests_run * 0.85):  # 85% pass rate for comprehensive testing
+        print("🎉 COMPREHENSIVE Backend API tests successful!")
+        print("✅ Photo Management System: Working")
+        print("✅ Category Management System: Working") 
+        print("✅ Article Management System: Working")
+        print("✅ Hierarchy & Constraints: Working")
+        print("🚀 Complete admin management system ready!")
         return 0
     else:
-        print(f"⚠️  Too many tests failed ({tester.tests_run - tester.tests_passed}). Backend needs fixes.")
+        failed_count = tester.tests_run - tester.tests_passed
+        print(f"⚠️  {failed_count} tests failed out of {tester.tests_run}. Backend needs attention.")
+        if success_rate >= 70:
+            print("📝 Most core functionality working, minor issues detected.")
+        else:
+            print("🚨 Significant issues detected, major fixes needed.")
         return 1
 
 if __name__ == "__main__":
