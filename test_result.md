@@ -101,3 +101,49 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Créer une interface admin avec glisser-déposer pour associer les photos des 4 ZIP extraits aux articles/catégories appropriés. L'utilisateur veut une solution intuitive pour mapper les photos aux bons objets sans avoir à nommer manuellement chaque fichier."
+
+backend:
+  - task: "Create admin photo management endpoints"
+    implemented: false
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Starting implementation of admin endpoints for photo management - list all photos, associate photos to articles"
+
+frontend:
+  - task: "Create admin interface with drag & drop for photo association"
+    implemented: false
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Will create admin interface after backend endpoints are ready and tested"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Create admin photo management endpoints"
+    - "Test backend photo listing and association"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Starting development of admin photo management system. Will implement backend endpoints first, test them, then create frontend interface."
