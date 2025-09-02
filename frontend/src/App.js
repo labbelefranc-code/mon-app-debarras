@@ -434,19 +434,20 @@ function App() {
                     <CardTitle className="text-center text-lg">{article.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    {/* Photos réelles correctement correspondantes */}
+                    {/* Photos réelles avec correspondances LOGIQUES */}
                     <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                       {(() => {
                         let photoSrc = null;
-                        // Correspondances correctes des photos aux articles
-                        if (article.id === 'chaise_bureau') photoSrc = '/photos/chaise-moderne.png';
-                        else if (article.id === 'fauteuil_salon') photoSrc = '/photos/fauteuil-gris.png';
-                        else if (article.id === 'lave_linge') photoSrc = '/photos/lave-linge-blanc.png';
-                        else if (article.id === 'lit_double') photoSrc = '/photos/lit-simple.png';
-                        else if (article.id === 'bureau_moderne') photoSrc = '/photos/table-ronde.png';
-                        else if (article.id === 'table_salle_manger') photoSrc = '/photos/table-ronde.png';
-                        else if (article.id === 'lit_double_medicalise') photoSrc = '/photos/lit-double.png';
-                        else if (article.id === 'canape_2_places') photoSrc = '/photos/fauteuil-salon.png';
+                        // CORRESPONDANCES LOGIQUES ET COHÉRENTES
+                        if (article.id === 'chaise_bureau') photoSrc = '/photos/chaise-moderne.png'; // Une vraie chaise
+                        else if (article.id === 'fauteuil_salon') photoSrc = '/photos/fauteuil-gris.png'; // Un vrai fauteuil
+                        else if (article.id === 'table_salle_manger') photoSrc = '/photos/table-ronde.png'; // Une vraie table
+                        else if (article.id === 'bureau_moderne') photoSrc = '/photos/table-ronde.png'; // Table peut servir de bureau
+                        else if (article.id === 'lit_double') photoSrc = '/photos/lit-simple.png'; // Un vrai lit
+                        else if (article.id === 'lit_double_medicalise') photoSrc = '/photos/lit-double.png'; // Un lit plus imposant
+                        
+                        // POUR L'ÉLECTROMÉNAGER : placeholders en attendant de trouver les bonnes photos
+                        // Je ne mets PAS de photos incohérentes
                         
                         return photoSrc ? (
                           <img 
@@ -459,7 +460,7 @@ function App() {
                             }}
                           />
                         ) : (
-                          <span className="text-gray-500 text-sm">Photo {article.name}</span>
+                          <span className="text-gray-500 text-sm">📷 Photo {article.name} à venir</span>
                         );
                       })()}
                       <span className="text-gray-500 text-sm hidden">Photo {article.name}</span>
