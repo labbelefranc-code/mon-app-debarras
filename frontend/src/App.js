@@ -20,18 +20,37 @@ const API = `${BACKEND_URL}/api`;
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
+  const inputRef = React.useRef(null);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
     if (inputValue.trim()) {
       onAddCustomItem(inputValue.trim());
       setInputValue('');
+      // Keep focus after clearing
+      if (inputRef.current) {
+        setTimeout(() => inputRef.current.focus(), 0);
+      }
     }
   }, [inputValue, onAddCustomItem]);
 
   const handleInputChange = useCallback((e) => {
+    e.stopPropagation();
     setInputValue(e.target.value);
   }, []);
+
+  const handleButtonClick = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (inputValue.trim()) {
+      onAddCustomItem(inputValue.trim());
+      setInputValue('');
+      // Keep focus after clearing
+      if (inputRef.current) {
+        setTimeout(() => inputRef.current.focus(), 0);
+      }
+    }
+  }, [inputValue, onAddCustomItem]);
 
   return (
     <Card className="mb-8">
@@ -39,21 +58,29 @@ const CustomItemInput = React.memo(({ onAddCustomItem }) => {
         <CardTitle className="text-lg">Mon objet n'est pas dans la liste</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="flex gap-4">
+        <div className="flex gap-4">
           <Input
+            ref={inputRef}
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Décrivez votre objet (ex: Table ronde en marbre 1m50)"
             className="flex-1"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
           />
           <Button
-            type="submit"
+            onClick={handleButtonClick}
+            type="button"
             className="bg-orange-500 hover:bg-orange-600"
           >
             <Plus className="h-4 w-4 mr-2" />
             Ajouter
           </Button>
-        </form>
+        </div>
         <p className="text-sm text-gray-600 mt-2">
           <AlertTriangle className="h-4 w-4 inline mr-1" />
           Un supplément sera calculé après consultation et vous sera confirmé avant réservation.
