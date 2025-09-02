@@ -1261,7 +1261,7 @@ function App() {
     const handleSubmit = useCallback((e) => {
       e.preventDefault();
       const dataToSend = { ...formData };
-      if (!dataToSend.parent_id) dataToSend.parent_id = null;
+      if (!dataToSend.parent_id || dataToSend.parent_id === 'none') dataToSend.parent_id = null;
       if (!dataToSend.description) delete dataToSend.description;
       if (!dataToSend.icon) delete dataToSend.icon;
       
