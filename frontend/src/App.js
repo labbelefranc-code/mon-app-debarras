@@ -165,6 +165,24 @@ const CustomItemCard = React.memo(({ item, index, onRemove }) => {
   );
 });
 
+// Isolated form input component
+const OptimizedInput = React.memo(({ value, onChange, ...props }) => {
+  const handleChange = useCallback((e) => {
+    onChange(e.target.value);
+  }, [onChange]);
+
+  return <Input value={value} onChange={handleChange} {...props} />;
+});
+
+// Isolated textarea component
+const OptimizedTextarea = React.memo(({ value, onChange, ...props }) => {
+  const handleChange = useCallback((e) => {
+    onChange(e.target.value);
+  }, [onChange]);
+
+  return <Textarea value={value} onChange={handleChange} {...props} />;
+});
+
 function App() {
   const [currentStep, setCurrentStep] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
