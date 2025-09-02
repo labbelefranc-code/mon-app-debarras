@@ -648,29 +648,66 @@ async def get_categories_tree(username: str = Depends(authenticate_admin)):
         categories = await db.categories.find().to_list(1000)
         articles = await db.articles.find().to_list(1000)
         
-        # Organiser en arbre
-        categories_dict = {cat['id']: {**cat, 'children': [], 'articles': []} for cat in categories}
+        print(f"DEBUG: Found {len(categories)} categories and {len(articles)} articles")
+        
+        # Organiser en arbre - ensure all categories have required fields
+        categories_dict = {}
+        for cat in categories:
+            if 'id' not in cat:
+                print(f"DEBUG: Category missing id: {cat}")
+                continue
+            categories_dict[cat['id']] = {
+                'id': cat['id'],
+                'name': cat.get('name', 'Unknown'),
+                'parent_id': cat.get('parent_id'),
+                'description': cat.get('description'),
+                'icon': cat.get('icon'),
+                'image_url': cat.get('image_url'),
+                'children': [],
+                'articles': []
+            }
+        
+        print(f"DEBUG: Created categories_dict with {len(categories_dict)} entries")
         
         # Ajouter les articles aux catégories
         for article in articles:
-            if article.get('category_id') and article['category_id'] in categories_dict:
-                categories_dict[article['category_id']]['articles'].append(article)
+            category_id = article.get('category_id')
+            if category_id and category_id in categories_dict:
+                categories_dict[category_id]['articles'].append({
+                    'id': article.get('id'),
+                    'name': article.get('name', 'Unknown'),
+                    'base_price': article.get('base_price', 0),
+                    'materials': article.get('materials', []),
+                    'description': article.get('description'),
+                    'requires_dismantling': article.get('requires_dismantling', False),
+                    'image_url': article.get('image_url')
+                })
         
         # Construire l'arbre hiérarchique
         root_categories = []
         for cat in categories:
+            cat_id = cat.get('id')
             parent_id = cat.get('parent_id')
+            
+            if not cat_id:
+                continue
+                
             if parent_id and parent_id in categories_dict:
                 # Add as child to parent
-                categories_dict[parent_id]['children'].append(categories_dict[cat['id']])
+                categories_dict[parent_id]['children'].append(categories_dict[cat_id])
             elif not parent_id:
                 # Add as root category
-                root_categories.append(categories_dict[cat['id']])
-            # If parent_id exists but parent not found, skip (orphaned category)
+                root_categories.append(categories_dict[cat_id])
+            else:
+                print(f"DEBUG: Orphaned category {cat_id} with parent {parent_id}")
         
+        print(f"DEBUG: Built tree with {len(root_categories)} root categories")
         return root_categories
+        
     except Exception as e:
-        logger.error(f"Error in get_categories_tree: {str(e)}")
+        print(f"ERROR in get_categories_tree: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error retrieving categories tree: {str(e)}")
 
 # Routes d'administration - Devis
