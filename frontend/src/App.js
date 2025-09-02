@@ -122,6 +122,26 @@ function App() {
     }
   };
 
+  const handleSubcategoryClick = async (subcategory) => {
+    setSelectedSubcategory(subcategory);
+    
+    try {
+      const subSubcategoriesResponse = await axios.get(`${API}/categories/${subcategory.id}/subcategories`);
+      if (subSubcategoriesResponse.data && subSubcategoriesResponse.data.length > 0) {
+        setSubcategories(subSubcategoriesResponse.data);
+        // Rester sur la page subcategories mais avec les nouvelles sous-catégories
+        setCurrentStep('subcategories');
+      } else {
+        setCurrentStep('articles');
+        loadArticles(subcategory.id);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification des sous-sous-catégories:', error);
+      setCurrentStep('articles');
+      loadArticles(subcategory.id);
+    }
+  };
+
   const addToSelection = (article, material = null) => {
     const newItem = {
       article_id: article.id,
