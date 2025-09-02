@@ -1658,16 +1658,16 @@ function App() {
               category={editingCategory}
               allCategories={allArticles}
               onSave={(data) => {
-                if (selectedCategory && !editingCategory) {
+                if (selectedAdminCategory && !editingCategory) {
                   // Creating subcategory
-                  data.parent_id = selectedCategory.id;
+                  data.parent_id = selectedAdminCategory.id;
                 }
                 editingCategory ? updateCategory(editingCategory.id, data) : createCategory(data);
               }}
               onCancel={() => {
                 setShowCategoryForm(false); 
                 setEditingCategory(null);
-                setSelectedCategory(null);
+                setSelectedAdminCategory(null);
               }}
             />
           )}
