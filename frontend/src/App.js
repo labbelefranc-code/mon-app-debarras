@@ -186,16 +186,16 @@ function App() {
     setSelectedItems(newItems);
   };
 
-  const addCustomItem = () => {
+  const addCustomItem = React.useCallback(() => {
     const description = document.getElementById('custom-item-description').value.trim();
     if (description) {
-      setCustomItems([...customItems, {
+      setCustomItems(prev => [...prev, {
         description: description,
         estimated_price: 0.0
       }]);
       document.getElementById('custom-item-description').value = '';
     }
-  };
+  }, []);
 
   const removeCustomItem = (index) => {
     const newItems = [...customItems];
