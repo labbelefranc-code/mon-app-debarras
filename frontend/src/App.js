@@ -1140,12 +1140,211 @@ function App() {
     </div>
   );
 
+  // Category Form Component
+  const CategoryForm = ({ category, allCategories, onSave, onCancel }) => {
+    const [formData, setFormData] = React.useState({
+      name: category?.name || '',
+      parent_id: category?.parent_id || '',
+      description: category?.description || '',
+      icon: category?.icon || ''
+    });
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const dataToSend = { ...formData };
+      if (!dataToSend.parent_id) dataToSend.parent_id = null;
+      if (!dataToSend.description) delete dataToSend.description;
+      if (!dataToSend.icon) delete dataToSend.icon;
+      
+      onSave(dataToSend);
+    };
+
+    return (
+      <Dialog open={true} onOpenChange={onCancel}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{category ? 'Modifier la catégorie' : 'Nouvelle catégorie'}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              placeholder="Nom de la catégorie"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              required
+            />
+            
+            <Select value={formData.parent_id} onValueChange={(value) => setFormData({...formData, parent_id: value})}>
+              <SelectTrigger>
+                <SelectValue placeholder="Catégorie parent (optionnel)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Aucune (catégorie racine)</SelectItem>
+                {allCategories.map(cat => (
+                  <SelectItem key={cat.id} value={cat.id} disabled={cat.id === category?.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Input
+              placeholder="Icône (emoji)"
+              value={formData.icon}
+              onChange={(e) => setFormData({...formData, icon: e.target.value})}
+            />
+            
+            <Textarea
+              placeholder="Description (optionnelle)"
+              value={formData.description}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+            />
+            
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={onCancel}>
+                Annuler
+              </Button>
+              <Button type="submit" className="bg-teal-600 hover:bg-teal-700">
+                {category ? 'Mettre à jour' : 'Créer'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  // Article Form Component
+  const ArticleForm = ({ article, allCategories, onSave, onCancel }) => {
+    const [formData, setFormData] = React.useState({
+      name: article?.name || '',
+      category_id: article?.category_id || '',
+      base_price: article?.base_price || 0,
+      materials: article?.materials?.join(', ') || '',
+      description: article?.description || '',
+      requires_dismantling: article?.requires_dismantling || false
+    });
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const dataToSend = {
+        ...formData,
+        base_price: parseFloat(formData.base_price),
+        materials: formData.materials ? formData.materials.split(',').map(m => m.trim()).filter(m => m) : []
+      };
+      if (!dataToSend.description) delete dataToSend.description;
+      
+      onSave(dataToSend);
+    };
+
+    // Flatten categories for selection
+    const flattenCategories = (cats, prefix = '') => {
+      let result = [];
+      cats.forEach(cat => {
+        result.push({ id: cat.id, name: prefix + cat.name });
+        if (cat.children && cat.children.length > 0) {
+          result = result.concat(flattenCategories(cat.children, prefix + cat.name + ' > '));
+        }
+      });
+      return result;
+    };
+
+    const flatCategories = flattenCategories(categoriesTree);
+
+    return (
+      <Dialog open={true} onOpenChange={onCancel}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{article ? 'Modifier l\'article' : 'Nouvel article'}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              placeholder="Nom de l'article"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              required
+            />
+            
+            <Select value={formData.category_id} onValueChange={(value) => setFormData({...formData, category_id: value})}>
+              <SelectTrigger>
+                <SelectValue placeholder="Choisir une catégorie" />
+              </SelectTrigger>
+              <SelectContent>
+                {flatCategories.map(cat => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Prix de base"
+              value={formData.base_price}
+              onChange={(e) => setFormData({...formData, base_price: e.target.value})}
+              required
+            />
+            
+            <Input
+              placeholder="Matériaux (séparés par des virgules)"
+              value={formData.materials}
+              onChange={(e) => setFormData({...formData, materials: e.target.value})}
+            />
+            
+            <Textarea
+              placeholder="Description (optionnelle)"
+              value={formData.description}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+            />
+            
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="requires_dismantling"
+                checked={formData.requires_dismantling}
+                onCheckedChange={(checked) => setFormData({...formData, requires_dismantling: checked})}
+              />
+              <label htmlFor="requires_dismantling">Nécessite démontage/débranchement</label>
+            </div>
+            
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={onCancel}>
+                Annuler
+              </Button>
+              <Button type="submit" className="bg-teal-600 hover:bg-teal-700">
+                {article ? 'Mettre à jour' : 'Créer'}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   const AdminPhotosPage = () => (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">Gestion des Photos</h1>
+          <div className="flex items-center space-x-4">
+            <h1 className="text-3xl font-bold">Administration</h1>
+            <div className="flex space-x-2">
+              <Button
+                onClick={() => setCurrentStep('admin-photos')}
+                variant={currentStep === 'admin-photos' ? 'default' : 'outline'}
+                className={currentStep === 'admin-photos' ? 'bg-teal-600 hover:bg-teal-700' : ''}
+              >
+                Photos
+              </Button>
+              <Button
+                onClick={() => setCurrentStep('admin-categories')}
+                variant={currentStep === 'admin-categories' ? 'default' : 'outline'}
+                className={currentStep === 'admin-categories' ? 'bg-teal-600 hover:bg-teal-700' : ''}
+              >
+                Catégories
+              </Button>
+            </div>
+          </div>
           <Button
             onClick={() => {
               setIsAdminMode(false);
