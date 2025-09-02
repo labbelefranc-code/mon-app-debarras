@@ -1418,19 +1418,31 @@ function App() {
     );
   });
 
-  // Article Form Component
+  // Article Form Component - Ultra isolated
   const ArticleForm = React.memo(({ article, allCategories, onSave, onCancel }) => {
-    const [formData, setFormData] = React.useState({
+    // Initialize form data once and keep it isolated
+    const [formData, setFormData] = React.useState(() => ({
       name: article?.name || '',
       category_id: article?.category_id || '',
       base_price: article?.base_price || 0,
       materials: article?.materials?.join(', ') || '',
       description: article?.description || '',
       requires_dismantling: article?.requires_dismantling || false
-    });
+    }));
+
+    // Prevent re-creation of handlers
+    const fieldUpdaters = React.useMemo(() => ({
+      name: (value) => setFormData(prev => ({ ...prev, name: value })),
+      category_id: (value) => setFormData(prev => ({ ...prev, category_id: value })),
+      base_price: (value) => setFormData(prev => ({ ...prev, base_price: value })),
+      materials: (value) => setFormData(prev => ({ ...prev, materials: value })),
+      description: (value) => setFormData(prev => ({ ...prev, description: value })),
+      requires_dismantling: (value) => setFormData(prev => ({ ...prev, requires_dismantling: value }))
+    }), []);
 
     const handleSubmit = useCallback((e) => {
       e.preventDefault();
+      e.stopPropagation();
       const dataToSend = {
         ...formData,
         base_price: parseFloat(formData.base_price),
@@ -1441,9 +1453,11 @@ function App() {
       onSave(dataToSend);
     }, [formData, onSave]);
 
-    const updateField = useCallback((field) => (value) => {
-      setFormData(prev => ({ ...prev, [field]: value }));
-    }, []);
+    const handleCancel = useCallback((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onCancel();
+    }, [onCancel]);
 
     // Flatten categories for selection
     const flattenCategories = (cats, prefix = '') => {
