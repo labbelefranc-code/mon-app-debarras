@@ -347,6 +347,203 @@ class AlloDebarrasAPITester:
             headers=headers
         )
 
+    # ===== NEW CATEGORY AND ARTICLE MANAGEMENT TESTS =====
+    
+    def test_create_category(self, category_data):
+        """Test POST /api/admin/categories - Create new category"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            f"Create Category '{category_data.get('name', 'Unknown')}'", 
+            "POST", 
+            "admin/categories", 
+            200, 
+            data=category_data,
+            headers=headers
+        )
+        if success:
+            category_id = response.get('id')
+            category_name = response.get('name')
+            print(f"   Created category ID: {category_id}")
+            print(f"   Category name: {category_name}")
+            return success, category_id
+        return success, None
+
+    def test_update_category(self, category_id, update_data):
+        """Test PUT /api/admin/categories/{id} - Update category"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            f"Update Category {category_id}", 
+            "PUT", 
+            f"admin/categories/{category_id}", 
+            200, 
+            data=update_data,
+            headers=headers
+        )
+        if success:
+            updated_name = response.get('name')
+            print(f"   Updated category name: {updated_name}")
+        return success, response
+
+    def test_delete_category(self, category_id, expected_status=200):
+        """Test DELETE /api/admin/categories/{id} - Delete category"""
+        headers = self.get_admin_auth_headers()
+        return self.run_test(
+            f"Delete Category {category_id}", 
+            "DELETE", 
+            f"admin/categories/{category_id}", 
+            expected_status, 
+            headers=headers
+        )
+
+    def test_create_article(self, article_data):
+        """Test POST /api/admin/articles - Create new article"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            f"Create Article '{article_data.get('name', 'Unknown')}'", 
+            "POST", 
+            "admin/articles", 
+            200, 
+            data=article_data,
+            headers=headers
+        )
+        if success:
+            article_id = response.get('id')
+            article_name = response.get('name')
+            base_price = response.get('base_price')
+            print(f"   Created article ID: {article_id}")
+            print(f"   Article name: {article_name}")
+            print(f"   Base price: {base_price}€")
+            return success, article_id
+        return success, None
+
+    def test_update_article(self, article_id, update_data):
+        """Test PUT /api/admin/articles/{id} - Update article"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            f"Update Article {article_id}", 
+            "PUT", 
+            f"admin/articles/{article_id}", 
+            200, 
+            data=update_data,
+            headers=headers
+        )
+        if success:
+            updated_name = response.get('name')
+            updated_price = response.get('base_price')
+            print(f"   Updated article name: {updated_name}")
+            print(f"   Updated price: {updated_price}€")
+        return success, response
+
+    def test_delete_article(self, article_id, expected_status=200):
+        """Test DELETE /api/admin/articles/{id} - Delete article"""
+        headers = self.get_admin_auth_headers()
+        return self.run_test(
+            f"Delete Article {article_id}", 
+            "DELETE", 
+            f"admin/articles/{article_id}", 
+            expected_status, 
+            headers=headers
+        )
+
+    def test_get_categories_tree(self):
+        """Test GET /api/admin/categories-tree - Get hierarchical category tree"""
+        headers = self.get_admin_auth_headers()
+        success, response = self.run_test(
+            "Get Categories Tree", 
+            "GET", 
+            "admin/categories-tree", 
+            200, 
+            headers=headers
+        )
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} root categories")
+            for root_cat in response:
+                children_count = len(root_cat.get('children', []))
+                articles_count = len(root_cat.get('articles', []))
+                print(f"   - {root_cat.get('name', 'Unknown')}: {children_count} subcategories, {articles_count} articles")
+        return success, response
+
+    def test_category_hierarchy_constraints(self):
+        """Test category hierarchy constraints (prevent self-parenting)"""
+        headers = self.get_admin_auth_headers()
+        
+        # First create a test category
+        test_category_data = {
+            "name": "Test Hierarchy Category",
+            "description": "For testing hierarchy constraints"
+        }
+        success, category_id = self.test_create_category(test_category_data)
+        
+        if success and category_id:
+            # Try to make it its own parent (should fail)
+            update_data = {"parent_id": category_id}
+            success_constraint, _ = self.run_test(
+                "Test Self-Parent Constraint (Should Fail)", 
+                "PUT", 
+                f"admin/categories/{category_id}", 
+                400,  # Should return 400 Bad Request
+                data=update_data,
+                headers=headers
+            )
+            
+            # Clean up - delete the test category
+            self.test_delete_category(category_id)
+            
+            return success_constraint, None
+        return False, None
+
+    def test_deletion_constraints(self):
+        """Test deletion constraints for categories with subcategories/articles"""
+        headers = self.get_admin_auth_headers()
+        
+        # Create parent category
+        parent_data = {
+            "name": "Test Parent Category",
+            "description": "Parent for constraint testing"
+        }
+        success_parent, parent_id = self.test_create_category(parent_data)
+        
+        if success_parent and parent_id:
+            # Create child category
+            child_data = {
+                "name": "Test Child Category",
+                "parent_id": parent_id,
+                "description": "Child for constraint testing"
+            }
+            success_child, child_id = self.test_create_category(child_data)
+            
+            if success_child and child_id:
+                # Try to delete parent (should fail because it has children)
+                success_constraint, _ = self.test_delete_category(parent_id, expected_status=400)
+                
+                # Clean up - delete child first, then parent
+                self.test_delete_category(child_id)
+                self.test_delete_category(parent_id)
+                
+                return success_constraint, None
+        return False, None
+
+    def test_article_category_constraints(self):
+        """Test article creation with non-existent category (should fail)"""
+        headers = self.get_admin_auth_headers()
+        
+        article_data = {
+            "name": "Test Article with Invalid Category",
+            "category_id": "nonexistent_category_id",
+            "base_price": 50.0,
+            "materials": ["Test Material"],
+            "description": "Article for testing category constraints"
+        }
+        
+        return self.run_test(
+            "Create Article with Non-existent Category (Should Fail)", 
+            "POST", 
+            "admin/articles", 
+            404,  # Should return 404 Not Found
+            data=article_data,
+            headers=headers
+        )
+
 def main():
     print("🚀 Starting Allo Débarras Express API Tests - New Advanced Version")
     print("=" * 70)
