@@ -116,56 +116,78 @@ class AlloDebarrasAPITester:
             print(f"   Available slots: {available_count}/{len(response)}")
         return success, response
 
-    def test_create_quote(self):
-        """Test creating a quote with the exact flow from the request"""
+    def test_get_articles_by_category(self, category_id):
+        """Test getting articles by category"""
+        return self.run_test(
+            f"Get Articles for Category {category_id}", 
+            "GET", 
+            f"categories/{category_id}/articles", 
+            200
+        )
+
+    def test_create_quote_with_custom_items(self):
+        """Test creating a quote with custom items (new feature)"""
         quote_data = {
             "quote_type": "instant",
             "items": [
                 {
-                    "article_id": "lit_double_medicalise",
-                    "article_name": "Lit double médicalisé",
-                    "material": "Métal",
+                    "article_id": "chaise_bureau",
+                    "article_name": "Chaise de bureau",
+                    "material": "Tissu",
                     "quantity": 1,
-                    "unit_price": 150.0
+                    "unit_price": 25.0,
+                    "is_dismantled": None,
+                    "is_custom": False
                 },
                 {
-                    "article_id": "congelateur_coffre",
-                    "article_name": "Congélateur coffre",
+                    "article_id": "lave_linge",
+                    "article_name": "Lave-linge",
                     "material": "Blanc",
                     "quantity": 1,
-                    "unit_price": 80.0
-                },
-                {
-                    "article_id": "secretaire_ancien",
-                    "article_name": "Secrétaire ancien",
-                    "material": "Bois massif",
-                    "quantity": 1,
-                    "unit_price": 120.0
+                    "unit_price": 60.0,
+                    "is_dismantled": True,  # Already dismantled
+                    "is_custom": False
                 }
             ],
-            "client_name": "Jean Dupont",
-            "client_email": "jean.dupont@test.com",
-            "client_phone": "0623456789",
-            "address": "15 Avenue des Palmiers, 83380 Les Issambres",
+            "custom_items": [
+                {
+                    "description": "Table en marbre antique",
+                    "estimated_price": 0.0
+                }
+            ],
+            "client_name": "Marie Dubois",
+            "client_email": "marie.dubois@test.com",
+            "client_phone": "0634567890",
+            "address": "25 Rue des Mimosas, 83380 Les Issambres",
             "parking": "facile",
-            "floor": 1,
-            "elevator": True,
-            "additional_info": "Intervention pour déménagement",
-            "preferred_date": "2025-02-15",
+            "floor": 0,
+            "elevator": False,
+            "additional_info": "Accès par le jardin",
+            "zone": "zone_1",
+            "preferred_date": "2025-02-18",
+            "preferred_time_slot": "09:00-10:00",
             "urgent": False,
             "photo_urls": []
         }
         
-        success, response = self.run_test("Create Quote (Full Flow)", "POST", "quotes", 200, quote_data)
+        success, response = self.run_test("Create Quote with Custom Items", "POST", "quotes", 200, quote_data)
         if success:
             quote_id = response.get('id')
-            expected_total = 350.0  # 150 + 80 + 120
-            actual_total = response.get('total_price', 0)
+            status = response.get('status')
+            base_total = response.get('base_total', 0)
+            final_total = response.get('final_total', 0)
+            
             print(f"   Created quote with ID: {quote_id}")
-            if actual_total == expected_total:
-                print(f"✅ Total price calculation correct: {actual_total}€")
+            print(f"   Status: {status}")
+            print(f"   Base total: {base_total}€")
+            print(f"   Final total: {final_total}€")
+            
+            # Should be "awaiting_supplement" because of custom items
+            if status == "awaiting_supplement":
+                print("✅ Status correctly set to 'awaiting_supplement' for custom items")
             else:
-                print(f"❌ Total price incorrect: expected {expected_total}€, got {actual_total}€")
+                print(f"❌ Expected status 'awaiting_supplement', got '{status}'")
+            
             return success, quote_id
         return success, None
 
