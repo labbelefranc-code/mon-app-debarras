@@ -1328,17 +1328,27 @@ function App() {
     </div>
   );
 
-  // Category Form Component
+  // Category Form Component - Ultra isolated
   const CategoryForm = React.memo(({ category, allCategories, onSave, onCancel }) => {
-    const [formData, setFormData] = React.useState({
+    // Initialize form data once and keep it isolated
+    const [formData, setFormData] = React.useState(() => ({
       name: category?.name || '',
       parent_id: category?.parent_id || '',
       description: category?.description || '',
       icon: category?.icon || ''
-    });
+    }));
+
+    // Prevent re-creation of handlers
+    const fieldUpdaters = React.useMemo(() => ({
+      name: (value) => setFormData(prev => ({ ...prev, name: value })),
+      parent_id: (value) => setFormData(prev => ({ ...prev, parent_id: value })),
+      description: (value) => setFormData(prev => ({ ...prev, description: value })),
+      icon: (value) => setFormData(prev => ({ ...prev, icon: value }))
+    }), []);
 
     const handleSubmit = useCallback((e) => {
       e.preventDefault();
+      e.stopPropagation();
       const dataToSend = { ...formData };
       if (!dataToSend.parent_id || dataToSend.parent_id === 'none') dataToSend.parent_id = null;
       if (!dataToSend.description) delete dataToSend.description;
@@ -1347,9 +1357,11 @@ function App() {
       onSave(dataToSend);
     }, [formData, onSave]);
 
-    const updateField = useCallback((field) => (value) => {
-      setFormData(prev => ({ ...prev, [field]: value }));
-    }, []);
+    const handleCancel = useCallback((e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onCancel();
+    }, [onCancel]);
 
     return (
       <Dialog open={true} onOpenChange={onCancel}>
