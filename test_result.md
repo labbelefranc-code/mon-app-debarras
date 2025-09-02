@@ -175,5 +175,7 @@ agent_communication:
     message: "Starting development of admin photo management system. Will implement backend endpoints first, test them, then create frontend interface."
   - agent: "main"
     message: "Completed implementation of admin photo management system. Backend has new endpoints for listing photos, assigning/unassigning photos to articles, and serving static photo files. Frontend has drag & drop admin interface accessible via footer link. Ready for backend testing first, then frontend testing with user permission."
+  - agent: "main"
+    message: "Extended admin system with complete category and article management. Added CRUD endpoints for categories/articles, hierarchical category tree view, forms for creation/editing, and comprehensive admin interface with tabs for Photos and Categories. Ready to test both photo and category management systems."
   - agent: "testing"
     message: "BACKEND TESTING COMPLETED SUCCESSFULLY - All admin photo management endpoints are working perfectly. Tested authentication, photo listing (336 photos from 4 directories), article listing (16 articles), photo assignment/unassignment workflow, database updates, and error handling. All core functionality verified. Ready for frontend testing with user permission."
