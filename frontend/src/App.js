@@ -269,13 +269,15 @@ function App() {
       const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
       const headers = { Authorization: `Basic ${auth}` };
       
-      const [photosResponse, articlesResponse] = await Promise.all([
+      const [photosResponse, articlesResponse, categoriesResponse] = await Promise.all([
         axios.get(`${API}/admin/photos`, { headers }),
-        axios.get(`${API}/admin/articles-for-photos`, { headers })
+        axios.get(`${API}/admin/articles-for-photos`, { headers }),
+        axios.get(`${API}/admin/categories-tree`, { headers })
       ]);
       
       setAllPhotos(photosResponse.data);
       setAllArticles(articlesResponse.data);
+      setCategoriesTree(categoriesResponse.data);
     } catch (error) {
       console.error('Erreur lors du chargement des données admin:', error);
     }
