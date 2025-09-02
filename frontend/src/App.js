@@ -17,6 +17,52 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/u
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Isolated component for custom item input to prevent re-renders
+const CustomItemInput = React.memo(({ onAddCustomItem }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (inputValue.trim()) {
+      onAddCustomItem(inputValue.trim());
+      setInputValue('');
+    }
+  }, [inputValue, onAddCustomItem]);
+
+  const handleInputChange = useCallback((e) => {
+    setInputValue(e.target.value);
+  }, []);
+
+  return (
+    <Card className="mb-8">
+      <CardHeader>
+        <CardTitle className="text-lg">Mon objet n'est pas dans la liste</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="flex gap-4">
+          <Input
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder="Décrivez votre objet (ex: Table ronde en marbre 1m50)"
+            className="flex-1"
+          />
+          <Button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Ajouter
+          </Button>
+        </form>
+        <p className="text-sm text-gray-600 mt-2">
+          <AlertTriangle className="h-4 w-4 inline mr-1" />
+          Un supplément sera calculé après consultation et vous sera confirmé avant réservation.
+        </p>
+      </CardContent>
+    </Card>
+  );
+});
+
 function App() {
   const [currentStep, setCurrentStep] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
