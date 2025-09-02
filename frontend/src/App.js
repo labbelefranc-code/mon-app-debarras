@@ -1337,7 +1337,7 @@ function App() {
       requires_dismantling: article?.requires_dismantling || false
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
       e.preventDefault();
       const dataToSend = {
         ...formData,
@@ -1347,7 +1347,11 @@ function App() {
       if (!dataToSend.description) delete dataToSend.description;
       
       onSave(dataToSend);
-    };
+    }, [formData, onSave]);
+
+    const updateField = useCallback((field) => (value) => {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }, []);
 
     // Flatten categories for selection
     const flattenCategories = (cats, prefix = '') => {
