@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import { Truck, Phone, Calendar, MapPin, ShoppingCart, ArrowLeft, Check, Upload } from "lucide-react";
+import { 
+  Truck, Phone, Calendar, MapPin, ShoppingCart, ArrowLeft, Check, Upload, 
+  Plus, Minus, X, Home, Clock, User, Settings, AlertTriangle
+} from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { Badge } from "./components/ui/badge";
+import { Checkbox } from "./components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
