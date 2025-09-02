@@ -1,7 +1,7 @@
 import requests
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, date
 
 class AlloDebarrasAPITester:
     def __init__(self, base_url="https://enleve-tout.preview.emergentagent.com"):
