@@ -1483,11 +1483,12 @@ function App() {
             <OptimizedInput
               placeholder="Nom de l'article"
               value={formData.name}
-              onChange={updateField('name')}
+              onChange={fieldUpdaters.name}
               required
+              autoFocus
             />
             
-            <Select value={formData.category_id || undefined} onValueChange={updateField('category_id')}>
+            <Select value={formData.category_id || undefined} onValueChange={fieldUpdaters.category_id}>
               <SelectTrigger>
                 <SelectValue placeholder="Choisir une catégorie" />
               </SelectTrigger>
@@ -1505,33 +1506,33 @@ function App() {
               step="0.01"
               placeholder="Prix de base"
               value={formData.base_price}
-              onChange={updateField('base_price')}
+              onChange={fieldUpdaters.base_price}
               required
             />
             
             <OptimizedInput
               placeholder="Matériaux (séparés par des virgules)"
               value={formData.materials}
-              onChange={updateField('materials')}
+              onChange={fieldUpdaters.materials}
             />
             
             <OptimizedTextarea
               placeholder="Description (optionnelle)"
               value={formData.description}
-              onChange={updateField('description')}
+              onChange={fieldUpdaters.description}
             />
             
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="requires_dismantling"
                 checked={formData.requires_dismantling}
-                onCheckedChange={updateField('requires_dismantling')}
+                onCheckedChange={fieldUpdaters.requires_dismantling}
               />
               <label htmlFor="requires_dismantling">Nécessite démontage/débranchement</label>
             </div>
             
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" onClick={onCancel}>
+              <Button type="button" variant="outline" onClick={handleCancel}>
                 Annuler
               </Button>
               <Button type="submit" className="bg-teal-600 hover:bg-teal-700">
