@@ -1014,7 +1014,7 @@ function App() {
                   <div>
                     <h4 className="font-medium mb-2">Articles sélectionnés :</h4>
                     {selectedItems.map((item, index) => (
-                      <div key={index} className="text-sm text-gray-600">
+                      <div key={`recap-${item.article_id}-${index}`} className="text-sm text-gray-600">
                         {item.quantity}x {item.article_name} {item.material && `(${item.material})`}
                       </div>
                     ))}
