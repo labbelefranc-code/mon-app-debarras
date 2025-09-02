@@ -1465,9 +1465,235 @@ function App() {
             </ul>
           </CardContent>
         </Card>
+
+        {/* Forms */}
+        {showCategoryForm && (
+          <CategoryForm
+            category={editingCategory}
+            allCategories={allArticles}
+            onSave={(data) => editingCategory ? updateCategory(editingCategory.id, data) : createCategory(data)}
+            onCancel={() => {setShowCategoryForm(false); setEditingCategory(null);}}
+          />
+        )}
+
+        {showArticleForm && (
+          <ArticleForm
+            article={editingArticle}
+            allCategories={categoriesTree}
+            onSave={(data) => editingArticle ? updateArticle(editingArticle.id, data) : createArticle(data)}
+            onCancel={() => {setShowArticleForm(false); setEditingArticle(null);}}
+          />
+        )}
       </div>
     </div>
   );
+
+  const AdminCategoriesPage = () => {
+    const renderCategoryTree = (categories, level = 0) => {
+      return categories.map((category) => (
+        <div key={category.id} className={`ml-${level * 4}`}>
+          <Card className="mb-4">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">{category.icon || '📁'}</span>
+                  <div>
+                    <h3 className="font-bold">{category.name}</h3>
+                    {category.description && (
+                      <p className="text-sm text-gray-600">{category.description}</p>
+                    )}
+                    <div className="flex items-center space-x-4 text-xs text-gray-500 mt-1">
+                      <span>{category.children?.length || 0} sous-catégories</span>
+                      <span>{category.articles?.length || 0} articles</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setEditingCategory(category);
+                      setShowCategoryForm(true);
+                    }}
+                  >
+                    Modifier
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setShowCategoryForm(true);
+                    }}
+                  >
+                    + Sous-catégorie
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => deleteCategory(category.id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    Supprimer
+                  </Button>
+                </div>
+              </div>
+
+              {/* Articles dans cette catégorie */}
+              {category.articles && category.articles.length > 0 && (
+                <div className="mt-4 pl-4 border-l-2 border-gray-200">
+                  <h4 className="font-semibold text-sm text-gray-700 mb-2">Articles :</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {category.articles.map((article) => (
+                      <div key={article.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                        <div>
+                          <span className="font-medium text-sm">{article.name}</span>
+                          <span className="text-xs text-gray-600 ml-2">{article.base_price}€</span>
+                          {article.image_url && (
+                            <Badge className="ml-2 bg-green-100 text-green-800 text-xs">📷</Badge>
+                          )}
+                        </div>
+                        <div className="flex space-x-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              setEditingArticle(article);
+                              setShowArticleForm(true);
+                            }}
+                            className="h-6 px-2 text-xs"
+                          >
+                            ✏️
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => deleteArticle(article.id)}
+                            className="h-6 px-2 text-xs text-red-600"
+                          >
+                            🗑️
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setShowArticleForm(true);
+                    }}
+                    className="mt-2"
+                  >
+                    + Nouvel article
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Sous-catégories */}
+          {category.children && category.children.length > 0 && (
+            <div className="ml-8">
+              {renderCategoryTree(category.children, level + 1)}
+            </div>
+          )}
+        </div>
+      ));
+    };
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-3xl font-bold">Administration</h1>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => setCurrentStep('admin-photos')}
+                  variant={currentStep === 'admin-photos' ? 'default' : 'outline'}
+                  className={currentStep === 'admin-photos' ? 'bg-teal-600 hover:bg-teal-700' : ''}
+                >
+                  Photos
+                </Button>
+                <Button
+                  onClick={() => setCurrentStep('admin-categories')}
+                  variant={currentStep === 'admin-categories' ? 'default' : 'outline'}
+                  className={currentStep === 'admin-categories' ? 'bg-teal-600 hover:bg-teal-700' : ''}
+                >
+                  Catégories
+                </Button>
+              </div>
+            </div>
+            <div className="flex space-x-2">
+              <Button
+                onClick={() => setShowCategoryForm(true)}
+                className="bg-orange-500 hover:bg-orange-600"
+              >
+                + Nouvelle catégorie
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsAdminMode(false);
+                  setCurrentStep('home');
+                }}
+                variant="outline"
+              >
+                Déconnexion
+              </Button>
+            </div>
+          </div>
+
+          {/* Categories Tree */}
+          <div className="space-y-6">
+            {renderCategoryTree(categoriesTree)}
+          </div>
+
+          {/* Forms */}
+          {showCategoryForm && (
+            <CategoryForm
+              category={editingCategory}
+              allCategories={allArticles}
+              onSave={(data) => {
+                if (selectedCategory && !editingCategory) {
+                  // Creating subcategory
+                  data.parent_id = selectedCategory.id;
+                }
+                editingCategory ? updateCategory(editingCategory.id, data) : createCategory(data);
+              }}
+              onCancel={() => {
+                setShowCategoryForm(false); 
+                setEditingCategory(null);
+                setSelectedCategory(null);
+              }}
+            />
+          )}
+
+          {showArticleForm && (
+            <ArticleForm
+              article={editingArticle}
+              allCategories={categoriesTree}
+              onSave={(data) => {
+                if (selectedCategory && !editingArticle) {
+                  // Creating article in specific category
+                  data.category_id = selectedCategory.id;
+                }
+                editingArticle ? updateArticle(editingArticle.id, data) : createArticle(data);
+              }}
+              onCancel={() => {
+                setShowArticleForm(false); 
+                setEditingArticle(null);
+                setSelectedCategory(null);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    );
+  };
 
   // Router simple
   const renderCurrentStep = () => {
