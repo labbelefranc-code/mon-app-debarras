@@ -65,6 +65,15 @@ function App() {
     }
   };
 
+  const loadArticles = async (categoryId) => {
+    try {
+      const response = await axios.get(`${API}/categories/${categoryId}/articles`);
+      setArticles(response.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des articles:', error);
+    }
+  };
+
   const handleCategoryClick = async (category) => {
     setSelectedCategory(category);
     
