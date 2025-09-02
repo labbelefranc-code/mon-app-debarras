@@ -604,6 +604,25 @@ async def reset_base_data():
     result = await init_base_data()
     return {"message": "Données réinitialisées avec succès", "init_result": result}
 
+# Route pour servir les photos
+@app.get("/photos/{filename}")
+async def get_photo(filename: str):
+    """Sert les photos depuis les différents dossiers extracted_photos*"""
+    base_path = Path(__file__).parent.parent
+    photo_dirs = [
+        base_path / "extracted_photos",
+        base_path / "extracted_photos2", 
+        base_path / "extracted_photos3",
+        base_path / "extracted_photos4"
+    ]
+    
+    for photo_dir in photo_dirs:
+        photo_path = photo_dir / filename
+        if photo_path.exists():
+            return FileResponse(str(photo_path))
+    
+    raise HTTPException(status_code=404, detail="Photo non trouvée")
+
 # Include the router in the main app
 app.include_router(api_router)
 
