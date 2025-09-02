@@ -434,14 +434,24 @@ function App() {
                     <CardTitle className="text-center text-lg">{article.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    {/* Placeholder pour la photo */}
-                    <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                      <span className="text-gray-500">Photo {article.name}</span>
+                    {/* Photo d'exemple avec placeholder */}
+                    <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      {/* Ajouter quelques photos d'exemple basées sur l'article */}
+                      {article.id === 'chaise_bureau' ? (
+                        <img 
+                          src="/placeholder-chaise-bureau.jpg" 
+                          alt={article.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <span className="text-gray-500 text-sm">Photo {article.name}</span>
                     </div>
                     
-                    <p className="text-2xl font-bold text-orange-600 mb-4">
-                      {article.base_price}€
-                    </p>
+                    {/* MASQUER LE PRIX - il sera affiché uniquement dans le récapitulatif final */}
                     
                     {article.materials && article.materials.length > 0 ? (
                       <div>
