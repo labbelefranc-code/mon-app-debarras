@@ -23,7 +23,10 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [articles, setArticles] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [customItems, setCustomItems] = useState([]);
+  const [zones, setZones] = useState({});
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [quoteForm, setQuoteForm] = useState({
     client_name: '',
     client_email: '',
@@ -33,13 +36,16 @@ function App() {
     floor: 0,
     elevator: false,
     additional_info: '',
+    zone: '',
     preferred_date: '',
+    preferred_time_slot: '',
     urgent: false
   });
 
   // Initialiser les données de base
   useEffect(() => {
     initializeData();
+    loadZones();
   }, []);
 
   const initializeData = async () => {
@@ -48,7 +54,7 @@ function App() {
       loadCategories();
     } catch (error) {
       console.error('Erreur lors de l\'initialisation:', error);
-      loadCategories(); // Essayer de charger quand même
+      loadCategories();
     }
   };
 
@@ -79,62 +85,119 @@ function App() {
     }
   };
 
+  const loadZones = async () => {
+    try {
+      const response = await axios.get(`${API}/zones`);
+      setZones(response.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des zones:', error);
+    }
+  };
+
+  const loadAvailableSlots = async (date, zone) => {
+    try {
+      const response = await axios.get(`${API}/available-slots?date=${date}&zone=${zone}`);
+      setAvailableSlots(response.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des créneaux:', error);
+    }
+  };
+
   const handleCategoryClick = async (category) => {
     setSelectedCategory(category);
     
-    // Vérifier s'il y a des sous-catégories
     try {
       const subcategoriesResponse = await axios.get(`${API}/categories/${category.id}/subcategories`);
       if (subcategoriesResponse.data && subcategoriesResponse.data.length > 0) {
-        // Il y a des sous-catégories, aller à la page subcategories
         setSubcategories(subcategoriesResponse.data);
         setCurrentStep('subcategories');
       } else {
-        // Pas de sous-catégories, aller directement aux articles
         setCurrentStep('articles');
         loadArticles(category.id);
       }
     } catch (error) {
       console.error('Erreur lors de la vérification des sous-catégories:', error);
-      // En cas d'erreur, essayer de charger les articles directement
       setCurrentStep('articles');
       loadArticles(category.id);
     }
   };
 
-  const addToCart = (article, material = null) => {
-    const cartItem = {
+  const addToSelection = (article, material = null) => {
+    const newItem = {
       article_id: article.id,
       article_name: article.name,
       material: material,
       quantity: 1,
-      unit_price: article.base_price
+      unit_price: article.base_price,
+      requires_dismantling: article.requires_dismantling,
+      is_dismantled: article.requires_dismantling ? false : null,
+      is_custom: false
     };
-    setCart([...cart, cartItem]);
+    setSelectedItems([...selectedItems, newItem]);
   };
 
-  const removeFromCart = (index) => {
-    const newCart = [...cart];
-    newCart.splice(index, 1);
-    setCart(newCart);
+  const updateItemQuantity = (index, quantity) => {
+    const newItems = [...selectedItems];
+    newItems[index].quantity = Math.max(1, quantity);
+    setSelectedItems(newItems);
+  };
+
+  const removeFromSelection = (index) => {
+    const newItems = [...selectedItems];
+    newItems.splice(index, 1);
+    setSelectedItems(newItems);
+  };
+
+  const toggleDismantling = (index) => {
+    const newItems = [...selectedItems];
+    newItems[index].is_dismantled = !newItems[index].is_dismantled;
+    setSelectedItems(newItems);
+  };
+
+  const addCustomItem = () => {
+    const description = document.getElementById('custom-item-description').value.trim();
+    if (description) {
+      setCustomItems([...customItems, {
+        description: description,
+        estimated_price: 0.0
+      }]);
+      document.getElementById('custom-item-description').value = '';
+    }
+  };
+
+  const removeCustomItem = (index) => {
+    const newItems = [...customItems];
+    newItems.splice(index, 1);
+    setCustomItems(newItems);
   };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + (item.unit_price * item.quantity), 0);
+    const itemsTotal = selectedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0);
+    const customTotal = customItems.reduce((total, item) => total + item.estimated_price, 0);
+    return itemsTotal + customTotal;
   };
 
   const submitQuote = async () => {
     try {
       const quoteData = {
         quote_type: 'instant',
-        items: cart,
+        items: selectedItems,
+        custom_items: customItems,
         ...quoteForm
       };
       
-      await axios.post(`${API}/quotes`, quoteData);
-      alert('Devis envoyé avec succès ! Vous recevrez une confirmation par email.');
+      const response = await axios.post(`${API}/quotes`, quoteData);
+      
+      if (customItems.length > 0) {
+        alert('Devis envoyé ! Un supplément sera calculé pour vos articles personnalisés. Vous recevrez une confirmation par email une fois le supplément confirmé.');
+      } else {
+        alert('Devis envoyé avec succès ! Vous recevrez une confirmation par email.');
+      }
+      
+      // Reset form
       setCurrentStep('home');
-      setCart([]);
+      setSelectedItems([]);
+      setCustomItems([]);
       setQuoteForm({
         client_name: '',
         client_email: '',
@@ -144,7 +207,9 @@ function App() {
         floor: 0,
         elevator: false,
         additional_info: '',
+        zone: '',
         preferred_date: '',
+        preferred_time_slot: '',
         urgent: false
       });
     } catch (error) {
@@ -238,13 +303,13 @@ function App() {
             Retour à l'accueil
           </Button>
           
-          {cart.length > 0 && (
+          {(selectedItems.length > 0 || customItems.length > 0) && (
             <Button
-              onClick={() => setCurrentStep('cart')}
+              onClick={() => setCurrentStep('selection')}
               className="bg-orange-500 hover:bg-orange-600"
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
-              Panier ({cart.length})
+              Ma sélection ({selectedItems.length + customItems.length})
             </Button>
           )}
         </div>
@@ -258,7 +323,8 @@ function App() {
               onClick={() => handleCategoryClick(category)}
             >
               <CardContent className="p-8 text-center bg-gradient-to-r from-orange-400 to-orange-500">
-                <h3 className="text-2xl font-bold text-black">
+                <div className="text-4xl mb-4">{category.icon}</div>
+                <h3 className="text-xl font-bold text-black">
                   {category.name}
                 </h3>
               </CardContent>
@@ -283,13 +349,13 @@ function App() {
             Retour catégories générales
           </Button>
           
-          {cart.length > 0 && (
+          {(selectedItems.length > 0 || customItems.length > 0) && (
             <Button
-              onClick={() => setCurrentStep('cart')}
+              onClick={() => setCurrentStep('selection')}
               className="bg-orange-500 hover:bg-orange-600"
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
-              Panier ({cart.length})
+              Ma sélection ({selectedItems.length + customItems.length})
             </Button>
           )}
         </div>
@@ -310,6 +376,11 @@ function App() {
                 <h3 className="text-xl font-bold text-black">
                   {subcategory.name}
                 </h3>
+                {subcategory.description && (
+                  <p className="text-sm text-gray-700 mt-2 opacity-80">
+                    {subcategory.description}
+                  </p>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -321,242 +392,436 @@ function App() {
   const ArticlesPage = () => (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left side - Articles */}
+          <div className="lg:col-span-3">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <Button
+                onClick={() => setCurrentStep('subcategories')}
+                variant="outline"
+                className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Retour
+              </Button>
+            </div>
+
+            {/* Articles Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {articles.map((article, index) => (
+                <Card
+                  key={`article-${article.id}-${index}`}
+                  className="hover:shadow-lg transition-all duration-200"
+                >
+                  <CardHeader>
+                    <CardTitle className="text-center text-lg">{article.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    {/* Placeholder pour la photo */}
+                    <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                      <span className="text-gray-500">Photo {article.name}</span>
+                    </div>
+                    
+                    <p className="text-2xl font-bold text-orange-600 mb-4">
+                      {article.base_price}€
+                    </p>
+                    
+                    {article.materials && article.materials.length > 0 ? (
+                      <div>
+                        <p className="mb-2 font-medium">Choisir le matériau :</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {article.materials.map((material, matIndex) => (
+                            <Button
+                              key={`material-${material}-${matIndex}`}
+                              onClick={() => addToSelection(article, material)}
+                              variant="outline"
+                              className="h-auto py-2 text-sm hover:bg-orange-100"
+                            >
+                              {material}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        onClick={() => addToSelection(article)}
+                        className="bg-orange-500 hover:bg-orange-600 w-full"
+                      >
+                        Ajouter à ma sélection
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Custom Item Input */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="text-lg">Mon objet n'est pas dans la liste</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4">
+                  <Input
+                    id="custom-item-description"
+                    placeholder="Décrivez votre objet (ex: Table ronde en marbre 1m50)"
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={addCustomItem}
+                    className="bg-orange-500 hover:bg-orange-600"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  <AlertTriangle className="h-4 w-4 inline mr-1" />
+                  Un supplément sera calculé après consultation et vous sera confirmé avant réservation.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right side - Selection Summary */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-8">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  Ma sélection ({selectedItems.length + customItems.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {selectedItems.length === 0 && customItems.length === 0 ? (
+                  <p className="text-gray-500 text-center py-8">
+                    Aucun article sélectionné
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {/* Selected Items */}
+                    {selectedItems.map((item, index) => (
+                      <div key={index} className="border rounded-lg p-3">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-medium text-sm">{item.article_name}</h4>
+                          <Button
+                            onClick={() => removeFromSelection(index)}
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 text-red-500"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        
+                        {item.material && (
+                          <Badge variant="secondary" className="text-xs mb-2">
+                            {item.material}
+                          </Badge>
+                        )}
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              onClick={() => updateItemQuantity(index, item.quantity - 1)}
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </Button>
+                            <span className="text-sm font-medium">{item.quantity}</span>
+                            <Button
+                              onClick={() => updateItemQuantity(index, item.quantity + 1)}
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <span className="font-bold text-sm">{item.unit_price * item.quantity}€</span>
+                        </div>
+                        
+                        {item.requires_dismantling && (
+                          <div className="mt-2 flex items-center space-x-2">
+                            <Checkbox
+                              id={`dismantled-${index}`}
+                              checked={item.is_dismantled}
+                              onCheckedChange={() => toggleDismantling(index)}
+                            />
+                            <label htmlFor={`dismantled-${index}`} className="text-xs text-gray-600">
+                              Déjà démonté/débranché
+                            </label>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    
+                    {/* Custom Items */}
+                    {customItems.map((item, index) => (
+                      <div key={`custom-${index}`} className="border rounded-lg p-3 border-orange-200 bg-orange-50">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-medium text-sm">{item.description}</h4>
+                          <Button
+                            onClick={() => removeCustomItem(index)}
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 text-red-500"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          Supplément à confirmer
+                        </Badge>
+                      </div>
+                    ))}
+                    
+                    <div className="border-t pt-4">
+                      <div className="flex justify-between items-center font-bold">
+                        <span>Total estimé :</span>
+                        <span className="text-orange-600">{calculateTotal()}€</span>
+                      </div>
+                      {customItems.length > 0 && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          + supplément à confirmer
+                        </p>
+                      )}
+                    </div>
+                    
+                    <Button
+                      onClick={() => setCurrentStep('quote-form')}
+                      className="w-full bg-teal-600 hover:bg-teal-700 mt-4"
+                    >
+                      Continuer
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const QuoteFormPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
-            onClick={() => setCurrentStep('subcategories')}
+            onClick={() => setCurrentStep('articles')}
             variant="outline"
             className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Retour
           </Button>
-          
-          {cart.length > 0 && (
-            <Button
-              onClick={() => setCurrentStep('cart')}
-              className="bg-orange-500 hover:bg-orange-600"
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Panier ({cart.length})
-            </Button>
-          )}
         </div>
 
-        {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article, index) => (
-            <Card
-              key={`article-${article.id}-${index}`}
-              className="hover:shadow-lg transition-all duration-200"
-            >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Form */}
+          <div className="lg:col-span-2">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-center">{article.name}</CardTitle>
+                <CardTitle>Informations pour votre devis</CardTitle>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-2xl font-bold text-orange-600 mb-4">
-                  {article.base_price}€
-                </p>
+              <CardContent className="space-y-6">
+                {/* Contact Info */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    placeholder="Nom complet *"
+                    value={quoteForm.client_name}
+                    onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email *"
+                    value={quoteForm.client_email}
+                    onChange={(e) => setQuoteForm({...quoteForm, client_email: e.target.value})}
+                  />
+                </div>
                 
-                {article.materials && article.materials.length > 0 ? (
+                <Input
+                  type="tel"
+                  placeholder="Téléphone *"
+                  value={quoteForm.client_phone}
+                  onChange={(e) => setQuoteForm({...quoteForm, client_phone: e.target.value})}
+                />
+                
+                <Input
+                  placeholder="Adresse complète *"
+                  value={quoteForm.address}
+                  onChange={(e) => setQuoteForm({...quoteForm, address: e.target.value})}
+                />
+
+                {/* Access Info */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Stationnement :</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['facile', 'delicat', 'difficile'].map((parking) => (
+                      <Button
+                        key={parking}
+                        onClick={() => setQuoteForm({...quoteForm, parking})}
+                        variant={quoteForm.parking === parking ? "default" : "outline"}
+                        className={quoteForm.parking === parking ? "bg-orange-500 hover:bg-orange-600" : ""}
+                      >
+                        {parking}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="mb-2 font-medium">Choisir le matériau :</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {article.materials.map((material, matIndex) => (
+                    <label className="block text-sm font-medium mb-2">Étage :</label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="20"
+                      value={quoteForm.floor}
+                      onChange={(e) => setQuoteForm({...quoteForm, floor: parseInt(e.target.value) || 0})}
+                    />
+                  </div>
+                  
+                  <div className="flex items-end">
+                    <Button
+                      onClick={() => setQuoteForm({...quoteForm, elevator: !quoteForm.elevator})}
+                      variant={quoteForm.elevator ? "default" : "outline"}
+                      className={quoteForm.elevator ? "bg-orange-500 hover:bg-orange-600 w-full" : "w-full"}
+                    >
+                      {quoteForm.elevator ? <Check className="mr-2 h-4 w-4" /> : null}
+                      Ascenseur
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Zone Selection */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Zone d'intervention :</label>
+                  <Select value={quoteForm.zone} onValueChange={(value) => setQuoteForm({...quoteForm, zone: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner votre zone" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(zones).map(([key, zone]) => (
+                        <SelectItem key={key} value={key}>
+                          {zone.name} - {zone.description}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Textarea
+                  placeholder="Détails importants (accès, contraintes particulières...)"
+                  value={quoteForm.additional_info}
+                  onChange={(e) => setQuoteForm({...quoteForm, additional_info: e.target.value})}
+                  rows={3}
+                />
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Date d'intervention souhaitée :</label>
+                  <Input
+                    type="date"
+                    value={quoteForm.preferred_date}
+                    onChange={(e) => {
+                      setQuoteForm({...quoteForm, preferred_date: e.target.value});
+                      if (e.target.value && quoteForm.zone) {
+                        loadAvailableSlots(e.target.value, quoteForm.zone);
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-gray-600 mt-1">
+                    Disponibilités : Mardi, Mercredi, Jeudi de 7h à 20h
+                  </p>
+                </div>
+
+                {/* Time Slots */}
+                {availableSlots.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Créneau horaire :</label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {availableSlots.map((slot) => (
                         <Button
-                          key={`material-${material}-${matIndex}`}
-                          onClick={() => addToCart(article, material)}
-                          variant="outline"
-                          className="h-auto py-2 text-sm hover:bg-orange-100"
+                          key={slot.time_slot}
+                          onClick={() => setQuoteForm({...quoteForm, preferred_time_slot: slot.time_slot})}
+                          variant={quoteForm.preferred_time_slot === slot.time_slot ? "default" : "outline"}
+                          disabled={!slot.available}
+                          className={`text-xs ${
+                            quoteForm.preferred_time_slot === slot.time_slot 
+                              ? "bg-orange-500 hover:bg-orange-600" 
+                              : ""
+                          } ${!slot.available ? "opacity-50" : ""}`}
                         >
-                          {material}
+                          {slot.time_slot}
                         </Button>
                       ))}
                     </div>
                   </div>
-                ) : (
-                  <Button
-                    onClick={() => addToCart(article)}
-                    className="bg-orange-500 hover:bg-orange-600 w-full"
-                  >
-                    Ajouter au panier
-                  </Button>
                 )}
+
+                <Button
+                  onClick={() => setQuoteForm({...quoteForm, urgent: !quoteForm.urgent})}
+                  variant={quoteForm.urgent ? "destructive" : "outline"}
+                  className="w-full"
+                >
+                  {quoteForm.urgent ? "🚨 Intervention d'urgence (supplément)" : "Intervention standard"}
+                </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+          </div>
 
-  const CartPage = () => (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <Button
-            onClick={() => setCurrentStep('categories')}
-            variant="outline"
-            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Continuer mes achats
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Cart Items */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Mon panier</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {cart.length === 0 ? (
-                <p className="text-gray-500">Votre panier est vide</p>
-              ) : (
+          {/* Summary */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-8">
+              <CardHeader>
+                <CardTitle>Récapitulatif</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="space-y-4">
-                  {cart.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <h4 className="font-medium">{item.article_name}</h4>
-                        {item.material && (
-                          <Badge variant="secondary" className="mt-1">
-                            {item.material}
-                          </Badge>
-                        )}
+                  <div>
+                    <h4 className="font-medium mb-2">Articles sélectionnés :</h4>
+                    {selectedItems.map((item, index) => (
+                      <div key={index} className="text-sm text-gray-600">
+                        {item.quantity}x {item.article_name} {item.material && `(${item.material})`}
                       </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="font-bold">{item.unit_price}€</span>
-                        <Button
-                          onClick={() => removeFromCart(index)}
-                          variant="destructive"
-                          size="sm"
-                        >
-                          Supprimer
-                        </Button>
+                    ))}
+                    
+                    {customItems.map((item, index) => (
+                      <div key={`custom-${index}`} className="text-sm text-orange-600">
+                        + {item.description}
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                   
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center text-xl font-bold">
-                      <span>Total :</span>
+                      <span>Total final :</span>
                       <span className="text-orange-600">{calculateTotal()}€</span>
                     </div>
+                    {customItems.length > 0 && (
+                      <p className="text-sm text-gray-600 mt-1">
+                        + supplément à confirmer
+                      </p>
+                    )}
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Quote Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Informations pour le devis</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  placeholder="Nom complet"
-                  value={quoteForm.client_name}
-                  onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
-                />
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={quoteForm.client_email}
-                  onChange={(e) => setQuoteForm({...quoteForm, client_email: e.target.value})}
-                />
-              </div>
-              
-              <Input
-                type="tel"
-                placeholder="Téléphone"
-                value={quoteForm.client_phone}
-                onChange={(e) => setQuoteForm({...quoteForm, client_phone: e.target.value})}
-              />
-              
-              <Input
-                placeholder="Adresse complète"
-                value={quoteForm.address}
-                onChange={(e) => setQuoteForm({...quoteForm, address: e.target.value})}
-              />
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Stationnement :</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {['facile', 'delicat', 'difficile'].map((parking) => (
-                    <Button
-                      key={parking}
-                      onClick={() => setQuoteForm({...quoteForm, parking})}
-                      variant={quoteForm.parking === parking ? "default" : "outline"}
-                      className={quoteForm.parking === parking ? "bg-orange-500 hover:bg-orange-600" : ""}
-                    >
-                      {parking}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Étage :</label>
-                  <Input
-                    type="number"
-                    min="0"
-                    max="20"
-                    value={quoteForm.floor}
-                    onChange={(e) => setQuoteForm({...quoteForm, floor: parseInt(e.target.value) || 0})}
-                  />
-                </div>
-                
-                <div className="flex items-end">
+                  
                   <Button
-                    onClick={() => setQuoteForm({...quoteForm, elevator: !quoteForm.elevator})}
-                    variant={quoteForm.elevator ? "default" : "outline"}
-                    className={quoteForm.elevator ? "bg-orange-500 hover:bg-orange-600" : ""}
+                    onClick={submitQuote}
+                    className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3"
+                    disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
                   >
-                    {quoteForm.elevator ? <Check className="mr-2 h-4 w-4" /> : null}
-                    Ascenseur
+                    <Calendar className="mr-2 h-5 w-5" />
+                    Envoyer le devis
                   </Button>
                 </div>
-              </div>
-
-              <Textarea
-                placeholder="Détails importants (accès, contraintes particulières...)"
-                value={quoteForm.additional_info}
-                onChange={(e) => setQuoteForm({...quoteForm, additional_info: e.target.value})}
-                rows={3}
-              />
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Date d'intervention souhaitée :</label>
-                <Input
-                  type="date"
-                  value={quoteForm.preferred_date}
-                  onChange={(e) => setQuoteForm({...quoteForm, preferred_date: e.target.value})}
-                />
-              </div>
-
-              <Button
-                onClick={() => setQuoteForm({...quoteForm, urgent: !quoteForm.urgent})}
-                variant={quoteForm.urgent ? "destructive" : "outline"}
-                className="w-full"
-              >
-                {quoteForm.urgent ? "🚨 Intervention d'urgence (supplément)" : "Intervention standard"}
-              </Button>
-
-              <Button
-                onClick={submitQuote}
-                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3"
-                disabled={cart.length === 0 || !quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address}
-              >
-                <Calendar className="mr-2 h-5 w-5" />
-                Envoyer le devis
-              </Button>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
@@ -621,8 +886,8 @@ function App() {
         return <SubcategoriesPage />;
       case 'articles':
         return <ArticlesPage />;
-      case 'cart':
-        return <CartPage />;
+      case 'quote-form':
+        return <QuoteFormPage />;
       case 'photo-quote':
         return <PhotoQuotePage />;
       case 'whole-home':
