@@ -664,9 +664,9 @@ function App() {
                       <div>
                         <p className="mb-2 font-medium">Choisir le matériau :</p>
                         <div className="grid grid-cols-2 gap-2">
-                          {article.materials.map((material, matIndex) => (
+                          {article.materials.map((material) => (
                             <Button
-                              key={`material-${material}-${matIndex}`}
+                              key={`${article.id}-${material}`}
                               onClick={() => addToSelection(article, material)}
                               variant="outline"
                               className="h-auto py-2 text-sm hover:bg-orange-100"
