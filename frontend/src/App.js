@@ -238,15 +238,11 @@ function App() {
     });
   }, []);
 
-  const addCustomItem = React.useCallback(() => {
-    const description = document.getElementById('custom-item-description').value.trim();
-    if (description) {
-      setCustomItems(prev => [...prev, {
-        description: description,
-        estimated_price: 0.0
-      }]);
-      document.getElementById('custom-item-description').value = '';
-    }
+  const addCustomItem = React.useCallback((description) => {
+    setCustomItems(prev => [...prev, {
+      description: description,
+      estimated_price: 0.0
+    }]);
   }, []);
 
   const removeCustomItem = React.useCallback((index) => {
