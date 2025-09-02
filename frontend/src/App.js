@@ -1020,7 +1020,7 @@ function App() {
                     ))}
                     
                     {customItems.map((item, index) => (
-                      <div key={`custom-${index}`} className="text-sm text-orange-600">
+                      <div key={`recap-custom-${item.description}-${index}`} className="text-sm text-orange-600">
                         + {item.description}
                       </div>
                     ))}
