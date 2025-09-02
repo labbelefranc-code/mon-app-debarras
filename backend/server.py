@@ -644,27 +644,34 @@ async def delete_article(article_id: str, username: str = Depends(authenticate_a
 @api_router.get("/admin/categories-tree")
 async def get_categories_tree(username: str = Depends(authenticate_admin)):
     """Récupère l'arbre complet des catégories avec leurs articles"""
-    categories = await db.categories.find().to_list(1000)
-    articles = await db.articles.find().to_list(1000)
-    
-    # Organiser en arbre
-    categories_dict = {cat['id']: {**cat, 'children': [], 'articles': []} for cat in categories}
-    
-    # Ajouter les articles aux catégories
-    for article in articles:
-        if article['category_id'] in categories_dict:
-            categories_dict[article['category_id']]['articles'].append(article)
-    
-    # Construire l'arbre hiérarchique
-    root_categories = []
-    for cat in categories:
-        if cat.get('parent_id'):
-            if cat['parent_id'] in categories_dict:
-                categories_dict[cat['parent_id']]['children'].append(categories_dict[cat['id']])
-        else:
-            root_categories.append(categories_dict[cat['id']])
-    
-    return root_categories
+    try:
+        categories = await db.categories.find().to_list(1000)
+        articles = await db.articles.find().to_list(1000)
+        
+        # Organiser en arbre
+        categories_dict = {cat['id']: {**cat, 'children': [], 'articles': []} for cat in categories}
+        
+        # Ajouter les articles aux catégories
+        for article in articles:
+            if article.get('category_id') and article['category_id'] in categories_dict:
+                categories_dict[article['category_id']]['articles'].append(article)
+        
+        # Construire l'arbre hiérarchique
+        root_categories = []
+        for cat in categories:
+            parent_id = cat.get('parent_id')
+            if parent_id and parent_id in categories_dict:
+                # Add as child to parent
+                categories_dict[parent_id]['children'].append(categories_dict[cat['id']])
+            elif not parent_id:
+                # Add as root category
+                root_categories.append(categories_dict[cat['id']])
+            # If parent_id exists but parent not found, skip (orphaned category)
+        
+        return root_categories
+    except Exception as e:
+        logger.error(f"Error in get_categories_tree: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving categories tree: {str(e)}")
 
 # Routes d'administration - Devis
 @api_router.get("/admin/quotes", response_model=List[Quote])
