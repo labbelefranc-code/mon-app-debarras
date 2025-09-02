@@ -1410,9 +1410,9 @@ function App() {
           <div>
             <h2 className="text-xl font-bold mb-4">Articles ({allArticles.length})</h2>
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {allArticles.map((article, index) => (
+              {allArticles.map((article) => (
                 <div
-                  key={index}
+                  key={article.id}
                   className="border rounded-lg p-3 hover:bg-gray-50 transition-colors"
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
