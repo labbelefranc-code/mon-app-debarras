@@ -1279,14 +1279,14 @@ function App() {
             <DialogTitle>{category ? 'Modifier la catégorie' : 'Nouvelle catégorie'}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
+            <OptimizedInput
               placeholder="Nom de la catégorie"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={updateField('name')}
               required
             />
             
-            <Select value={formData.parent_id} onValueChange={(value) => setFormData({...formData, parent_id: value})}>
+            <Select value={formData.parent_id} onValueChange={updateField('parent_id')}>
               <SelectTrigger>
                 <SelectValue placeholder="Catégorie parent (optionnel)" />
               </SelectTrigger>
@@ -1300,16 +1300,16 @@ function App() {
               </SelectContent>
             </Select>
             
-            <Input
+            <OptimizedInput
               placeholder="Icône (emoji)"
               value={formData.icon}
-              onChange={(e) => setFormData({...formData, icon: e.target.value})}
+              onChange={updateField('icon')}
             />
             
-            <Textarea
+            <OptimizedTextarea
               placeholder="Description (optionnelle)"
               value={formData.description}
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              onChange={updateField('description')}
             />
             
             <div className="flex justify-end space-x-2">
