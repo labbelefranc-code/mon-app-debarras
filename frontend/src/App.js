@@ -1523,7 +1523,7 @@ function App() {
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      setSelectedCategory(category);
+                      setSelectedAdminCategory(category);
                       setShowCategoryForm(true);
                     }}
                   >
