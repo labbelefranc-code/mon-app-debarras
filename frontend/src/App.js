@@ -1214,7 +1214,7 @@ function App() {
   });
 
   // Article Form Component
-  const ArticleForm = ({ article, allCategories, onSave, onCancel }) => {
+  const ArticleForm = React.memo(({ article, allCategories, onSave, onCancel }) => {
     const [formData, setFormData] = React.useState({
       name: article?.name || '',
       category_id: article?.category_id || '',
