@@ -250,8 +250,9 @@ async def init_base_data():
     
     all_categories = main_categories + mobilier_subcategories + literie_items
     
-    # Ajouter des articles de base
+    # Ajouter des articles de base avec les bons category_ids
     base_articles = [
+        # Articles literie
         {
             "id": "lit_double_medicalise",
             "name": "Lit double médicalisé",
@@ -261,6 +262,23 @@ async def init_base_data():
             "description": "Lit médicalisé double avec mécanisme électrique"
         },
         {
+            "id": "tete_lit_classique",
+            "name": "Tête de lit classique",
+            "category_id": "tete_lit",
+            "base_price": 45.0,
+            "materials": ["Bois", "Tissu", "Métal"],
+            "description": "Tête de lit standard"
+        },
+        {
+            "id": "lit_bebe_standard",
+            "name": "Lit bébé à barreaux",
+            "category_id": "lit_bebe",
+            "base_price": 35.0,
+            "materials": ["Bois", "Plastique"],
+            "description": "Lit bébé standard avec barreaux"
+        },
+        # Articles électroménager  
+        {
             "id": "congelateur_coffre",
             "name": "Congélateur coffre",
             "category_id": "electromenager",
@@ -269,12 +287,46 @@ async def init_base_data():
             "description": "Congélateur coffre standard"
         },
         {
+            "id": "lave_linge",
+            "name": "Lave-linge",
+            "category_id": "electromenager", 
+            "base_price": 60.0,
+            "materials": ["Blanc", "Inox"],
+            "description": "Lave-linge standard"
+        },
+        # Articles tables & bureaux
+        {
             "id": "secretaire_ancien",
             "name": "Secrétaire ancien",
             "category_id": "tables_bureaux",
             "base_price": 120.0,
             "materials": ["Bois massif", "Bois plaqué", "Peint"],
             "description": "Meuble secrétaire de style ancien"
+        },
+        {
+            "id": "bureau_moderne",
+            "name": "Bureau moderne",
+            "category_id": "tables_bureaux",
+            "base_price": 75.0,
+            "materials": ["Mélaminé", "Bois", "Métal"],
+            "description": "Bureau de travail moderne"
+        },
+        # Articles assises
+        {
+            "id": "chaise_bureau",
+            "name": "Chaise de bureau",
+            "category_id": "assises",
+            "base_price": 25.0,
+            "materials": ["Tissu", "Cuir", "Plastique"],
+            "description": "Chaise de bureau ergonomique"
+        },
+        {
+            "id": "fauteuil_salon",
+            "name": "Fauteuil de salon",
+            "category_id": "salon_fauteuils",
+            "base_price": 65.0,
+            "materials": ["Tissu", "Cuir", "Velours"],
+            "description": "Fauteuil confortable pour salon"
         }
     ]
     
