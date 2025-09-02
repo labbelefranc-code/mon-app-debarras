@@ -983,6 +983,173 @@ function App() {
     </div>
   );
 
+  const AdminLoginPage = () => (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <Card className="max-w-md w-full">
+        <CardHeader>
+          <CardTitle className="text-center">Connexion Admin</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input
+            type="email"
+            placeholder="Email admin"
+            value={adminAuth.username}
+            onChange={(e) => setAdminAuth({...adminAuth, username: e.target.value})}
+          />
+          <Input
+            type="password"
+            placeholder="Mot de passe"
+            value={adminAuth.password}
+            onChange={(e) => setAdminAuth({...adminAuth, password: e.target.value})}
+          />
+          <Button 
+            onClick={authenticateAdmin}
+            className="w-full bg-teal-600 hover:bg-teal-700"
+          >
+            Se connecter
+          </Button>
+          <Button 
+            onClick={() => setCurrentStep('home')}
+            variant="outline"
+            className="w-full"
+          >
+            Retour à l'accueil
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const AdminPhotosPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Gestion des Photos</h1>
+          <Button
+            onClick={() => {
+              setIsAdminMode(false);
+              setCurrentStep('home');
+            }}
+            variant="outline"
+          >
+            Déconnexion
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Photos disponibles */}
+          <div>
+            <h2 className="text-xl font-bold mb-4">Photos Disponibles ({allPhotos.length})</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+              {allPhotos.map((photo, index) => (
+                <div
+                  key={index}
+                  className={`relative border-2 rounded-lg p-2 cursor-grab ${
+                    photo.is_assigned ? 'border-green-400 bg-green-50' : 'border-gray-300'
+                  } hover:border-orange-400 transition-colors`}
+                  draggable
+                  onDragStart={(e) => {
+                    setDraggedPhoto(photo);
+                    e.dataTransfer.setData('text/plain', '');
+                  }}
+                >
+                  <img
+                    src={`${BACKEND_URL}${photo.preview_url}`}
+                    alt={photo.filename}
+                    className="w-full h-20 object-cover rounded"
+                  />
+                  <p className="text-xs mt-1 truncate">{photo.filename}</p>
+                  {photo.is_assigned && (
+                    <div className="absolute top-1 right-1">
+                      <Badge className="bg-green-500 text-white text-xs">
+                        ✓
+                      </Badge>
+                    </div>
+                  )}
+                  {photo.is_assigned && (
+                    <div className="mt-1">
+                      <p className="text-xs text-green-600 font-medium">
+                        → {photo.assigned_to_article_name}
+                      </p>
+                      <Button
+                        onClick={() => unassignPhoto(photo.filename)}
+                        size="sm"
+                        variant="outline"
+                        className="text-xs mt-1 h-6"
+                      >
+                        Désassigner
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Articles */}
+          <div>
+            <h2 className="text-xl font-bold mb-4">Articles ({allArticles.length})</h2>
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {allArticles.map((article, index) => (
+                <div
+                  key={index}
+                  className="border rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (draggedPhoto) {
+                      assignPhotoToArticle(draggedPhoto.filename, article.id);
+                      setDraggedPhoto(null);
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">{article.name}</h3>
+                      <p className="text-sm text-gray-600">ID: {article.id}</p>
+                      {article.image_url && (
+                        <div className="flex items-center mt-1">
+                          <img
+                            src={`${BACKEND_URL}${article.image_url}`}
+                            alt="Preview"
+                            className="w-8 h-8 object-cover rounded mr-2"
+                          />
+                          <Badge className="bg-green-100 text-green-800 text-xs">
+                            Photo assignée
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-500">Glissez une photo ici</p>
+                      <div className="w-12 h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+                        📷
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Aide */}
+        <Card className="mt-8">
+          <CardContent className="p-4">
+            <h3 className="font-bold mb-2">Comment utiliser :</h3>
+            <ul className="text-sm space-y-1 text-gray-600">
+              <li>• Glissez une photo depuis la colonne de gauche vers un article à droite</li>
+              <li>• Les photos vertes sont déjà assignées</li>
+              <li>• Cliquez sur "Désassigner" pour retirer une assignation</li>
+              <li>• Une photo ne peut être assignée qu'à un seul article</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+
   // Router simple
   const renderCurrentStep = () => {
     switch(currentStep) {
