@@ -383,7 +383,113 @@ async def confirm_supplement(quote_id: str, final_supplement: float):
     
     return {"message": "Supplément confirmé", "final_total": new_final_total}
 
-# Routes d'administration
+# Routes d'administration - Gestion des photos
+@api_router.get("/admin/photos", response_model=List[PhotoItem])
+async def get_all_available_photos(username: str = Depends(authenticate_admin)):
+    """Liste toutes les photos disponibles dans les dossiers extracted_photos*"""
+    photo_items = []
+    
+    # Chercher dans tous les dossiers extracted_photos*
+    base_path = Path(__file__).parent.parent
+    photo_dirs = [
+        base_path / "extracted_photos",
+        base_path / "extracted_photos2", 
+        base_path / "extracted_photos3",
+        base_path / "extracted_photos4"
+    ]
+    
+    # Récupérer les assignations existantes
+    assignments = await db.photo_assignments.find().to_list(1000)
+    assignment_map = {assignment['photo_filename']: assignment for assignment in assignments}
+    
+    for photo_dir in photo_dirs:
+        if photo_dir.exists():
+            # Chercher tous les fichiers image
+            for ext in ['*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp']:
+                photo_files = glob.glob(str(photo_dir / ext))
+                for photo_path in photo_files:
+                    filename = os.path.basename(photo_path)
+                    
+                    # Vérifier si la photo est déjà assignée
+                    assignment = assignment_map.get(filename)
+                    is_assigned = assignment is not None
+                    assigned_article_id = assignment.get('article_id') if assignment else None
+                    assigned_article_name = None
+                    
+                    if assigned_article_id:
+                        # Récupérer le nom de l'article
+                        article = await db.articles.find_one({"id": assigned_article_id})
+                        assigned_article_name = article.get('name') if article else "Article supprimé"
+                    
+                    photo_items.append(PhotoItem(
+                        filename=filename,
+                        original_path=photo_path,
+                        preview_url=f"/photos/{filename}",  # URL pour le frontend
+                        is_assigned=is_assigned,
+                        assigned_to_article_id=assigned_article_id,
+                        assigned_to_article_name=assigned_article_name
+                    ))
+    
+    return photo_items
+
+@api_router.post("/admin/photos/assign")
+async def assign_photo_to_article(assignment: PhotoAssignment, username: str = Depends(authenticate_admin)):
+    """Assigne une photo à un article"""
+    
+    # Vérifier que l'article existe
+    article = await db.articles.find_one({"id": assignment.article_id})
+    if not article:
+        raise HTTPException(status_code=404, detail="Article non trouvé")
+    
+    # Supprimer toute assignation précédente de cette photo
+    await db.photo_assignments.delete_many({"photo_filename": assignment.photo_filename})
+    
+    # Créer la nouvelle assignation
+    assignment_data = {
+        "photo_filename": assignment.photo_filename,
+        "article_id": assignment.article_id,
+        "assigned_at": datetime.now(timezone.utc).isoformat(),
+        "assigned_by": username
+    }
+    
+    await db.photo_assignments.insert_one(assignment_data)
+    
+    # Mettre à jour l'article avec l'URL de la photo
+    article_photo_url = f"/photos/{assignment.photo_filename}"
+    await db.articles.update_one(
+        {"id": assignment.article_id},
+        {"$set": {"image_url": article_photo_url}}
+    )
+    
+    return {"message": "Photo assignée avec succès", "article_name": article['name']}
+
+@api_router.delete("/admin/photos/{photo_filename}/assignment")
+async def unassign_photo(photo_filename: str, username: str = Depends(authenticate_admin)):
+    """Désassigne une photo"""
+    
+    # Trouver l'assignation
+    assignment = await db.photo_assignments.find_one({"photo_filename": photo_filename})
+    if not assignment:
+        raise HTTPException(status_code=404, detail="Assignation non trouvée")
+    
+    # Supprimer l'assignation
+    await db.photo_assignments.delete_one({"photo_filename": photo_filename})
+    
+    # Retirer l'URL de la photo de l'article
+    await db.articles.update_one(
+        {"id": assignment['article_id']},
+        {"$unset": {"image_url": ""}}
+    )
+    
+    return {"message": "Photo désassignée avec succès"}
+
+@api_router.get("/admin/articles-for-photos", response_model=List[Article])
+async def get_articles_for_photo_assignment(username: str = Depends(authenticate_admin)):
+    """Récupère tous les articles pour l'assignation de photos"""
+    articles = await db.articles.find().to_list(1000)
+    return [Article(**art) for art in articles]
+
+# Routes d'administration - Devis
 @api_router.get("/admin/quotes", response_model=List[Quote])
 async def get_admin_quotes(username: str = Depends(authenticate_admin)):
     """Route admin pour voir tous les devis"""
