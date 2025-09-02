@@ -321,9 +321,9 @@ function App() {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <Card
-              key={article.id}
+              key={`article-${article.id}-${index}`}
               className="hover:shadow-lg transition-all duration-200"
             >
               <CardHeader>
@@ -338,9 +338,9 @@ function App() {
                   <div>
                     <p className="mb-2 font-medium">Choisir le matériau :</p>
                     <div className="grid grid-cols-2 gap-2">
-                      {article.materials.map((material) => (
+                      {article.materials.map((material, matIndex) => (
                         <Button
-                          key={material}
+                          key={`material-${material}-${matIndex}`}
                           onClick={() => addToCart(article, material)}
                           variant="outline"
                           className="h-auto py-2 text-sm hover:bg-orange-100"
