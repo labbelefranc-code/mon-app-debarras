@@ -272,9 +272,9 @@ function App() {
 
         {/* Subcategories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subcategories.map((subcategory) => (
+          {subcategories.map((subcategory, index) => (
             <Card
-              key={subcategory.id}
+              key={`subcategory-${subcategory.id}-${index}`}
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
               onClick={() => {
                 setSelectedSubcategory(subcategory);
