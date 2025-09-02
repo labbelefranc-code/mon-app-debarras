@@ -34,7 +34,7 @@ function App() {
   const [allArticles, setAllArticles] = useState([]);
   const [draggedPhoto, setDraggedPhoto] = useState(null);
   const [categoriesTree, setCategoriesTree] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedAdminCategory, setSelectedAdminCategory] = useState(null);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [showArticleForm, setShowArticleForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
