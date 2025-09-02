@@ -161,6 +161,18 @@ class AdminUser(BaseModel):
     username: str
     password: str
 
+class PhotoItem(BaseModel):
+    filename: str
+    original_path: str
+    preview_url: str
+    is_assigned: bool = False
+    assigned_to_article_id: Optional[str] = None
+    assigned_to_article_name: Optional[str] = None
+
+class PhotoAssignment(BaseModel):
+    photo_filename: str
+    article_id: str
+
 # Admin authentication
 def authenticate_admin(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, "labbelefranc@gmail.com")
