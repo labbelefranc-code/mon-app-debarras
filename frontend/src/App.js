@@ -243,6 +243,73 @@ function App() {
     }
   };
 
+  // Admin functions
+  const authenticateAdmin = async () => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      const response = await axios.get(`${API}/admin/photos`, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      setIsAdminMode(true);
+      setCurrentStep('admin-photos');
+      loadAdminData();
+    } catch (error) {
+      alert('Identifiants admin incorrects');
+    }
+  };
+
+  const loadAdminData = async () => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      const headers = { Authorization: `Basic ${auth}` };
+      
+      const [photosResponse, articlesResponse] = await Promise.all([
+        axios.get(`${API}/admin/photos`, { headers }),
+        axios.get(`${API}/admin/articles-for-photos`, { headers })
+      ]);
+      
+      setAllPhotos(photosResponse.data);
+      setAllArticles(articlesResponse.data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des données admin:', error);
+    }
+  };
+
+  const assignPhotoToArticle = async (photoFilename, articleId) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.post(`${API}/admin/photos/assign`, {
+        photo_filename: photoFilename,
+        article_id: articleId
+      }, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      // Recharger les données
+      loadAdminData();
+      alert('Photo assignée avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de l\'assignation:', error);
+      alert('Erreur lors de l\'assignation de la photo');
+    }
+  };
+
+  const unassignPhoto = async (photoFilename) => {
+    try {
+      const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
+      await axios.delete(`${API}/admin/photos/${photoFilename}/assignment`, {
+        headers: { Authorization: `Basic ${auth}` }
+      });
+      
+      // Recharger les données
+      loadAdminData();
+      alert('Photo désassignée avec succès !');
+    } catch (error) {
+      console.error('Erreur lors de la désassignation:', error);
+      alert('Erreur lors de la désassignation de la photo');
+    }
+  };
+
   const HomePage = () => (
     <div className="min-h-screen bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600">
       <div className="container mx-auto px-4 py-8">
