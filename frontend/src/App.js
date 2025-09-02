@@ -1258,7 +1258,7 @@ function App() {
       icon: category?.icon || ''
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
       e.preventDefault();
       const dataToSend = { ...formData };
       if (!dataToSend.parent_id) dataToSend.parent_id = null;
@@ -1266,7 +1266,11 @@ function App() {
       if (!dataToSend.icon) delete dataToSend.icon;
       
       onSave(dataToSend);
-    };
+    }, [formData, onSave]);
+
+    const updateField = useCallback((field) => (value) => {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }, []);
 
     return (
       <Dialog open={true} onOpenChange={onCancel}>
