@@ -103,7 +103,7 @@ class AlloDebarrasAPITester:
         )
 
     def test_create_quote(self):
-        """Test creating a quote"""
+        """Test creating a quote with the exact flow from the request"""
         quote_data = {
             "quote_type": "instant",
             "items": [
@@ -113,25 +113,45 @@ class AlloDebarrasAPITester:
                     "material": "Métal",
                     "quantity": 1,
                     "unit_price": 150.0
+                },
+                {
+                    "article_id": "congelateur_coffre",
+                    "article_name": "Congélateur coffre",
+                    "material": "Blanc",
+                    "quantity": 1,
+                    "unit_price": 80.0
+                },
+                {
+                    "article_id": "secretaire_ancien",
+                    "article_name": "Secrétaire ancien",
+                    "material": "Bois massif",
+                    "quantity": 1,
+                    "unit_price": 120.0
                 }
             ],
-            "client_name": "Test Client",
-            "client_email": "test@example.com",
-            "client_phone": "0123456789",
-            "address": "123 Rue de Test, 75001 Paris",
+            "client_name": "Jean Dupont",
+            "client_email": "jean.dupont@test.com",
+            "client_phone": "0623456789",
+            "address": "15 Avenue des Palmiers, 83380 Les Issambres",
             "parking": "facile",
-            "floor": 2,
+            "floor": 1,
             "elevator": True,
-            "additional_info": "Test quote",
-            "preferred_date": "2025-02-01",
+            "additional_info": "Intervention pour déménagement",
+            "preferred_date": "2025-02-15",
             "urgent": False,
             "photo_urls": []
         }
         
-        success, response = self.run_test("Create Quote", "POST", "quotes", 200, quote_data)
+        success, response = self.run_test("Create Quote (Full Flow)", "POST", "quotes", 200, quote_data)
         if success:
             quote_id = response.get('id')
+            expected_total = 350.0  # 150 + 80 + 120
+            actual_total = response.get('total_price', 0)
             print(f"   Created quote with ID: {quote_id}")
+            if actual_total == expected_total:
+                print(f"✅ Total price calculation correct: {actual_total}€")
+            else:
+                print(f"❌ Total price incorrect: expected {expected_total}€, got {actual_total}€")
             return success, quote_id
         return success, None
 
