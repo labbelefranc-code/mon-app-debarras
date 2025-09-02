@@ -252,11 +252,11 @@ async def init_base_data():
     
     # Ajouter des articles de base avec les bons category_ids
     base_articles = [
-        # Articles literie
+        # Articles literie - assignés directement à "literie"
         {
             "id": "lit_double_medicalise",
             "name": "Lit double médicalisé",
-            "category_id": "lit_medicalise",
+            "category_id": "literie",
             "base_price": 150.0,
             "materials": ["Métal", "Bois", "Mixte"],
             "description": "Lit médicalisé double avec mécanisme électrique"
@@ -264,7 +264,7 @@ async def init_base_data():
         {
             "id": "tete_lit_classique",
             "name": "Tête de lit classique",
-            "category_id": "tete_lit",
+            "category_id": "literie",
             "base_price": 45.0,
             "materials": ["Bois", "Tissu", "Métal"],
             "description": "Tête de lit standard"
@@ -272,12 +272,20 @@ async def init_base_data():
         {
             "id": "lit_bebe_standard",
             "name": "Lit bébé à barreaux",
-            "category_id": "lit_bebe",
+            "category_id": "literie",
             "base_price": 35.0,
             "materials": ["Bois", "Plastique"],
             "description": "Lit bébé standard avec barreaux"
         },
-        # Articles électroménager  
+        {
+            "id": "lit_pliant_simple",
+            "name": "Lit pliant simple",
+            "category_id": "literie",
+            "base_price": 40.0,
+            "materials": ["Métal", "Tissu"],
+            "description": "Lit pliant d'appoint"
+        },
+        # Articles électroménager - assignés directement à "electromenager"
         {
             "id": "congelateur_coffre",
             "name": "Congélateur coffre",
@@ -293,6 +301,14 @@ async def init_base_data():
             "base_price": 60.0,
             "materials": ["Blanc", "Inox"],
             "description": "Lave-linge standard"
+        },
+        {
+            "id": "refrigerateur",
+            "name": "Réfrigérateur",
+            "category_id": "electromenager",
+            "base_price": 90.0,
+            "materials": ["Blanc", "Inox", "Noir"],
+            "description": "Réfrigérateur standard"
         },
         # Articles tables & bureaux
         {
@@ -321,12 +337,47 @@ async def init_base_data():
             "description": "Chaise de bureau ergonomique"
         },
         {
+            "id": "chaise_salle_manger",
+            "name": "Chaise salle à manger",
+            "category_id": "assises",
+            "base_price": 30.0,
+            "materials": ["Bois", "Métal", "Tissu"],
+            "description": "Chaise pour salle à manger"
+        },
+        # Articles salon fauteuils
+        {
             "id": "fauteuil_salon",
             "name": "Fauteuil de salon",
             "category_id": "salon_fauteuils",
             "base_price": 65.0,
             "materials": ["Tissu", "Cuir", "Velours"],
             "description": "Fauteuil confortable pour salon"
+        },
+        {
+            "id": "canape_2_places",
+            "name": "Canapé 2 places",
+            "category_id": "salon_fauteuils",
+            "base_price": 150.0,
+            "materials": ["Tissu", "Cuir", "Simili"],
+            "description": "Canapé 2 places pour salon"
+        },
+        # Articles meubles TV
+        {
+            "id": "meuble_tv_moderne",
+            "name": "Meuble TV moderne",
+            "category_id": "meubles_tv",
+            "base_price": 55.0,
+            "materials": ["Mélaminé", "Bois", "Laqué"],
+            "description": "Meuble TV avec rangements"
+        },
+        # Articles meubles de rangement
+        {
+            "id": "armoire_2_portes",
+            "name": "Armoire 2 portes",
+            "category_id": "meubles_rangement",
+            "base_price": 85.0,
+            "materials": ["Bois", "Mélaminé", "Miroir"],
+            "description": "Armoire penderie 2 portes"
         }
     ]
     
