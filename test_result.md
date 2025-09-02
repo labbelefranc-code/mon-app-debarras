@@ -153,3 +153,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Starting development of admin photo management system. Will implement backend endpoints first, test them, then create frontend interface."
+  - agent: "main"
+    message: "Completed implementation of admin photo management system. Backend has new endpoints for listing photos, assigning/unassigning photos to articles, and serving static photo files. Frontend has drag & drop admin interface accessible via footer link. Ready for backend testing first, then frontend testing with user permission."
