@@ -65,12 +65,26 @@ function App() {
     }
   };
 
-  const loadArticles = async (categoryId) => {
+  const handleCategoryClick = async (category) => {
+    setSelectedCategory(category);
+    
+    // Vérifier s'il y a des sous-catégories
     try {
-      const response = await axios.get(`${API}/categories/${categoryId}/articles`);
-      setArticles(response.data);
+      const subcategoriesResponse = await axios.get(`${API}/categories/${category.id}/subcategories`);
+      if (subcategoriesResponse.data && subcategoriesResponse.data.length > 0) {
+        // Il y a des sous-catégories, aller à la page subcategories
+        setSubcategories(subcategoriesResponse.data);
+        setCurrentStep('subcategories');
+      } else {
+        // Pas de sous-catégories, aller directement aux articles
+        setCurrentStep('articles');
+        loadArticles(category.id);
+      }
     } catch (error) {
-      console.error('Erreur lors du chargement des articles:', error);
+      console.error('Erreur lors de la vérification des sous-catégories:', error);
+      // En cas d'erreur, essayer de charger les articles directement
+      setCurrentStep('articles');
+      loadArticles(category.id);
     }
   };
 
