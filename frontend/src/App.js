@@ -1361,9 +1361,9 @@ function App() {
           <div>
             <h2 className="text-xl font-bold mb-4">Photos Disponibles ({allPhotos.length})</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
-              {allPhotos.map((photo, index) => (
+              {allPhotos.map((photo) => (
                 <div
-                  key={index}
+                  key={photo.filename}
                   className={`relative border-2 rounded-lg p-2 cursor-grab ${
                     photo.is_assigned ? 'border-green-400 bg-green-50' : 'border-gray-300'
                   } hover:border-orange-400 transition-colors`}
