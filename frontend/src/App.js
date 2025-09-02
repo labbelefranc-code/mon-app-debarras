@@ -969,30 +969,30 @@ function App() {
               <CardContent className="space-y-6">
                 {/* Contact Info */}
                 <div className="grid grid-cols-2 gap-4">
-                  <Input
+                  <OptimizedInput
                     placeholder="Nom complet *"
                     value={quoteForm.client_name}
-                    onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
+                    onChange={quoteFormUpdaters.client_name}
                   />
-                  <Input
+                  <OptimizedInput
                     type="email"
                     placeholder="Email *"
                     value={quoteForm.client_email}
-                    onChange={(e) => setQuoteForm({...quoteForm, client_email: e.target.value})}
+                    onChange={quoteFormUpdaters.client_email}
                   />
                 </div>
                 
-                <Input
+                <OptimizedInput
                   type="tel"
                   placeholder="Téléphone *"
                   value={quoteForm.client_phone}
-                  onChange={(e) => setQuoteForm({...quoteForm, client_phone: e.target.value})}
+                  onChange={quoteFormUpdaters.client_phone}
                 />
                 
-                <Input
+                <OptimizedInput
                   placeholder="Adresse complète *"
                   value={quoteForm.address}
-                  onChange={(e) => setQuoteForm({...quoteForm, address: e.target.value})}
+                  onChange={quoteFormUpdaters.address}
                 />
 
                 {/* Access Info */}
