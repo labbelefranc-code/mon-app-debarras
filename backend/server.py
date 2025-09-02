@@ -175,6 +175,34 @@ class PhotoAssignment(BaseModel):
     photo_filename: str
     article_id: str
 
+class CategoryCreate(BaseModel):
+    name: str
+    parent_id: Optional[str] = None
+    description: Optional[str] = None
+    icon: Optional[str] = None
+
+class CategoryUpdate(BaseModel):
+    name: Optional[str] = None
+    parent_id: Optional[str] = None
+    description: Optional[str] = None
+    icon: Optional[str] = None
+
+class ArticleCreate(BaseModel):
+    name: str
+    category_id: str
+    base_price: float
+    materials: List[str] = []
+    description: Optional[str] = None
+    requires_dismantling: bool = False
+
+class ArticleUpdate(BaseModel):
+    name: Optional[str] = None
+    category_id: Optional[str] = None
+    base_price: Optional[float] = None
+    materials: Optional[List[str]] = None
+    description: Optional[str] = None
+    requires_dismantling: Optional[bool] = None
+
 # Admin authentication
 def authenticate_admin(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, "labbelefranc@gmail.com")
