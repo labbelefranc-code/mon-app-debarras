@@ -168,7 +168,7 @@ metadata:
 test_plan:
   current_focus:
     - "Create admin photo management endpoints"
-    - "Test backend photo listing and association"
+    - "Create admin category and article management system"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
