@@ -41,7 +41,7 @@ const ABCD_CATEGORIES = {
   },
   'B': {
     id: 'B',
-    name: 'Jardin/Bricolage/Extérieur',
+    name: 'JARDIN',
     color: 'from-green-400 to-green-500',
     icon: '🌿',
     items: [
@@ -57,7 +57,7 @@ const ABCD_CATEGORIES = {
   },
   'C': {
     id: 'C',
-    name: 'Électroménager/ électronique/ électrique',
+    name: 'ELEC',
     color: 'from-yellow-400 to-yellow-500',
     icon: '⚡',
     items: [
@@ -74,7 +74,7 @@ const ABCD_CATEGORIES = {
   },
   'D': {
     id: 'D',
-    name: 'Décoration / accessoires / instruments / vaisselle / objets divers et encombrants / cartons et sacs',
+    name: 'AUTRES',
     color: 'from-purple-400 to-purple-500',
     icon: '🎨',
     items: [
