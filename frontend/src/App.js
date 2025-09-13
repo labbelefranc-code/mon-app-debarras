@@ -1645,6 +1645,23 @@ function App() {
     </div>
   );
 
+  // Optimized admin login handlers
+  const handleAdminUsernameChange = useCallback((e) => {
+    setAdminAuth(prev => ({...prev, username: e.target.value}));
+  }, []);
+
+  const handleAdminPasswordChange = useCallback((e) => {
+    setAdminAuth(prev => ({...prev, password: e.target.value}));
+  }, []);
+
+  const handleAdminLogin = useCallback(() => {
+    authenticateAdmin();
+  }, [authenticateAdmin]);
+
+  const handleGoHome = useCallback(() => {
+    setCurrentStep('home');
+  }, []);
+
   const AdminLoginPage = () => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <Card className="max-w-md w-full">
@@ -1652,26 +1669,28 @@ function App() {
           <CardTitle className="text-center">Connexion Admin</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Input
+          <OptimizedInput
             type="email"
             placeholder="Email admin"
             value={adminAuth.username}
-            onChange={(e) => setAdminAuth({...adminAuth, username: e.target.value})}
+            onChange={handleAdminUsernameChange}
+            autoComplete="username"
           />
-          <Input
+          <OptimizedInput
             type="password"
             placeholder="Mot de passe"
             value={adminAuth.password}
-            onChange={(e) => setAdminAuth({...adminAuth, password: e.target.value})}
+            onChange={handleAdminPasswordChange}
+            autoComplete="current-password"
           />
           <Button 
-            onClick={authenticateAdmin}
+            onClick={handleAdminLogin}
             className="w-full bg-teal-600 hover:bg-teal-700"
           >
             Se connecter
           </Button>
           <Button 
-            onClick={() => setCurrentStep('home')}
+            onClick={handleGoHome}
             variant="outline"
             className="w-full"
           >
