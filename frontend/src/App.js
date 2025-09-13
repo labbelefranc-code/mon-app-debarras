@@ -91,7 +91,15 @@ const ABCD_CATEGORIES = {
       'encombrants',
       'cartons et sacs'
     ],
-    subcategories: []
+    subcategories: [
+      'Décoration',
+      'accessoires',
+      'instruments',
+      'vaisselle',
+      'objets divers',
+      'encombrants',
+      'cartons et sacs'
+    ]
   }
 };
 
