@@ -656,8 +656,8 @@ function App() {
     }
   };
 
-  // Admin functions
-  const authenticateAdmin = async () => {
+  // Admin functions - wrapped in useCallback to prevent re-renders
+  const authenticateAdmin = useCallback(async () => {
     try {
       const auth = btoa(`${adminAuth.username}:${adminAuth.password}`);
       const response = await axios.get(`${API}/admin/photos`, {
@@ -669,7 +669,7 @@ function App() {
     } catch (error) {
       alert('Identifiants admin incorrects');
     }
-  };
+  }, [adminAuth.username, adminAuth.password]);
 
   const loadAdminData = async () => {
     try {
