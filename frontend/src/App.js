@@ -1655,12 +1655,12 @@ function App() {
   );
 
   // Optimized admin login handlers
-  const handleAdminUsernameChange = useCallback((e) => {
-    setAdminAuth(prev => ({...prev, username: e.target.value}));
+  const handleAdminUsernameChange = useCallback((value) => {
+    setAdminAuth(prev => ({...prev, username: value}));
   }, []);
 
-  const handleAdminPasswordChange = useCallback((e) => {
-    setAdminAuth(prev => ({...prev, password: e.target.value}));
+  const handleAdminPasswordChange = useCallback((value) => {
+    setAdminAuth(prev => ({...prev, password: value}));
   }, []);
 
   const handleAdminLogin = useCallback(() => {
