@@ -1414,24 +1414,23 @@ function App() {
                 }
               }}
             >
-              <CardContent className={`p-6 text-center bg-gradient-to-r ${category.color} text-white h-48 flex flex-col justify-center`}>
-                <div className="text-4xl mb-3">{category.icon}</div>
-                <h3 className="text-lg font-bold mb-3 leading-tight">
-                  {category.name}
+              <CardContent className={`p-4 text-center bg-gradient-to-r ${category.color} text-white h-60 flex flex-col`}>
+                <div className="text-3xl mb-2">{category.icon}</div>
+                <h3 className="text-base font-bold mb-3 leading-tight">
+                  {category.name.split('/')[0].trim()}
                 </h3>
-                {category.subcategories.length > 0 && (
-                  <div className="text-xs opacity-90">
-                    <p className="mb-1">Comprend :</p>
-                    <div className="space-y-0.5">
-                      {category.subcategories.slice(0, 2).map((sub, index) => (
-                        <div key={index}>• {sub}</div>
-                      ))}
-                      {category.subcategories.length > 2 && (
-                        <div>• Et plus...</div>
-                      )}
-                    </div>
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="flex flex-wrap gap-1.5 justify-center items-center max-w-full">
+                    {category.items.map((item, index) => (
+                      <div 
+                        key={index}
+                        className="bg-white bg-opacity-20 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium border border-white border-opacity-30"
+                      >
+                        {item}
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
               </CardContent>
             </Card>
           ))}
