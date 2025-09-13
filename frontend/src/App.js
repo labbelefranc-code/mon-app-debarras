@@ -1477,15 +1477,14 @@ function App() {
 
         {/* Category Info */}
         {selectedABCDCategory && (
-          <div className="text-center mb-12">
-            <div className={`inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`}>
-              <div className="text-4xl mr-4">{selectedABCDCategory.icon}</div>
+          <div className="text-center mb-8">
+            <div className={`inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+              <div className="text-4xl mr-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedABCDCategory.icon}</div>
               <div>
-                <div className="text-lg font-bold">Catégorie {selectedABCDCategory.id}</div>
-                <div className="text-sm opacity-90">{selectedABCDCategory.name}</div>
+                <div className="text-lg font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>{selectedABCDCategory.name}</div>
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Précisez le type d'objets
             </h2>
           </div>
