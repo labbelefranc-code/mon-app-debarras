@@ -113,10 +113,12 @@ const CustomItemInput = React.memo(({ onAddCustomItem }) => {
     if (inputValue.trim()) {
       onAddCustomItem(inputValue.trim());
       setInputValue('');
-      // Keep focus after clearing
-      if (inputRef.current) {
-        setTimeout(() => inputRef.current.focus(), 0);
-      }
+      // Keep focus after clearing - with null check inside setTimeout
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 0);
     }
   }, [inputValue, onAddCustomItem]);
 
