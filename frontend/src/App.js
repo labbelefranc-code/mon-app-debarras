@@ -1369,8 +1369,8 @@ function App() {
           </p>
         </div>
 
-        {/* Categories Grid A, B, C, D */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* Categories Grid 2x2 */}
+        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
           {Object.values(ABCD_CATEGORIES).map((category) => (
             <Card
               key={category.id}
@@ -1385,25 +1385,22 @@ function App() {
                 }
               }}
             >
-              <CardContent className={`p-8 text-center bg-gradient-to-r ${category.color} text-white`}>
-                <div className="text-6xl mb-6">{category.icon}</div>
-                <div className="bg-white text-black px-4 py-2 rounded-full mb-4 font-bold text-2xl">
-                  {category.id}
-                </div>
-                <h3 className="text-xl font-bold mb-4">
+              <CardContent className={`p-6 text-center bg-gradient-to-r ${category.color} text-white h-48 flex flex-col justify-center`}>
+                <div className="text-4xl mb-3">{category.icon}</div>
+                <h3 className="text-lg font-bold mb-3 leading-tight">
                   {category.name}
                 </h3>
                 {category.subcategories.length > 0 && (
-                  <div className="text-sm opacity-90">
-                    <p className="mb-2">Comprend :</p>
-                    <ul className="space-y-1">
-                      {category.subcategories.slice(0, 3).map((sub, index) => (
-                        <li key={index}>• {sub}</li>
+                  <div className="text-xs opacity-90">
+                    <p className="mb-1">Comprend :</p>
+                    <div className="space-y-0.5">
+                      {category.subcategories.slice(0, 2).map((sub, index) => (
+                        <div key={index}>• {sub}</div>
                       ))}
-                      {category.subcategories.length > 3 && (
-                        <li>• Et plus...</li>
+                      {category.subcategories.length > 2 && (
+                        <div>• Et plus...</div>
                       )}
-                    </ul>
+                    </div>
                   </div>
                 )}
               </CardContent>
