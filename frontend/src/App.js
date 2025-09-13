@@ -2250,6 +2250,12 @@ function App() {
         return <QuoteFormPage />;
       case 'photo-quote':
         return <PhotoQuotePage />;
+      case 'abcd-categories':
+        return <ABCDCategoriesPage />;
+      case 'abcd-subcategories':
+        return <ABCDSubcategoriesPage />;
+      case 'abcd-objects':
+        return <ABCDObjectsPage />;
       case 'admin-login':
         return <AdminLoginPage />;
       case 'admin-photos':
