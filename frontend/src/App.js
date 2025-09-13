@@ -24,6 +24,13 @@ const ABCD_CATEGORIES = {
     name: 'MOBILIER',
     color: 'from-blue-400 to-blue-500',
     icon: '🛏️',
+    items: [
+      'Literie / Canapés / Fauteuils',
+      'Tables et assises',
+      'Rangements',
+      'SALLE DE BAIN / CUISINE',
+      'Meubles divers'
+    ],
     subcategories: [
       'Literie / Canapés / Fauteuils',
       'Tables et assises',
@@ -37,6 +44,11 @@ const ABCD_CATEGORIES = {
     name: 'Jardin/Bricolage/Extérieur',
     color: 'from-green-400 to-green-500',
     icon: '🌿',
+    items: [
+      'Mobilier de jardin et contenants',
+      'Jardin et extérieur',
+      'Bricolage/matériaux/ énergie'
+    ],
     subcategories: [
       'Mobilier de jardin et contenants',
       'Jardin et extérieur',
@@ -48,6 +60,14 @@ const ABCD_CATEGORIES = {
     name: 'Électroménager/ électronique/ électrique',
     color: 'from-yellow-400 to-yellow-500',
     icon: '⚡',
+    items: [
+      'Électroménager',
+      'électronique',
+      'électrique',
+      'Chauffage',
+      'climatisation',
+      'ventilation'
+    ],
     subcategories: [
       'Chauffage / climatisation / ventilation'
     ]
@@ -57,6 +77,15 @@ const ABCD_CATEGORIES = {
     name: 'Décoration / accessoires / instruments / vaisselle / objets divers et encombrants / cartons et sacs',
     color: 'from-purple-400 to-purple-500',
     icon: '🎨',
+    items: [
+      'Décoration',
+      'accessoires',
+      'instruments',
+      'vaisselle',
+      'objets divers',
+      'encombrants',
+      'cartons et sacs'
+    ],
     subcategories: []
   }
 };
