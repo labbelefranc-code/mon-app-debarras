@@ -1542,12 +1542,12 @@ function App() {
             {/* Category/Subcategory Info */}
             {selectedABCDCategory && (
               <div className="mb-8">
-                <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`}>
-                  <div className="text-2xl mr-3">{selectedABCDCategory.icon}</div>
+                <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                  <div className="text-2xl mr-3" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedABCDCategory.icon}</div>
                   <div>
-                    <div className="font-bold">Catégorie {selectedABCDCategory.id}</div>
+                    <div className="font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>{selectedABCDCategory.name}</div>
                     {selectedABCDSubcategory && (
-                      <div className="text-sm opacity-90">→ {selectedABCDSubcategory}</div>
+                      <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>→ {selectedABCDSubcategory}</div>
                     )}
                   </div>
                 </div>
