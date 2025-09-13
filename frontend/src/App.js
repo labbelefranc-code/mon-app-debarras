@@ -17,6 +17,50 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/u
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Nouvelles catégories A, B, C, D
+const ABCD_CATEGORIES = {
+  'A': {
+    id: 'A',
+    name: 'MOBILIER',
+    color: 'from-blue-400 to-blue-500',
+    icon: '🛏️',
+    subcategories: [
+      'Literie / Canapés / Fauteuils',
+      'Tables et assises',
+      'Rangements',
+      'SALLE DE BAIN / CUISINE',
+      'Meubles divers'
+    ]
+  },
+  'B': {
+    id: 'B',
+    name: 'Jardin/Bricolage/Extérieur',
+    color: 'from-green-400 to-green-500',
+    icon: '🌿',
+    subcategories: [
+      'Mobilier de jardin et contenants',
+      'Jardin et extérieur',
+      'Bricolage/matériaux/ énergie'
+    ]
+  },
+  'C': {
+    id: 'C',
+    name: 'Électroménager/ électronique/ électrique',
+    color: 'from-yellow-400 to-yellow-500',
+    icon: '⚡',
+    subcategories: [
+      'Chauffage / climatisation / ventilation'
+    ]
+  },
+  'D': {
+    id: 'D',
+    name: 'Décoration / accessoires / instruments / vaisselle / objets divers et encombrants / cartons et sacs',
+    color: 'from-purple-400 to-purple-500',
+    icon: '🎨',
+    subcategories: []
+  }
+};
+
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
