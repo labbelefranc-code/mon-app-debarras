@@ -285,7 +285,16 @@ const OptimizedInput = React.memo(React.forwardRef(({ value, onChange, ...props 
   
   const handleChange = useCallback((e) => {
     e.stopPropagation();
-    onChange(e.target.value);
+    // Check if onChange expects the event or just the value
+    if (typeof onChange === 'function') {
+      // If onChange expects an event (like standard React onChange)
+      if (onChange.length === 1 && e && e.target) {
+        onChange(e);
+      } else {
+        // If onChange expects just the value (like our optimized handlers)
+        onChange(e.target.value);
+      }
+    }
   }, [onChange]);
 
   const handleKeyDown = useCallback((e) => {
