@@ -1334,6 +1334,279 @@ function App() {
     </div>
   );
 
+  const ABCDCategoriesPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            onClick={() => setCurrentStep('home')}
+            variant="outline"
+            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour à l'accueil
+          </Button>
+          
+          {(selectedItems.length > 0 || customItems.length > 0) && (
+            <Button
+              onClick={() => setCurrentStep('quote-form')}
+              className="bg-orange-500 hover:bg-orange-600"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Ma sélection ({selectedItems.length + customItems.length})
+            </Button>
+          )}
+        </div>
+
+        {/* Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            Choisissez la catégorie de vos objets
+          </h2>
+          <p className="text-lg text-gray-600">
+            Sélectionnez la catégorie correspondant à vos objets à évacuer
+          </p>
+        </div>
+
+        {/* Categories Grid A, B, C, D */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {Object.values(ABCD_CATEGORIES).map((category) => (
+            <Card
+              key={category.id}
+              className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-300"
+              onClick={() => {
+                setSelectedABCDCategory(category);
+                if (category.subcategories.length > 0) {
+                  setCurrentStep('abcd-subcategories');
+                } else {
+                  // Si pas de sous-catégories, aller directement à la sélection d'objets
+                  setCurrentStep('abcd-objects');
+                }
+              }}
+            >
+              <CardContent className={`p-8 text-center bg-gradient-to-r ${category.color} text-white`}>
+                <div className="text-6xl mb-6">{category.icon}</div>
+                <div className="bg-white text-black px-4 py-2 rounded-full mb-4 font-bold text-2xl">
+                  {category.id}
+                </div>
+                <h3 className="text-xl font-bold mb-4">
+                  {category.name}
+                </h3>
+                {category.subcategories.length > 0 && (
+                  <div className="text-sm opacity-90">
+                    <p className="mb-2">Comprend :</p>
+                    <ul className="space-y-1">
+                      {category.subcategories.slice(0, 3).map((sub, index) => (
+                        <li key={index}>• {sub}</li>
+                      ))}
+                      {category.subcategories.length > 3 && (
+                        <li>• Et plus...</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Bottom section */}
+        <div className="mt-16 text-center">
+          <CustomItemInput onAddCustomItem={addCustomItem} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const ABCDSubcategoriesPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            onClick={() => setCurrentStep('abcd-categories')}
+            variant="outline"
+            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour aux catégories
+          </Button>
+          
+          {(selectedItems.length > 0 || customItems.length > 0) && (
+            <Button
+              onClick={() => setCurrentStep('quote-form')}
+              className="bg-orange-500 hover:bg-orange-600"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Ma sélection ({selectedItems.length + customItems.length})
+            </Button>
+          )}
+        </div>
+
+        {/* Category Info */}
+        {selectedABCDCategory && (
+          <div className="text-center mb-12">
+            <div className={`inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`}>
+              <div className="text-4xl mr-4">{selectedABCDCategory.icon}</div>
+              <div>
+                <div className="text-lg font-bold">Catégorie {selectedABCDCategory.id}</div>
+                <div className="text-sm opacity-90">{selectedABCDCategory.name}</div>
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Précisez le type d'objets
+            </h2>
+          </div>
+        )}
+
+        {/* Subcategories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {selectedABCDCategory?.subcategories.map((subcategory, index) => (
+            <Card
+              key={index}
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2 hover:border-orange-300"
+              onClick={() => {
+                setSelectedABCDSubcategory(subcategory);
+                setCurrentStep('abcd-objects');
+              }}
+            >
+              <CardContent className="p-6 text-center bg-gradient-to-r from-gray-100 to-gray-200 hover:from-orange-100 hover:to-orange-200">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  {subcategory}
+                </h3>
+                <div className="text-orange-600 font-medium">
+                  Voir les objets →
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Bottom section */}
+        <div className="mt-16">
+          <CustomItemInput onAddCustomItem={addCustomItem} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const ABCDObjectsPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Left side - Objects */}
+          <div className="lg:col-span-3">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <Button
+                onClick={() => setCurrentStep(selectedABCDCategory?.subcategories.length > 0 ? 'abcd-subcategories' : 'abcd-categories')}
+                variant="outline"
+                className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Retour
+              </Button>
+            </div>
+
+            {/* Category/Subcategory Info */}
+            {selectedABCDCategory && (
+              <div className="mb-8">
+                <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`}>
+                  <div className="text-2xl mr-3">{selectedABCDCategory.icon}</div>
+                  <div>
+                    <div className="font-bold">Catégorie {selectedABCDCategory.id}</div>
+                    {selectedABCDSubcategory && (
+                      <div className="text-sm opacity-90">→ {selectedABCDSubcategory}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Objects Selection */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                Sélectionnez vos objets
+              </h3>
+              
+              {/* Pour le moment, on affiche un message */}
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <div className="text-6xl mb-4">📦</div>
+                  <h4 className="text-xl font-bold mb-4">Objets disponibles prochainement</h4>
+                  <p className="text-gray-600 mb-6">
+                    Les objets spécifiques pour cette catégorie seront bientôt disponibles.
+                    En attendant, vous pouvez décrire vos objets ci-dessous.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Custom Item Input */}
+            <CustomItemInput onAddCustomItem={addCustomItem} />
+          </div>
+
+          {/* Right side - Selection Summary */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-8">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  Ma sélection ({selectedItems.length + customItems.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {selectedItems.length === 0 && customItems.length === 0 ? (
+                  <p className="text-gray-500 text-center py-8">
+                    Aucun article sélectionné
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {/* Selected Items */}
+                    {selectedItems.map((item, index) => (
+                      <SelectionItem
+                        key={`selected-${item.article_id}-${index}`}
+                        item={item}
+                        index={index}
+                        onUpdateQuantity={updateItemQuantity}
+                        onRemove={removeFromSelection}
+                        onToggleDismantling={toggleDismantling}
+                      />
+                    ))}
+                    
+                    {/* Custom Items */}
+                    {customItems.map((item, index) => (
+                      <CustomItemCard
+                        key={`custom-${item.description}-${index}`}
+                        item={item}
+                        index={index}
+                        onRemove={removeCustomItem}
+                      />
+                    ))}
+                    
+                    <div className="border-t pt-4">
+                      <div className="text-center text-gray-600">
+                        <span>Prix calculé après validation des informations</span>
+                      </div>
+                    </div>
+                    
+                    <Button
+                      onClick={() => setCurrentStep('quote-form')}
+                      className="w-full bg-teal-600 hover:bg-teal-700 mt-4"
+                    >
+                      Continuer
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const AdminLoginPage = () => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <Card className="max-w-md w-full">
