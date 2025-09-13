@@ -69,7 +69,12 @@ const ABCD_CATEGORIES = {
       'ventilation'
     ],
     subcategories: [
-      'Chauffage / climatisation / ventilation'
+      'Électroménager',
+      'électronique',
+      'électrique',
+      'Chauffage',
+      'climatisation',
+      'ventilation'
     ]
   },
   'D': {
