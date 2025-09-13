@@ -733,10 +733,7 @@ function App() {
           </Button>
           
           <Button
-            onClick={() => {
-              setCurrentStep('categories');
-              loadCategories();
-            }}
+            onClick={() => setCurrentStep('abcd-categories')}
             className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
           >
             Un ou plusieurs articles <span className="text-sm opacity-80">(devis instantané)</span>
