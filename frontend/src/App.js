@@ -1654,13 +1654,13 @@ function App() {
     </div>
   );
 
-  // Optimized admin login handlers
-  const handleAdminUsernameChange = useCallback((value) => {
-    setAdminAuth(prev => ({...prev, username: value}));
+  // Stable admin login handlers - using regular Input components to avoid cursor issues
+  const handleAdminUsernameChange = useCallback((e) => {
+    setAdminAuth(prev => ({...prev, username: e.target.value}));
   }, []);
 
-  const handleAdminPasswordChange = useCallback((value) => {
-    setAdminAuth(prev => ({...prev, password: value}));
+  const handleAdminPasswordChange = useCallback((e) => {
+    setAdminAuth(prev => ({...prev, password: e.target.value}));
   }, []);
 
   const handleAdminLogin = useCallback(() => {
@@ -1678,14 +1678,14 @@ function App() {
           <CardTitle className="text-center">Connexion Admin</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <OptimizedInput
+          <Input
             type="email"
             placeholder="Email admin"
             value={adminAuth.username}
             onChange={handleAdminUsernameChange}
             autoComplete="username"
           />
-          <OptimizedInput
+          <Input
             type="password"
             placeholder="Mot de passe"
             value={adminAuth.password}
