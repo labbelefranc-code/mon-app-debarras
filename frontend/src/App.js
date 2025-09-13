@@ -1711,45 +1711,6 @@ function App() {
     setCurrentStep('home');
   }, []);
 
-  const AdminLoginPage = () => (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <Card className="max-w-md w-full">
-        <CardHeader>
-          <CardTitle className="text-center">Connexion Admin</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Input
-            type="email"
-            placeholder="Email admin"
-            value={adminAuth.username}
-            onChange={handleAdminUsernameChange}
-            autoComplete="username"
-          />
-          <Input
-            type="password"
-            placeholder="Mot de passe"
-            value={adminAuth.password}
-            onChange={handleAdminPasswordChange}
-            autoComplete="current-password"
-          />
-          <Button 
-            onClick={handleAdminLogin}
-            className="w-full bg-teal-600 hover:bg-teal-700"
-          >
-            Se connecter
-          </Button>
-          <Button 
-            onClick={handleGoHome}
-            variant="outline"
-            className="w-full"
-          >
-            Retour à l'accueil
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
   // Category Form Component - Ultra isolated
   const CategoryForm = React.memo(({ category, allCategories, onSave, onCancel }) => {
     // Initialize form data once and keep it isolated
