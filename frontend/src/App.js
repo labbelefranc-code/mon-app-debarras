@@ -310,6 +310,8 @@ function App() {
   const [currentStep, setCurrentStep] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [selectedABCDCategory, setSelectedABCDCategory] = useState(null);
+  const [selectedABCDSubcategory, setSelectedABCDSubcategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [articles, setArticles] = useState([]);
