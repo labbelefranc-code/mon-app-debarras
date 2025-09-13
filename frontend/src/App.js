@@ -2363,7 +2363,13 @@ function App() {
       case 'abcd-objects':
         return <ABCDObjectsPage />;
       case 'admin-login':
-        return <AdminLoginPage />;
+        return <AdminLoginPage 
+          adminAuth={adminAuth}
+          onUsernameChange={handleAdminUsernameChange}
+          onPasswordChange={handleAdminPasswordChange}
+          onLogin={handleAdminLogin}
+          onGoHome={handleGoHome}
+        />;
       case 'admin-photos':
         return <AdminPhotosPage />;
       case 'admin-categories':
