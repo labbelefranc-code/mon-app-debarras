@@ -1414,17 +1414,18 @@ function App() {
                 }
               }}
             >
-              <CardContent className={`p-4 text-center bg-gradient-to-r ${category.color} text-white h-60 flex flex-col`}>
-                <div className="text-3xl mb-2">{category.icon}</div>
-                <h3 className="text-base font-bold mb-3 leading-tight">
-                  {category.name.split('/')[0].trim()}
+              <CardContent className={`p-4 text-center bg-gradient-to-r ${category.color} text-white h-60 flex flex-col`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                <div className="text-3xl mb-2" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{category.icon}</div>
+                <h3 className="text-base font-bold mb-3 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+                  {category.name}
                 </h3>
                 <div className="flex-1 flex items-center justify-center">
                   <div className="flex flex-wrap gap-1.5 justify-center items-center max-w-full">
                     {category.items.map((item, index) => (
                       <div 
                         key={index}
-                        className="bg-white bg-opacity-20 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium border border-white border-opacity-30"
+                        className="bg-white bg-opacity-25 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium border border-white border-opacity-40"
+                        style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}
                       >
                         {item}
                       </div>
