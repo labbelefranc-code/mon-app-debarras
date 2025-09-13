@@ -1491,21 +1491,21 @@ function App() {
         )}
 
         {/* Subcategories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
           {selectedABCDCategory?.subcategories.map((subcategory, index) => (
             <Card
               key={index}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2 hover:border-orange-300"
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2"
               onClick={() => {
                 setSelectedABCDSubcategory(subcategory);
                 setCurrentStep('abcd-objects');
               }}
             >
-              <CardContent className="p-6 text-center bg-gradient-to-r from-gray-100 to-gray-200 hover:from-orange-100 hover:to-orange-200">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
+              <CardContent className={`p-4 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white h-32 flex flex-col justify-center`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                <h3 className="text-sm font-bold mb-2 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
                   {subcategory}
                 </h3>
-                <div className="text-orange-600 font-medium">
+                <div className="text-xs opacity-90 font-medium" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
                   Voir les objets →
                 </div>
               </CardContent>
