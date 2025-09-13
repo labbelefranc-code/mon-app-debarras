@@ -357,6 +357,46 @@ const OptimizedTextarea = React.memo(React.forwardRef(({ value, onChange, ...pro
   );
 }));
 
+// AdminLoginPage component - moved outside App to prevent re-creation on re-renders
+const AdminLoginPage = ({ adminAuth, onUsernameChange, onPasswordChange, onLogin, onGoHome }) => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <Card className="max-w-md w-full">
+      <CardHeader>
+        <CardTitle className="text-center">Connexion Admin</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Input
+          type="email"
+          placeholder="Email admin"
+          value={adminAuth.username}
+          onChange={onUsernameChange}
+          autoComplete="username"
+        />
+        <Input
+          type="password"
+          placeholder="Mot de passe"
+          value={adminAuth.password}
+          onChange={onPasswordChange}
+          autoComplete="current-password"
+        />
+        <Button 
+          onClick={onLogin}
+          className="w-full bg-teal-600 hover:bg-teal-700"
+        >
+          Se connecter
+        </Button>
+        <Button 
+          onClick={onGoHome}
+          variant="outline"
+          className="w-full"
+        >
+          Retour à l'accueil
+        </Button>
+      </CardContent>
+    </Card>
+  </div>
+);
+
 function App() {
   const [currentStep, setCurrentStep] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
