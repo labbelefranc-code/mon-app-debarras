@@ -50,58 +50,76 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" alt="Emergent Logo" />
-        </a>
-        <h1 className="text-4xl font-bold text-white mb-4">🚀 Mon Application</h1>
-        <p className="text-xl text-gray-300 mb-8">Building something incredible ~!</p>
-        
-        {/* Debug Information */}
-        <div className="mt-8 p-6 bg-gray-800 rounded-lg text-left max-w-2xl">
-          <h3 className="text-lg font-bold mb-4 text-green-400">🔧 Debug Info</h3>
-          <div className="space-y-2 text-sm">
-            <p><strong className="text-blue-400">API Status:</strong> <span className={apiStatus.includes('Success') ? 'text-green-400' : 'text-red-400'}>{apiStatus}</span></p>
-            <p><strong className="text-blue-400">Backend URL:</strong> <span className="text-gray-300">{BACKEND_URL}</span></p>
-            <p><strong className="text-blue-400">API Endpoint:</strong> <span className="text-gray-300">{API}</span></p>
-            <p><strong className="text-blue-400">Current Location:</strong> <span className="text-gray-300">{window.location.href}</span></p>
-            {apiData && <p><strong className="text-blue-400">API Response:</strong> <span className="text-green-400">{JSON.stringify(apiData)}</span></p>}
-            {debugInfo.timestamp && <p><strong className="text-blue-400">Last Check:</strong> <span className="text-gray-300">{debugInfo.timestamp}</span></p>}
-            {debugInfo.error && <p><strong className="text-blue-400">Error:</strong> <span className="text-red-400">{debugInfo.error}</span></p>}
+      <div className="min-h-screen bg-gray-900 p-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <a
+              className="App-link inline-block mb-4"
+              href="https://emergent.sh"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img 
+                src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" 
+                alt="Emergent Logo" 
+                className="w-24 h-24 mx-auto rounded-xl"
+              />
+            </a>
+            <h1 className="text-4xl font-bold text-white mb-2">🚀 Mon Application</h1>
+            <p className="text-xl text-gray-300 mb-6">Building something incredible ~!</p>
           </div>
           
-          <div className="mt-6 space-x-4">
-            <button 
-              onClick={helloWorldApi}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-            >
-              🔄 Test API Again
-            </button>
-            <button 
-              onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-green-600 hover:bg-green-700 rounded transition-colors"
-            >
-              🔄 Reload Page
-            </button>
+          {/* Debug Information */}
+          <div className="bg-gray-800 rounded-lg p-6 mb-6">
+            <h3 className="text-lg font-bold mb-4 text-green-400">🔧 Debug Info</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p><strong className="text-blue-400">API Status:</strong> <span className={apiStatus.includes('Success') ? 'text-green-400' : 'text-red-400'}>{apiStatus}</span></p>
+                <p><strong className="text-blue-400">Backend URL:</strong> <span className="text-gray-300 break-all">{BACKEND_URL}</span></p>
+                <p><strong className="text-blue-400">API Endpoint:</strong> <span className="text-gray-300 break-all">{API}</span></p>
+              </div>
+              <div>
+                <p><strong className="text-blue-400">Current Location:</strong> <span className="text-gray-300 break-all">{window.location.href}</span></p>
+                {apiData && <p><strong className="text-blue-400">API Response:</strong> <span className="text-green-400">{JSON.stringify(apiData)}</span></p>}
+                {debugInfo.timestamp && <p><strong className="text-blue-400">Last Check:</strong> <span className="text-gray-300">{debugInfo.timestamp}</span></p>}
+                {debugInfo.error && <p><strong className="text-blue-400">Error:</strong> <span className="text-red-400">{debugInfo.error}</span></p>}
+              </div>
+            </div>
+            
+            <div className="mt-6 flex flex-wrap gap-4 justify-center">
+              <button 
+                onClick={helloWorldApi}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors text-white font-medium"
+              >
+                🔄 Test API Again
+              </button>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-green-600 hover:bg-green-700 rounded transition-colors text-white font-medium"
+              >
+                🔄 Reload Page
+              </button>
+            </div>
+          </div>
+          
+          {/* System Status */}
+          <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+            <h4 className="text-md font-bold mb-3 text-yellow-400">📋 System Status</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <div className="text-green-400">✅ Frontend Service: Running</div>
+              <div className="text-green-400">✅ Backend Service: Connected</div>
+              <div className="text-green-400">✅ Database: MongoDB Ready</div>
+              <div className="text-green-400">✅ Preview Mode: Active</div>
+            </div>
+          </div>
+          
+          {/* Footer */}
+          <div className="text-center mt-8 text-gray-500 text-sm">
+            <p>✨ Application Ready for Development ✨</p>
           </div>
         </div>
-        
-        {/* Additional Info */}
-        <div className="mt-6 p-4 bg-gray-900 rounded-lg max-w-2xl">
-          <h4 className="text-md font-bold mb-2 text-yellow-400">📋 System Status</h4>
-          <div className="text-xs space-y-1">
-            <p>✅ Frontend Service: Running</p>
-            <p>✅ Backend Service: Connected</p>
-            <p>✅ Database: MongoDB Ready</p>
-            <p>✅ Preview Mode: Active</p>
-          </div>
-        </div>
-      </header>
+      </div>
     </div>
   );
 }
