@@ -3,16 +3,22 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Use different approaches to access environment variables
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || window.location.origin.replace('3000', '8001');
 const API = `${BACKEND_URL}/api`;
+
+console.log('Backend URL configured:', BACKEND_URL);
+console.log('API endpoint:', API);
 
 const Home = () => {
   const helloWorldApi = async () => {
     try {
+      console.log('Making API call to:', `${API}/`);
       const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
+      console.log('✅ API Response:', response.data.message);
     } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      console.error('❌ API Error:', e);
+      console.error('Failed API URL:', `${API}/`);
     }
   };
 
