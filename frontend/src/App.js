@@ -2841,6 +2841,41 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         return <ABCDSubcategoriesPage />;
       case 'abcd-objects':
         return <ABCDObjectsPage />;
+      case 'electromenager-types':
+        return <ElectromenagerTypePage 
+          onGoBack={() => setCurrentStep('abcd-subcategories')}
+          onSelectType={(key, type) => {
+            setSelectedElectroType(key);
+            setCurrentStep('electromenager-items');
+          }}
+        />;
+      case 'electromenager-items':
+        return <ElectromenagerItemsPage 
+          selectedType={ELECTROMENAGER_STRUCTURE[selectedElectroType]}
+          onGoBack={() => setCurrentStep('electromenager-types')}
+          onSelectItem={(key, item) => {
+            setSelectedElectroItem(key);
+            setCurrentStep('electromenager-photos');
+          }}
+        />;
+      case 'electromenager-photos':
+        return <ElectromenagerPhotosPage 
+          selectedType={ELECTROMENAGER_STRUCTURE[selectedElectroType]}
+          selectedItem={ELECTROMENAGER_STRUCTURE[selectedElectroType]?.items[selectedElectroItem]}
+          onGoBack={() => setCurrentStep('electromenager-items')}
+          onAddToSelection={(item, photoIndex) => {
+            // Add item to selection and go to quote form
+            const newItem = {
+              article_id: `electromenager-${selectedElectroType}-${selectedElectroItem}-${photoIndex}`,
+              article_name: item.name + (item.variants[photoIndex] ? ` (${item.variants[photoIndex]})` : ''),
+              price: 50, // Default price, should be calculated
+              quantity: 1,
+              material: selectedElectroType
+            };
+            setSelectedItems(prev => [...prev, newItem]);
+            setCurrentStep('quote-form');
+          }}
+        />;
       case 'admin-login':
         return <AdminLoginPage 
           adminAuth={adminAuth}
