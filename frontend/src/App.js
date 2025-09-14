@@ -17,6 +17,101 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/u
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Structure hiérarchique pour l'électroménager
+const ELECTROMENAGER_STRUCTURE = {
+  'froid': {
+    name: 'Froid',
+    icon: '❄️',
+    items: {
+      'frigo': {
+        name: 'FRIGO',
+        variants: ['top', '1 porte', 'grand'],
+        photos: [
+          'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=300&h=200&fit=crop',
+          'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=200&fit=crop',
+          'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=300&h=200&fit=crop'
+        ]
+      },
+      'congelateur': {
+        name: 'CONGELATEUR',
+        variants: ['mini', 'coffre simple', 'double coffre', 'vertical', 'armoire professionnelle simple', 'armoire professionnelle double'],
+        photos: [
+          'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=200&fit=crop',
+          'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=300&h=200&fit=crop'
+        ]
+      },
+      'frigo_congelateur': {
+        name: 'FRIGO CONGELATEUR',
+        variants: ['combiné standard', 'combiné grand', 'américain', 'armoire frigorifique simple', 'armoire frigorifique double'],
+        photos: [
+          'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=300&h=200&fit=crop'
+        ]
+      }
+    }
+  },
+  'cuisine': {
+    name: 'Cuisine',
+    icon: '🍳',
+    items: {
+      'gaziniere': {
+        name: 'GAZINIERE',
+        variants: [],
+        photos: [
+          'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop'
+        ]
+      },
+      'lave_vaisselle': {
+        name: 'LAVE VAISSELLE',
+        variants: [],
+        photos: [
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop'
+        ]
+      },
+      'four': {
+        name: 'FOUR',
+        variants: ['encastré', 'four taille micro-ondes', 'mini four'],
+        photos: [
+          'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop'
+        ]
+      },
+      'microondes': {
+        name: 'MICRO-ONDES',
+        variants: ['léger/lourd'],
+        photos: [
+          'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=300&h=200&fit=crop'
+        ]
+      },
+      'petit_electromenager': {
+        name: 'PETIT ÉLECTROMÉNAGER',
+        variants: ['plaques de cuisson', 'camping gaz', 'robot', 'centrale vapeur', 'cafetière', 'mixeur'],
+        photos: [
+          'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop'
+        ]
+      }
+    }
+  },
+  'salle_de_bain': {
+    name: 'Salle de bain',
+    icon: '🚿',
+    items: {
+      'lave_linge': {
+        name: 'LAVE LINGE',
+        variants: ['hublot', 'couvercle'],
+        photos: [
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop'
+        ]
+      },
+      'seche_linge': {
+        name: 'SECHE LINGE',
+        variants: [],
+        photos: [
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop'
+        ]
+      }
+    }
+  }
+};
+
 // Nouvelles catégories A, B, C, D
 const ABCD_CATEGORIES = {
   'A': {
