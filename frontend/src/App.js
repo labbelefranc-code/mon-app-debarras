@@ -1298,8 +1298,10 @@ function App() {
                       type="number"
                       min="0"
                       max="20"
+                      step="0.5"
                       value={quoteForm.floor}
-                      onChange={(e) => setQuoteForm({...quoteForm, floor: parseInt(e.target.value) || 0})}
+                      onChange={(e) => setQuoteForm({...quoteForm, floor: parseFloat(e.target.value) || 0})}
+                      placeholder="Ex: 1.5 pour un demi-étage"
                     />
                   </div>
                   
