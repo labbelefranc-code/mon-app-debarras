@@ -780,14 +780,7 @@ function App() {
   const [customItems, setCustomItems] = useState([]);
   const [isPhotoQuote, setIsPhotoQuote] = useState(false);
 
-  // Stable quote form updaters
-  const stableQuoteFormUpdaters = useMemo(() => ({
-    client_name: (e) => setQuoteForm(prev => ({...prev, client_name: e.target.value})),
-    client_email: (e) => setQuoteForm(prev => ({...prev, client_email: e.target.value})),
-    client_phone: (e) => setQuoteForm(prev => ({...prev, client_phone: e.target.value})),
-    address: (e) => setQuoteForm(prev => ({...prev, address: e.target.value})),
-    additional_info: (e) => setQuoteForm(prev => ({...prev, additional_info: e.target.value})),
-  }), []);
+  // Stable updaters removed - using external component now
   const [zones, setZones] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
   const [isAdminMode, setIsAdminMode] = useState(false);
