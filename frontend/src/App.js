@@ -1360,10 +1360,10 @@ function App() {
                   </Select>
                 </div>
 
-                <OptimizedTextarea
+                <Textarea
                   placeholder="Détails importants (accès, contraintes particulières, marches, chemins divers...)"
                   value={quoteForm.additional_info}
-                  onChange={quoteFormUpdaters.additional_info}
+                  onChange={(e) => setQuoteForm({...quoteForm, additional_info: e.target.value})}
                   rows={3}
                 />
 
