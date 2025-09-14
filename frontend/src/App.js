@@ -84,21 +84,21 @@ const ABCD_CATEGORIES = {
     icon: '🪞',
     items: [
       'Décoration',
-      'accessoires',
-      'instruments',
-      'vaisselle',
-      'objets divers',
-      'encombrants',
-      'cartons et sacs'
+      'Accessoires',
+      'Instruments',
+      'Vaisselle',
+      'Objets divers',
+      'Encombrants',
+      'Cartons et sacs'
     ],
     subcategories: [
       'Décoration',
-      'accessoires',
-      'instruments',
-      'vaisselle',
-      'objets divers',
-      'encombrants',
-      'cartons et sacs'
+      'Accessoires',
+      'Instruments',
+      'Vaisselle',
+      'Objets divers',
+      'Encombrants',
+      'Cartons et sacs'
     ]
   }
 };
