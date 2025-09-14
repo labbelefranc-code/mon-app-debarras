@@ -1373,9 +1373,11 @@ function App() {
                       }
                     }}
                   />
-                  <p className="text-xs text-gray-600 mt-1">
-                    Disponibilités : Mardi, Mercredi, Jeudi de 7h à 20h
-                  </p>
+                  {!isPhotoQuote && (
+                    <p className="text-xs text-gray-600 mt-1">
+                      Disponibilités : Mardi, Mercredi, Jeudi de 7h à 20h
+                    </p>
+                  )}
                 </div>
 
                 {/* Time Slots */}
