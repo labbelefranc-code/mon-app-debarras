@@ -388,6 +388,114 @@ const ABCD_CATEGORIES = {
   }
 };
 
+// Structure hiérarchique complète pour MULTIMEDIA/ELECTRONIQUE/ELECTRIQUE (Admin)
+const MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE = {
+  id: 'multimedia_electrique',
+  name: 'MULTIMEDIA / ELECTRONIQUE / ELECTRIQUE',
+  icon: '⚡',
+  color: 'from-yellow-400 to-yellow-500',
+  categories: {
+    'multimedia_electronique': {
+      id: 'multimedia_electronique',
+      name: 'MULTIMEDIA / ELECTRONIQUE',
+      icon: '📺',
+      items: [
+        { name: 'Télévision/Ecran', variants: ['petit', 'moyen', 'grand', 'écran plat', 'tube cathodique'] },
+        { name: 'Hifi/Lecteur', variants: ['ampli', 'lecteur cd', 'lecteur cassette', 'lecteur vinyles', 'box'] },
+        { name: 'Console de jeux vidéo', variants: ['PlayStation', 'Xbox', 'Nintendo', 'retro'] },
+        { name: 'Enceintes', variants: ['Bluetooth', 'Hi-Fi', 'home cinéma', 'portables'] },
+        { name: 'Ordinateur', variants: ['portable', 'PC fixe', 'tout-en-un', 'serveur'] },
+        { name: 'Imprimante / scanner', variants: ['jet d\'encre', 'laser', 'multifonction', 'scanner seul'] }
+      ]
+    },
+    'electrique': {
+      id: 'electrique',
+      name: 'ELECTRIQUE',
+      icon: '💡',
+      subcategories: {
+        'aspirateur': {
+          name: 'ASPIRATEUR',
+          items: [
+            { name: 'Aspirateur traineau', variants: ['avec sac', 'sans sac'] },
+            { name: 'Aspirateur balai', variants: ['filaire', 'sans fil'] },
+            { name: 'Aspirateur robot', variants: [] },
+            { name: 'Aspirateur eau et poussière', variants: [] }
+          ]
+        },
+        'eclairage': {
+          name: 'ÉCLAIRAGE',
+          items: [
+            { name: 'Lampe', variants: ['de table', 'de chevet', 'de bureau'] },
+            { name: 'Lampadaire', variants: ['sur pied', 'halogène', 'LED'] },
+            { name: 'Luminaire', variants: ['plafonnier', 'suspension', 'applique'] }
+          ]
+        },
+        'chauffe_eau': {
+          name: 'CHAUFFE-EAU / CUMULUS',
+          items: [
+            { name: 'Chauffe-eau électrique', variants: ['50L', '100L', '150L', '200L', '300L'] },
+            { name: 'Cumulus', variants: ['petit', 'moyen', 'grand'] }
+          ]
+        },
+        'chauffage_climatisation': {
+          name: 'CHAUFFAGE/CLIMATISATION/VENTILATION',
+          subcategories: {
+            'chaud': {
+              name: 'CHAUD',
+              items: [
+                { name: 'Convecteur', variants: ['mobile', 'fixe'] },
+                { name: 'Chauffage bain d\'huile', variants: [] },
+                { name: 'Chauffage d\'appoint', variants: ['électrique', 'gaz'] },
+                { name: 'Poêle à pétrole', variants: [] },
+                { name: 'Poêle à bois', variants: ['à bûches', 'à granulés'] }
+              ]
+            },
+            'froid': {
+              name: 'FROID',
+              items: [
+                { name: 'Climatisation', variants: ['mobile', 'murale', 'partie extérieure'] },
+                { name: 'Ventilateur', variants: ['sur pied', 'de table', 'au plafond'] }
+              ]
+            }
+          }
+        }
+      }
+    },
+    'electromenager': {
+      id: 'electromenager',
+      name: 'ÉLECTROMÉNAGER',
+      icon: '🏠',
+      subcategories: {
+        'electromenager_froid': {
+          name: 'ÉLECTROMÉNAGER FROID',
+          items: [
+            { name: 'FRIGO', variants: ['top', '1 porte', 'grand'] },
+            { name: 'CONGELATEUR', variants: ['mini', 'coffre simple', 'double coffre', 'vertical', 'armoire professionnelle simple', 'armoire professionnelle double'] },
+            { name: 'FRIGO CONGELATEUR', variants: ['combiné standard', 'combiné grand', 'américain', 'armoire frigorifique simple', 'armoire frigorifique double'] }
+          ]
+        },
+        'electromenager_cuisine': {
+          name: 'ÉLECTROMÉNAGER CUISINE',
+          items: [
+            { name: 'GAZINIERE', variants: ['4 feux', '5 feux', '6 feux', 'piano de cuisson'] },
+            { name: 'LAVE VAISSELLE', variants: ['compact', 'standard', 'grand format'] },
+            { name: 'FOUR', variants: ['encastré', 'four taille micro-ondes', 'mini four'] },
+            { name: 'MICRO-ONDES', variants: ['léger', 'lourd'] },
+            { name: 'PETIT ÉLECTROMÉNAGER', variants: ['plaques de cuisson', 'camping gaz', 'robot', 'centrale vapeur', 'cafetière', 'mixeur'] }
+          ]
+        },
+        'electromenager_salle_de_bain': {
+          name: 'ÉLECTROMÉNAGER SALLE DE BAIN',
+          items: [
+            { name: 'LAVE LINGE', variants: ['hublot', 'couvercle'] },
+            { name: 'SECHE LINGE', variants: ['évacuation', 'condensation', 'pompe à chaleur'] }
+          ]
+        }
+      }
+    }
+  }
+};
+
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
