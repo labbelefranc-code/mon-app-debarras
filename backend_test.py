@@ -544,6 +544,132 @@ class AlloDebarrasAPITester:
             headers=headers
         )
 
+    def test_complete_database_cleanup(self):
+        """Test complete database cleanup - delete all photos and articles"""
+        print(f"\n🧹 STARTING COMPLETE DATABASE CLEANUP...")
+        print("=" * 60)
+        
+        headers = self.get_admin_auth_headers()
+        cleanup_results = {
+            'photos_found': 0,
+            'photos_unassigned': 0,
+            'articles_found': 0,
+            'articles_deleted': 0,
+            'errors': []
+        }
+        
+        # Step 1: Get all photos and unassign them
+        print(f"\n📸 Step 1: Getting all photos for cleanup...")
+        success_photos, photos = self.test_get_admin_photos()
+        
+        if success_photos and photos:
+            cleanup_results['photos_found'] = len(photos)
+            print(f"   Found {len(photos)} photos to process")
+            
+            # Unassign all assigned photos
+            assigned_photos = [p for p in photos if p.get('is_assigned', False)]
+            print(f"   Found {len(assigned_photos)} assigned photos to unassign")
+            
+            for photo in assigned_photos:
+                filename = photo.get('filename')
+                if filename:
+                    print(f"   Unassigning photo: {filename}")
+                    success_unassign, _ = self.test_unassign_photo(filename)
+                    if success_unassign:
+                        cleanup_results['photos_unassigned'] += 1
+                        print(f"   ✅ Unassigned: {filename}")
+                    else:
+                        error_msg = f"Failed to unassign photo: {filename}"
+                        cleanup_results['errors'].append(error_msg)
+                        print(f"   ❌ {error_msg}")
+        else:
+            print("   ❌ Could not retrieve photos for cleanup")
+            cleanup_results['errors'].append("Could not retrieve photos")
+        
+        # Step 2: Get all articles and delete them
+        print(f"\n📄 Step 2: Getting all articles for deletion...")
+        success_articles, articles = self.test_get_articles()
+        
+        if success_articles and articles:
+            cleanup_results['articles_found'] = len(articles)
+            print(f"   Found {len(articles)} articles to delete")
+            
+            # Delete all articles
+            for article in articles:
+                article_id = article.get('id')
+                article_name = article.get('name', 'Unknown')
+                if article_id:
+                    print(f"   Deleting article: {article_name} (ID: {article_id})")
+                    success_delete, _ = self.test_delete_article(article_id)
+                    if success_delete:
+                        cleanup_results['articles_deleted'] += 1
+                        print(f"   ✅ Deleted: {article_name}")
+                    else:
+                        error_msg = f"Failed to delete article: {article_name} (ID: {article_id})"
+                        cleanup_results['errors'].append(error_msg)
+                        print(f"   ❌ {error_msg}")
+        else:
+            print("   ❌ Could not retrieve articles for cleanup")
+            cleanup_results['errors'].append("Could not retrieve articles")
+        
+        # Step 3: Verify cleanup
+        print(f"\n🔍 Step 3: Verifying cleanup completion...")
+        
+        # Verify no assigned photos remain
+        success_verify_photos, remaining_photos = self.test_get_admin_photos()
+        if success_verify_photos:
+            assigned_remaining = [p for p in remaining_photos if p.get('is_assigned', False)]
+            if len(assigned_remaining) == 0:
+                print(f"   ✅ Photo cleanup verified: No assigned photos remaining")
+            else:
+                error_msg = f"Photo cleanup incomplete: {len(assigned_remaining)} photos still assigned"
+                cleanup_results['errors'].append(error_msg)
+                print(f"   ❌ {error_msg}")
+        
+        # Verify no articles remain
+        success_verify_articles, remaining_articles = self.test_get_articles()
+        if success_verify_articles:
+            if len(remaining_articles) == 0:
+                print(f"   ✅ Article cleanup verified: No articles remaining")
+            else:
+                error_msg = f"Article cleanup incomplete: {len(remaining_articles)} articles still exist"
+                cleanup_results['errors'].append(error_msg)
+                print(f"   ❌ {error_msg}")
+                # Show remaining articles
+                for art in remaining_articles[:5]:  # Show first 5
+                    print(f"      - {art.get('name', 'Unknown')} (ID: {art.get('id', 'Unknown')})")
+        
+        # Print cleanup summary
+        print(f"\n📊 CLEANUP SUMMARY:")
+        print(f"   Photos found: {cleanup_results['photos_found']}")
+        print(f"   Photos unassigned: {cleanup_results['photos_unassigned']}")
+        print(f"   Articles found: {cleanup_results['articles_found']}")
+        print(f"   Articles deleted: {cleanup_results['articles_deleted']}")
+        print(f"   Errors encountered: {len(cleanup_results['errors'])}")
+        
+        if cleanup_results['errors']:
+            print(f"\n❌ ERRORS DURING CLEANUP:")
+            for error in cleanup_results['errors']:
+                print(f"   - {error}")
+        
+        # Determine overall success
+        cleanup_success = (
+            len(cleanup_results['errors']) == 0 and
+            cleanup_results['photos_unassigned'] == len([p for p in photos if p.get('is_assigned', False)]) and
+            cleanup_results['articles_deleted'] == cleanup_results['articles_found']
+        )
+        
+        if cleanup_success:
+            print(f"\n🎉 COMPLETE DATABASE CLEANUP SUCCESSFUL!")
+            print(f"   ✅ All photo assignments removed")
+            print(f"   ✅ All articles deleted")
+            print(f"   ✅ Database is now clean and ready for fresh start")
+        else:
+            print(f"\n⚠️ CLEANUP COMPLETED WITH ISSUES")
+            print(f"   Some operations may have failed - see errors above")
+        
+        return cleanup_success, cleanup_results
+
 def main():
     print("🚀 Starting Allo Débarras Express API Tests - New Advanced Version")
     print("=" * 70)
