@@ -1268,11 +1268,11 @@ function App() {
                   />
                 </div>
                 
-                <OptimizedInput
+                <Input
                   type="tel"
                   placeholder="Téléphone *"
                   value={quoteForm.client_phone}
-                  onChange={quoteFormUpdaters.client_phone}
+                  onChange={(e) => setQuoteForm({...quoteForm, client_phone: e.target.value})}
                 />
                 
                 <OptimizedInput
