@@ -1345,25 +1345,15 @@ function App() {
                   </div>
                   
                   <div className="border-t pt-4">
-                    <div className="flex justify-between items-center text-xl font-bold">
-                      <span>Total final :</span>
-                      <span className="text-orange-600">{calculateTotal()}€</span>
-                    </div>
-                    {customItems.length > 0 && (
-                      <p className="text-sm text-gray-600 mt-1">
-                        + supplément à confirmer
-                      </p>
-                    )}
+                    <Button
+                      onClick={() => setCurrentStep('quote-display')}
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3"
+                      disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
+                    >
+                      <Calendar className="mr-2 h-5 w-5" />
+                      Voir mon devis et prendre rendez-vous en ligne
+                    </Button>
                   </div>
-                  
-                  <Button
-                    onClick={submitQuote}
-                    className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3"
-                    disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
-                  >
-                    <Calendar className="mr-2 h-5 w-5" />
-                    Recevoir mon devis par mail
-                  </Button>
                 </div>
               </CardContent>
             </Card>
