@@ -2238,8 +2238,17 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
                   </Button>
                   <Button
                     onClick={() => {
-                      // Save the item (for now just close the modal)
-                      alert('Modifications sauvegardées ! (Cette fonctionnalité sera connectée à la base de données)');
+                      // Convert static item data to proper article format and save
+                      const articleData = {
+                        name: editingItem.name,
+                        category_id: 'multimedia_electrique', // Category for multimedia/electrique
+                        base_price: 0, // Default price
+                        materials: editingItem.materials || [],
+                        description: editingItem.note || '',
+                        requires_dismantling: false
+                      };
+                      
+                      createArticle(articleData);
                       setEditingItem(null);
                     }}
                     className="bg-yellow-600 hover:bg-yellow-700"
