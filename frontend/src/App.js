@@ -1209,6 +1209,269 @@ const QuoteDisplayPage = ({ quoteForm, selectedItems, customItems, calculateTota
   </div>
 );
 
+// Modern Admin Categories Page - moved outside App to prevent re-creation
+const ModernAdminCategoriesPage = ({ onGoBack }) => {
+  const [selectedMainCategory, setSelectedMainCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+
+  const renderMobilierStructure = () => {
+    if (!selectedMainCategory) {
+      // Show main categories
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Object.entries(MOBILIER_ADMIN_STRUCTURE.categories).map(([key, category]) => (
+            <Card
+              key={key}
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
+              onClick={() => setSelectedMainCategory(key)}
+            >
+              <CardContent className={`p-6 text-center bg-gradient-to-r ${MOBILIER_ADMIN_STRUCTURE.color} text-white`}>
+                <div className="text-4xl mb-3">{category.icon}</div>
+                <h3 className="text-lg font-bold mb-2">{category.name}</h3>
+                <div className="text-sm opacity-90">
+                  {category.subcategories ? 
+                    `${Object.keys(category.subcategories).length} sous-catégories` :
+                    `${category.items?.length || 0} articles`
+                  }
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      );
+    }
+
+    const category = MOBILIER_ADMIN_STRUCTURE.categories[selectedMainCategory];
+    
+    if (category.subcategories && !selectedSubCategory) {
+      // Show subcategories
+      return (
+        <div>
+          <div className="mb-6">
+            <Button
+              onClick={() => setSelectedMainCategory(null)}
+              variant="outline"
+              className="mb-4"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Retour aux catégories principales
+            </Button>
+            <h2 className="text-2xl font-bold text-gray-800">{category.name}</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {Object.entries(category.subcategories).map(([key, subcategory]) => (
+              <Card
+                key={key}
+                className="cursor-pointer hover:shadow-lg transition-all duration-200"
+                onClick={() => setSelectedSubCategory(key)}
+              >
+                <CardContent className="p-4">
+                  <h3 className="text-lg font-bold mb-2">{subcategory.name}</h3>
+                  <div className="text-sm text-gray-600">
+                    {subcategory.items?.length || 0} articles
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Show items
+    const items = selectedSubCategory ? 
+      category.subcategories[selectedSubCategory].items :
+      category.items;
+    
+    const categoryName = selectedSubCategory ? 
+      category.subcategories[selectedSubCategory].name :
+      category.name;
+
+    return (
+      <div>
+        <div className="mb-6">
+          <Button
+            onClick={() => {
+              if (selectedSubCategory) {
+                setSelectedSubCategory(null);
+              } else {
+                setSelectedMainCategory(null);
+              }
+            }}
+            variant="outline"
+            className="mb-4"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour
+          </Button>
+          <h2 className="text-2xl font-bold text-gray-800">{categoryName}</h2>
+        </div>
+        
+        <div className="space-y-4">
+          {items?.map((item, index) => (
+            <Card key={index} className="border-l-4 border-l-blue-500">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold mb-2">{item.name}</h3>
+                    
+                    {item.variants && item.variants.length > 0 && (
+                      <div className="mb-2">
+                        <span className="text-sm font-medium text-gray-600">Variantes: </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {item.variants.map((variant, vIndex) => (
+                            <span key={vIndex} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                              {variant}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {item.materials && item.materials.length > 0 && (
+                      <div className="mb-2">
+                        <span className="text-sm font-medium text-gray-600">Matériaux: </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {item.materials.map((material, mIndex) => (
+                            <span key={mIndex} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                              {material}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {item.options && item.options.length > 0 && (
+                      <div className="mb-2">
+                        <span className="text-sm font-medium text-gray-600">Options: </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {item.options.map((option, oIndex) => (
+                            <span key={oIndex} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
+                              {option}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {item.note && (
+                      <div className="text-sm text-gray-600 italic">
+                        Note: {item.note}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex space-x-2 ml-4">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setEditingItem({...item, index, categoryKey: selectedMainCategory, subCategoryKey: selectedSubCategory})}
+                    >
+                      Modifier
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-red-600 border-red-300 hover:bg-red-50"
+                    >
+                      Supprimer
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          
+          <Card className="border-2 border-dashed border-gray-300">
+            <CardContent className="p-6 text-center">
+              <Button variant="outline" className="text-blue-600 border-blue-300">
+                <Plus className="mr-2 h-4 w-4" />
+                Ajouter un nouvel article
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            onClick={onGoBack}
+            variant="outline"
+            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour admin
+          </Button>
+          
+          <div className="flex space-x-4">
+            <Button variant="outline">
+              Exporter structure
+            </Button>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Sauvegarder modifications
+            </Button>
+          </div>
+        </div>
+
+        {/* Title */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 text-white mb-4">
+            <div className="text-4xl mr-4">🛏️</div>
+            <div>
+              <div className="text-lg font-bold">ADMINISTRATION MOBILIER</div>
+              <div className="text-sm opacity-90">Gestion de l'arborescence complète</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Structure Navigation */}
+        {renderMobilierStructure()}
+
+        {/* Edit Modal (placeholder) */}
+        {editingItem && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+              <CardHeader>
+                <CardTitle>Modifier l'article</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">
+                  Édition de: <strong>{editingItem.name}</strong>
+                </p>
+                <div className="flex space-x-4">
+                  <Button
+                    onClick={() => setEditingItem(null)}
+                    variant="outline"
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      // Save logic here
+                      setEditingItem(null);
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    Sauvegarder
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // AdminLoginPage component - moved outside App to prevent re-creation on re-renders
 const AdminLoginPage = ({ adminAuth, onUsernameChange, onPasswordChange, onLogin, onGoHome }) => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
