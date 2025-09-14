@@ -1287,7 +1287,7 @@ function App() {
                 <Input
                   placeholder="Adresse complète *"
                   value={quoteForm.address}
-                  onChange={(e) => setQuoteForm({...quoteForm, address: e.target.value})}
+                  onChange={stableQuoteFormUpdaters.address}
                 />
 
                 {/* Access Info */}
