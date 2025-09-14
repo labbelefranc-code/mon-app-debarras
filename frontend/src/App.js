@@ -2416,21 +2416,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         return <AdminPhotosPage />;
       case 'admin-categories':
         return <AdminCategoriesPage />;
-      case 'whole-home':
-      case 'garage-cave':
-        return (
-          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <Card className="max-w-md">
-              <CardContent className="p-8 text-center">
-                <h2 className="text-2xl font-bold mb-4">Fonctionnalité en cours de développement</h2>
-                <p className="text-gray-600 mb-4">Cette option sera bientôt disponible.</p>
-                <Button onClick={() => setCurrentStep('home')} className="bg-teal-600 hover:bg-teal-700">
-                  Retour à l'accueil
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        );
       default:
         return <HomePage />;
     }
