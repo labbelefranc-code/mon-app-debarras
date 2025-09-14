@@ -1333,7 +1333,6 @@ function App() {
                     </div>
                   </div>
                 )}
-                </div>
 
                 {/* Zone Selection */}
                 <div>
