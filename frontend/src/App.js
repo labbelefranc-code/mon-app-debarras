@@ -1419,48 +1419,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     onPhotosValidated();
   }, [uploadedPhotos.length, onPhotosValidated]);
 
-  if (showForm) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-8 max-w-2xl">
-          <Button
-            onClick={() => setShowForm(false)}
-            variant="outline"
-            className="mb-8 bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour aux photos
-          </Button>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">Informations pour votre devis</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center mb-6">
-                <p className="text-gray-600">{uploadedPhotos.length} photo(s) sélectionnée(s)</p>
-              </div>
-
-              <div className="space-y-4">
-                <Input placeholder="Nom complet" />
-                <Input type="email" placeholder="Email" />
-                <Input type="tel" placeholder="Téléphone" />
-                <Input placeholder="Adresse complète" />
-                <Textarea placeholder="Description des objets et informations complémentaires" rows={4} />
-              </div>
-
-              <Button 
-                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3"
-                onClick={() => alert('Devis envoyé !')}
-              >
-                Recevoir mon devis par mail
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
+  // No more form display in PhotoQuotePage
 
   return (
     <div className="min-h-screen bg-gray-50">
