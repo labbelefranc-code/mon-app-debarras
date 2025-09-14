@@ -1255,10 +1255,10 @@ function App() {
               <CardContent className="space-y-6">
                 {/* Contact Info */}
                 <div className="grid grid-cols-2 gap-4">
-                  <OptimizedInput
+                  <Input
                     placeholder="Nom complet *"
                     value={quoteForm.client_name}
-                    onChange={quoteFormUpdaters.client_name}
+                    onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
                   />
                   <OptimizedInput
                     type="email"
