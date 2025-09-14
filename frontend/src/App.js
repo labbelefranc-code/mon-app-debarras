@@ -4789,10 +4789,18 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'admin-divers':
         return <ModernAdminDiversPage 
           onGoBack={() => setCurrentStep('admin-photos')}
+          createArticle={createArticle}
+          updateArticle={updateArticle}
+          deleteArticle={deleteArticle}
+          adminAuth={adminAuth}
         />;
       case 'admin-jardin':
         return <ModernAdminJardinPage 
           onGoBack={() => setCurrentStep('admin-photos')}
+          createArticle={createArticle}
+          updateArticle={updateArticle}
+          deleteArticle={deleteArticle}
+          adminAuth={adminAuth}
         />;
       default:
         return <HomePage />;
