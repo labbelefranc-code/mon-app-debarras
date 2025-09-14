@@ -496,6 +496,86 @@ const MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE = {
   }
 };
 
+// Structure hiérarchique complète pour DIVERS (Admin)
+const DIVERS_ADMIN_STRUCTURE = {
+  id: 'divers',
+  name: 'DIVERS',
+  icon: '🎨',
+  color: 'from-purple-400 to-purple-500',
+  categories: {
+    'decoration': {
+      id: 'decoration',
+      name: 'DÉCORATION',
+      icon: '🖼️',
+      items: [
+        { name: 'Miroir', variants: ['petit', 'moyen', 'grand', 'sur pied'] },
+        { name: 'Horloge comtoise', variants: [] },
+        { name: 'Lampadaire/ luminaire / lustre', variants: ['lampadaire', 'luminaire', 'lustre', 'applique'] },
+        { name: 'Plante en pot', variants: ['petit pot', 'moyen pot', 'grand pot', 'jardinière'] },
+        { name: 'Tableau/cadre', variants: ['petit', 'moyen', 'grand', 'encadré', 'toile'] },
+        { name: 'Vase / Jarre', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Paravent', variants: ['2 panneaux', '3 panneaux', '4 panneaux'] },
+        { name: 'Tapis', variants: ['petit', 'moyen', 'grand', 'tapis de couloir'] },
+        { name: 'Porte manteau /portant', variants: ['sur pied', 'mural', 'portant à vêtements'] },
+        { name: 'Rideaux', variants: ['voilages', 'occultants', 'stores'] },
+        { name: 'Statue/sculpture', variants: ['petite', 'moyenne', 'grande'] }
+      ]
+    },
+    'accessoires': {
+      id: 'accessoires',
+      name: 'ACCESSOIRES',
+      icon: '🎒',
+      items: [
+        { name: 'Porte-manteaux', variants: ['sur pied', 'mural'] },
+        { name: 'Valises / malles', variants: ['petite valise', 'grande valise', 'malle', 'set de valises'] },
+        { name: 'Coffre', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Glacière', variants: ['portable', 'électrique'] },
+        { name: 'Bébé', variants: ['poussette', 'siège auto', 'lit bébé portable', 'chaise haute'] },
+        { name: 'Machines diverses', variants: ['à coudre', 'à écrire', 'à café professionnelle'] },
+        { name: 'Machines de sport et accessoires', variants: ['tapis de course', 'banc', 'vélo elliptique', 'rameur', 'grosses machines', 'tatami', 'poids et haltères'] }
+      ]
+    },
+    'objets_divers_encombrants': {
+      id: 'objets_divers_encombrants',
+      name: 'OBJETS DIVERS ENCOMBRANTS',
+      icon: '📦',
+      items: [
+        { name: 'Coffres-forts', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Pianos', variants: ['droit', 'à queue'] },
+        { name: 'Instruments de musique volumineux', variants: ['batterie', 'guitare avec ampli', 'contrebasse', 'harpe'] },
+        { name: 'Aquariums', variants: ['petit', 'moyen', 'grand', 'avec meuble'] },
+        { name: 'Cages pour animaux', variants: ['petite', 'moyenne', 'grande', 'volière'] },
+        { name: 'Objets de sport', variants: ['tapis de course', 'vélo d\'appartement', 'rameur', 'banc de musculation'] },
+        { name: 'Jeux de loisirs volumineux', variants: ['baby-foot', 'table de ping-pong', 'billard', 'air hockey'] }
+      ]
+    },
+    'instruments_musique': {
+      id: 'instruments_musique',
+      name: 'INSTRUMENTS DE MUSIQUE',
+      icon: '🎵',
+      items: [
+        { name: 'Guitare/violon/harpe', variants: ['guitare acoustique', 'guitare électrique', 'violon', 'harpe'] },
+        { name: 'Tambour/Batterie', variants: ['djembé', 'batterie complète', 'batterie électronique'], note: 'Préciser le nombre de caissons pour batterie' },
+        { name: 'Pianos', variants: ['portatif', 'petit électrique', 'piano droit', 'piano à queue'] },
+        { name: 'Cajon', variants: [] }
+      ]
+    },
+    'vaisselle_objets_divers': {
+      id: 'vaisselle_objets_divers',
+      name: 'VAISSELLE ET OBJETS DIVERS',
+      icon: '📋',
+      items: [
+        { name: 'Carton/sac d\'objets divers', variants: ['petit carton', 'moyen carton', 'grand carton', 'sac'] },
+        { name: 'Carton de vaisselle', variants: ['service complet', 'assiettes seulement', 'verres seulement'] },
+        { name: 'Cartons/sac outils divers et bricolage', variants: ['boîte à outils', 'carton d\'outils', 'outillage professionnel'] },
+        { name: 'Carton/sac de produits ménagers', variants: ['produits d\'entretien', 'lessive', 'petit électroménager'] },
+        { name: 'Carton/sac de vêtements', variants: ['vêtements homme', 'vêtements femme', 'vêtements enfant', 'chaussures'] },
+        { name: 'Couette/couverture', variants: ['couette simple', 'couette double', 'couverture', 'plaid'] }
+      ]
+    }
+  }
+};
+
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
