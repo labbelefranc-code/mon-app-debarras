@@ -4803,6 +4803,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
           adminAuth={adminAuth}
+          setCurrentStep={setCurrentStep}
+          setIsAdminMode={setIsAdminMode}
         />;
       case 'admin-divers':
         return <ModernAdminDiversPage 
@@ -4811,6 +4813,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
           adminAuth={adminAuth}
+          setCurrentStep={setCurrentStep}
+          setIsAdminMode={setIsAdminMode}
         />;
       case 'admin-jardin':
         return <ModernAdminJardinPage 
@@ -4819,6 +4823,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
           adminAuth={adminAuth}
+          setCurrentStep={setCurrentStep}
+          setIsAdminMode={setIsAdminMode}
         />;
       default:
         return <HomePage />;
