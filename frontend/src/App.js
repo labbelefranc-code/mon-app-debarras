@@ -2762,7 +2762,21 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'articles':
         return <ArticlesPage />;
       case 'quote-form':
-        return <QuoteFormPage />;
+        return <QuoteFormPage 
+          quoteForm={quoteForm}
+          onUpdateQuoteForm={(field, value) => setQuoteForm(prev => ({...prev, [field]: value}))}
+          selectedItems={selectedItems}
+          customItems={customItems}
+          zones={zones}
+          availableSlots={availableSlots}
+          isPhotoQuote={isPhotoQuote}
+          onGoBack={() => {
+            setIsPhotoQuote(false);
+            setCurrentStep('articles');
+          }}
+          onViewQuote={() => setCurrentStep('quote-display')}
+          onLoadAvailableSlots={loadAvailableSlots}
+        />;
       case 'quote-display':
         return <QuoteDisplayPage 
           quoteForm={quoteForm}
