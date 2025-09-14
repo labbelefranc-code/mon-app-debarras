@@ -1381,7 +1381,7 @@ function App() {
                 </div>
 
                 {/* Time Slots */}
-                {availableSlots.length > 0 && (
+                {availableSlots.length > 0 && !isPhotoQuote && (
                   <div>
                     <label className="block text-sm font-medium mb-2">Créneau horaire :</label>
                     <div className="grid grid-cols-4 gap-2">
