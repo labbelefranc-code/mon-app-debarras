@@ -452,6 +452,203 @@ const OptimizedTextarea = React.memo(React.forwardRef(({ value, onChange, ...pro
   );
 }));
 
+// Electromenager Type Selection Page - moved outside App to prevent re-creation
+const ElectromenagerTypePage = ({ onGoBack, onSelectType }) => (
+  <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <Button
+          onClick={onGoBack}
+          variant="outline"
+          className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour aux catégories ELEC
+        </Button>
+      </div>
+
+      {/* Title */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white mb-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+          <div className="text-4xl mr-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>⚡</div>
+          <div>
+            <div className="text-lg font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>ÉLECTROMÉNAGER</div>
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Choisissez le type d'électroménager
+        </h2>
+      </div>
+
+      {/* Electromenager Types Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        {Object.entries(ELECTROMENAGER_STRUCTURE).map(([key, type]) => (
+          <Card
+            key={key}
+            className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-300"
+            onClick={() => onSelectType(key, type)}
+          >
+            <CardContent className="p-6 text-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-white h-40 flex flex-col justify-center" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+              <div className="text-4xl mb-3" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{type.icon}</div>
+              <h3 className="text-lg font-bold mb-2 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+                {type.name}
+              </h3>
+              <div className="text-sm opacity-90 font-medium" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                Voir les objets →
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Electromenager Items Page - moved outside App to prevent re-creation
+const ElectromenagerItemsPage = ({ selectedType, onGoBack, onSelectItem }) => (
+  <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <Button
+          onClick={onGoBack}
+          variant="outline"
+          className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour aux types
+        </Button>
+      </div>
+
+      {/* Title */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white mb-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+          <div className="text-4xl mr-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedType.icon}</div>
+          <div>
+            <div className="text-lg font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>ÉLECTROMÉNAGER {selectedType.name.toUpperCase()}</div>
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Choisissez votre appareil
+        </h2>
+      </div>
+
+      {/* Items Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {Object.entries(selectedType.items).map(([key, item]) => (
+          <Card
+            key={key}
+            className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2 hover:border-orange-300"
+            onClick={() => onSelectItem(key, item)}
+          >
+            <CardContent className="p-6 text-center bg-gradient-to-r from-yellow-400 to-yellow-500 text-white h-32 flex flex-col justify-center" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+              <h3 className="text-sm font-bold mb-2 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+                {item.name}
+              </h3>
+              {item.variants.length > 0 && (
+                <div className="text-xs opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                  {item.variants.length} variante{item.variants.length > 1 ? 's' : ''}
+                </div>
+              )}
+              <div className="text-xs opacity-90 font-medium mt-1" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                Voir les photos →
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Electromenager Photos Page - moved outside App to prevent re-creation
+const ElectromenagerPhotosPage = ({ selectedType, selectedItem, onGoBack, onAddToSelection }) => (
+  <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <Button
+          onClick={onGoBack}
+          variant="outline"
+          className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour aux objets
+        </Button>
+      </div>
+
+      {/* Title */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white mb-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+          <div className="text-4xl mr-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedType.icon}</div>
+          <div>
+            <div className="text-lg font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+              {selectedItem.name}
+            </div>
+            <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+              {selectedType.name}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Photos Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
+        {selectedItem.photos.map((photo, index) => (
+          <Card key={index} className="overflow-hidden">
+            <div className="relative">
+              <img 
+                src={photo} 
+                alt={`${selectedItem.name} ${index + 1}`}
+                className="w-full h-48 object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <h3 className="text-white font-bold text-sm">
+                  {selectedItem.name}
+                  {selectedItem.variants.length > 0 && index < selectedItem.variants.length && (
+                    <span className="block text-xs opacity-80">
+                      {selectedItem.variants[index]}
+                    </span>
+                  )}
+                </h3>
+              </div>
+            </div>
+            <CardContent className="p-4">
+              <Button
+                onClick={() => onAddToSelection(selectedItem, index)}
+                className="w-full bg-orange-500 hover:bg-orange-600"
+              >
+                Ajouter à ma sélection
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Variants List if any */}
+      {selectedItem.variants.length > 0 && (
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>Variantes disponibles</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {selectedItem.variants.map((variant, index) => (
+                  <div key={index} className="p-2 bg-gray-100 rounded text-sm text-center">
+                    {variant}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
 // Quote Form Page component - moved outside App to prevent re-creation on re-renders
 const QuoteFormPage = ({ 
   quoteForm, 
