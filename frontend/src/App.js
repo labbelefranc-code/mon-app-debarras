@@ -1260,11 +1260,11 @@ function App() {
                     value={quoteForm.client_name}
                     onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
                   />
-                  <OptimizedInput
+                  <Input
                     type="email"
                     placeholder="Email *"
                     value={quoteForm.client_email}
-                    onChange={quoteFormUpdaters.client_email}
+                    onChange={(e) => setQuoteForm({...quoteForm, client_email: e.target.value})}
                   />
                 </div>
                 
