@@ -17,6 +17,200 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/u
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Structure hiérarchique complète pour MOBILIER (Admin)
+const MOBILIER_ADMIN_STRUCTURE = {
+  id: 'mobilier',
+  name: 'MOBILIER',
+  icon: '🛏️',
+  color: 'from-blue-400 to-blue-500',
+  categories: {
+    'literie': {
+      id: 'literie',
+      name: 'LITERIE',
+      icon: '🛏️',
+      subcategories: {
+        'sommier': {
+          name: 'SOMMIER',
+          items: [
+            { name: 'Sommier simple', materials: ['en ferraille', 'en bois'] },
+            { name: 'Sommier double', materials: ['en ferraille', 'en bois'] },
+            { name: 'Sommier king size', materials: ['en ferraille', 'en bois'] }
+          ]
+        },
+        'matelas': {
+          name: 'MATELAS',
+          items: [
+            { name: 'Matelas simple', variants: [] },
+            { name: 'Matelas double', variants: ['140', '160'] },
+            { name: 'Matelas king size', variants: [] }
+          ]
+        },
+        'lit_complet': {
+          name: 'LIT COMPLET',
+          items: [
+            { name: 'Lit simple', variants: [] },
+            { name: 'Lit double', variants: ['140', '160'] },
+            { name: 'Lit king size', variants: [] }
+          ]
+        },
+        'autres_lits': {
+          name: 'AUTRES LITS',
+          items: [
+            { name: 'Lit électrique', variants: ['simple', 'double'] },
+            { name: 'Lit médicalisé', variants: ['simple', 'double'] },
+            { name: 'Lit bébé', variants: [] },
+            { name: 'Lits superposés', variants: [] },
+            { name: 'Lit escamotable', variants: ['1 place', '2 places'] },
+            { name: 'Lit pliant', variants: ['1 place', '2 places'] },
+            { name: 'Lit bureau enfant', variants: [] },
+            { name: 'Mezzanine', variants: ['lit 1 place', 'lit 2 places'], options: ['+ bureau'] },
+            { name: 'Lit gigogne', variants: ['simple', 'double'] }
+          ]
+        },
+        'divers': {
+          name: 'DIVERS',
+          items: [
+            { name: 'Tête de lit', variants: [] },
+            { name: 'Meuble contour de lit (pont de lit)', variants: [] },
+            { name: 'Table de nuit', variants: [] },
+            { name: 'Couette/couverture/oreiller/traversin', variants: [] }
+          ]
+        }
+      }
+    },
+    'tables': {
+      id: 'tables',
+      name: 'TABLES',
+      icon: '🪑',
+      items: [
+        { name: 'Basse', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
+        { name: 'Pour manger', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
+        { name: 'De pique-nique', variants: ['grand format', 'petit format'], materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte'] },
+        { name: 'Longue table +/-2M style pétrin/table de ferme', materials: ['Bois', 'bois massif', 'verre', 'pierre', 'fonte', 'plastique'] },
+        { name: 'Pliante', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'osier'] },
+        { name: 'Ronde/ovale', variants: ['bistrot', 'de salle à manger', 'avec rallonge'], materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
+        { name: 'Carrée', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
+        { name: 'À repasser', materials: [] },
+        { name: 'Bureau', variants: ['petit', 'moyen', 'grand'], materials: ['Bois', 'Bois massif', 'fer', 'verre', 'marbre'] },
+        { name: 'Comptoir/Bar', materials: [] }
+      ]
+    },
+    'canape_fauteuils': {
+      id: 'canape_fauteuils',
+      name: 'CANAPÉ/FAUTEUILS',
+      icon: '🛋️',
+      subcategories: {
+        'fauteuils': {
+          name: 'FAUTEUILS',
+          items: [
+            { name: 'Medical (ou électrique)', variants: [] },
+            { name: 'Petit fauteuils / chauffeuse', materials: ['osier'], note: '...' },
+            { name: 'Fauteuil convertible', variants: [] },
+            { name: 'Crapauds', variants: [] },
+            { name: 'Rocking-chair', variants: [] },
+            { name: 'Gros fauteuils de salon', variants: [] }
+          ]
+        },
+        'canapes': {
+          name: 'CANAPÉS',
+          items: [
+            { name: 'Canapé standard', variants: ['2 places', '3 places'] },
+            { name: 'Convertible / clic clac / BZ', variants: [] },
+            { name: 'Canapé d\'angle', variants: [] },
+            { name: 'Méridienne', variants: [] },
+            { name: 'Canapé modulaire', variants: [] },
+            { name: 'Canapé style Chesterfield', variants: [] },
+            { name: 'Canapé compact /banquette', variants: [] },
+            { name: 'Rapido', variants: [] },
+            { name: 'Canapé électrique', variants: [] },
+            { name: 'Canapé électrique avec retour', variants: [] },
+            { name: 'Canapé structure bois ancien démontable', variants: [] }
+          ]
+        }
+      }
+    },
+    'assises': {
+      id: 'assises',
+      name: 'ASSISES',
+      icon: '🪑',
+      subcategories: {
+        'chaises': {
+          name: 'CHAISES',
+          items: [
+            { name: 'chaises pliantes', materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
+            { name: 'chaises empilables de jardin', materials: ['plastique', 'plastique lourd'] },
+            { name: 'chaises', materials: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
+            { name: 'Chaise de bureau /reunion', variants: [] },
+            { name: 'Rocking-chair', variants: [] },
+            { name: 'Chaises par style', variants: ['style louis XVI', 'bistrot', 'scandinave'] }
+          ]
+        },
+        'fauteuils_assises': {
+          name: 'FAUTEUILS',
+          items: [
+            { name: 'fauteuils salle à manger en bois', materials: ['Bois', 'bois massif'] },
+            { name: 'fauteuils de jardin/transat', variants: ['empilable', 'pliant'], materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] },
+            { name: 'fauteuils de bureau', variants: ['petit', 'gamer'] },
+            { name: 'Fauteuils de salon par style', variants: ['club', 'bridge', 'crapaud', 'bergère', 'cabriolet', 'gros fauteuil'] }
+          ]
+        },
+        'banc_divers': {
+          name: 'BANC/BANQUETTE/POUF/TABOURET/REPOSE PIED/TRANSAT',
+          items: [
+            { name: 'banc', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte', 'osier'] },
+            { name: 'Banc coffre', variants: [] },
+            { name: 'pouf', variants: ['cubique', 'cylindrique', 'gros pouf', 'chauffeuse'] },
+            { name: 'tabourets', variants: ['bar', 'pliant', 'petit tabouret'] },
+            { name: 'Banquette', variants: ['angle cuisine', 'méridien', 'confident'] },
+            { name: 'Transat', variants: ['empilable', 'pliable'], materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] }
+          ]
+        }
+      }
+    },
+    'meubles_rangement': {
+      id: 'meubles_rangement',
+      name: 'MEUBLES DE RANGEMENTS',
+      icon: '🗄️',
+      items: [
+        { name: 'COMMODE BASSE/BUFFET', variants: ['petit', 'grand', 'XL', 'HAUTE(semainier) +2M'], options: ['+ dessus marbre'] },
+        { name: 'BLOC CASIER OU COMMODE MODULABLE', variants: [] },
+        { name: 'SECRÉTAIRE', variants: [] },
+        { name: 'MEUBLE À CHAUSSURES', variants: [] },
+        { name: 'ELEMENTS DE CUISINE', variants: ['placards', 'îlot de cuisine'], options: ['à démonter', 'plaques de cuisson', 'évier', 'plan de travail', 'hotte', 'démontage pour chacun', 'carton de vaisselle'] },
+        { name: 'ARMOIRE', variants: [] },
+        { name: 'RANGEMENTS XXL', note: 'Jusqu\'au plafond ou presque' },
+        { name: 'VAISSELIER', variants: ['PARTIE HAUTE', 'basse', 'entier'] },
+        { name: 'Enfilade', variants: [] },
+        { name: 'VITRINE', variants: [] },
+        { name: 'Meuble de couloir', variants: [] },
+        { name: 'ETAGERE', options: ['taille', 'matière'] },
+        { name: 'BIBLIOTHEQUE', options: ['taille', 'matière'] },
+        { name: 'MEUBLE TV', variants: ['petit', 'moyen', 'grand'], options: ['+TV (Petite, moyenne, grande ou cathodique)'] }
+      ]
+    },
+    'salle_de_bain': {
+      id: 'salle_de_bain',
+      name: 'SALLE DE BAIN',
+      icon: '🛁',
+      items: [
+        { name: 'BAIGNOIRE', options: ['déjà démontée (cochée d\'office)', 'matériau'] },
+        { name: 'LAVABO', options: ['déjà démonté (cochée d\'office)'] },
+        { name: 'Meuble lavabo', variants: [] },
+        { name: 'Colonne rangement salle de bain', variants: [] },
+        { name: 'Miroir rangement salle de bain', variants: [] }
+      ]
+    },
+    'autres_meubles': {
+      id: 'autres_meubles',
+      name: 'Autres meubles',
+      icon: '🎨',
+      items: [
+        { name: 'Chevalet', variants: [] }
+      ]
+    }
+  }
+};
+
 // Structure hiérarchique pour l'électroménager
 const ELECTROMENAGER_STRUCTURE = {
   'froid': {
