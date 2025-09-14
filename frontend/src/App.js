@@ -2436,7 +2436,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'quote-form':
         return <QuoteFormPage />;
       case 'photo-quote':
-        return <PhotoQuotePage />;
+        return <PhotoQuotePage 
+          onGoHome={() => setCurrentStep('home')}
+          onPhotosValidated={() => console.log('Photos validated')}
+        />;
       case 'abcd-categories':
         return <ABCDCategoriesPage />;
       case 'abcd-subcategories':
