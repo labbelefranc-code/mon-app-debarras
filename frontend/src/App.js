@@ -1479,7 +1479,7 @@ const QuoteDisplayPage = ({ quoteForm, selectedItems, customItems, calculateTota
 );
 
 // Modern Admin Categories Page - moved outside App to prevent re-creation
-const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth }) => {
+const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode }) => {
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
