@@ -2386,7 +2386,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'home':
         return <HomePage />;
       case 'categories':
-        return <CategoriesPage />;
+        return <ABCDCategoriesPage />;
       case 'subcategories':
         return <SubcategoriesPage />;
       case 'articles':
