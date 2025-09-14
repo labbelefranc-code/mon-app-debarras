@@ -43,7 +43,7 @@ const ABCD_CATEGORIES = {
     id: 'B',
     name: 'JARDIN',
     color: 'from-green-400 to-green-500',
-    icon: '🌿',
+    icon: '🔥',
     items: [
       'Mobilier de jardin et contenants',
       'Jardin et extérieur',
