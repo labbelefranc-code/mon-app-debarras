@@ -670,6 +670,56 @@ class AlloDebarrasAPITester:
         
         return cleanup_success, cleanup_results
 
+def cleanup_database():
+    """Main function for complete database cleanup operation"""
+    print("🧹 ALLO DÉBARRAS EXPRESS - COMPLETE DATABASE CLEANUP")
+    print("=" * 70)
+    print("🎯 TASK: Delete all photos and articles from the database")
+    print("🔐 Using admin credentials: labbelefranc@gmail.com / admin06")
+    print("⚠️  This will remove ALL existing data for a fresh start")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    
+    # Test admin authentication first
+    print(f"\n🔐 Step 0: Verifying admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ CRITICAL ERROR: Admin authentication failed!")
+        print("   Cannot proceed with cleanup without admin access")
+        return 1
+    
+    print("✅ Admin authentication successful - proceeding with cleanup")
+    
+    # Perform complete database cleanup
+    success_cleanup, cleanup_results = tester.test_complete_database_cleanup()
+    
+    # Print final results
+    print("\n" + "=" * 70)
+    print(f"📊 CLEANUP OPERATION RESULTS:")
+    print(f"   Authentication: {'✅ Success' if success_auth else '❌ Failed'}")
+    print(f"   Database Cleanup: {'✅ Success' if success_cleanup else '❌ Failed'}")
+    
+    if success_cleanup:
+        print(f"\n🎉 DATABASE CLEANUP COMPLETED SUCCESSFULLY!")
+        print(f"   ✅ All photo assignments removed ({cleanup_results['photos_unassigned']} photos)")
+        print(f"   ✅ All articles deleted ({cleanup_results['articles_deleted']} articles)")
+        print(f"   ✅ Database is now completely clean")
+        print(f"   🚀 Ready for fresh start without any existing data")
+        return 0
+    else:
+        print(f"\n⚠️ CLEANUP COMPLETED WITH ISSUES:")
+        print(f"   📸 Photos processed: {cleanup_results['photos_unassigned']}/{cleanup_results['photos_found']}")
+        print(f"   📄 Articles deleted: {cleanup_results['articles_deleted']}/{cleanup_results['articles_found']}")
+        print(f"   ❌ Errors: {len(cleanup_results['errors'])}")
+        
+        if cleanup_results['errors']:
+            print(f"\n🚨 ERRORS ENCOUNTERED:")
+            for error in cleanup_results['errors']:
+                print(f"   - {error}")
+        
+        return 1
+
 def main():
     print("🚀 Starting Allo Débarras Express API Tests - New Advanced Version")
     print("=" * 70)
