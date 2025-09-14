@@ -1267,7 +1267,7 @@ function App() {
                   <Input
                     placeholder="Nom complet *"
                     value={quoteForm.client_name}
-                    onChange={(e) => setQuoteForm({...quoteForm, client_name: e.target.value})}
+                    onChange={stableQuoteFormUpdaters.client_name}
                   />
                   <Input
                     type="email"
