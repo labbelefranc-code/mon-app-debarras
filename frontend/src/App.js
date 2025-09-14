@@ -28,14 +28,14 @@ const ABCD_CATEGORIES = {
       'Literie / Canapés / Fauteuils',
       'Tables et assises',
       'Rangements',
-      'SALLE DE BAIN / CUISINE',
+      'Salle de bain / Cuisine',
       'Meubles divers'
     ],
     subcategories: [
       'Literie / Canapés / Fauteuils',
       'Tables et assises',
       'Rangements',
-      'SALLE DE BAIN / CUISINE',
+      'Salle de bain / Cuisine',
       'Meubles divers'
     ]
   },
