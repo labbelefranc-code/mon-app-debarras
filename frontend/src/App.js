@@ -361,6 +361,269 @@ const OptimizedTextarea = React.memo(React.forwardRef(({ value, onChange, ...pro
   );
 }));
 
+// Quote Form Page component - moved outside App to prevent re-creation on re-renders
+const QuoteFormPage = ({ 
+  quoteForm, 
+  onUpdateQuoteForm,
+  selectedItems, 
+  customItems, 
+  zones, 
+  availableSlots, 
+  isPhotoQuote,
+  onGoBack, 
+  onViewQuote,
+  onLoadAvailableSlots
+}) => (
+  <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left side - Form */}
+        <div className="lg:col-span-2">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <Button
+              onClick={onGoBack}
+              variant="outline"
+              className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Retour
+            </Button>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations pour votre devis</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Contact Info */}
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  placeholder="Nom complet *"
+                  value={quoteForm.client_name}
+                  onChange={(e) => onUpdateQuoteForm('client_name', e.target.value)}
+                />
+                <Input
+                  type="email"
+                  placeholder="Email *"
+                  value={quoteForm.client_email}
+                  onChange={(e) => onUpdateQuoteForm('client_email', e.target.value)}
+                />
+              </div>
+              
+              <Input
+                type="tel"
+                placeholder="Téléphone *"
+                value={quoteForm.client_phone}
+                onChange={(e) => onUpdateQuoteForm('client_phone', e.target.value)}
+              />
+              
+              <Input
+                placeholder="Adresse complète *"
+                value={quoteForm.address}
+                onChange={(e) => onUpdateQuoteForm('address', e.target.value)}
+              />
+
+              {/* Parking */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Stationnement :</label>
+                <div className="grid grid-cols-3 gap-4">
+                  {['facile', 'délicat', 'difficile'].map((option) => (
+                    <Button
+                      key={option}
+                      onClick={() => onUpdateQuoteForm('parking', option)}
+                      variant={quoteForm.parking === option ? "default" : "outline"}
+                      className={quoteForm.parking === option ? "bg-orange-500 hover:bg-orange-600" : ""}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Floor and Elevator */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Étage :</label>
+                  <Input
+                    type="number"
+                    min="0"
+                    max="20"
+                    step="0.5"
+                    value={quoteForm.floor}
+                    onChange={(e) => onUpdateQuoteForm('floor', parseFloat(e.target.value) || 0)}
+                    placeholder="Ex: 1.5 pour un demi-étage"
+                  />
+                </div>
+
+                <div className="flex items-end">
+                  <Button
+                    onClick={() => onUpdateQuoteForm('elevator', !quoteForm.elevator)}
+                    variant={quoteForm.elevator ? "default" : "outline"}
+                    className={quoteForm.elevator ? "bg-orange-500 hover:bg-orange-600 w-full" : "w-full"}
+                  >
+                    {quoteForm.elevator ? <Check className="mr-2 h-4 w-4" /> : null}
+                    Ascenseur
+                  </Button>
+                </div>
+              </div>
+
+              {/* Elevator Size Selection */}
+              {quoteForm.elevator && (
+                <div>
+                  <label className="block text-sm font-medium mb-2">Taille de l'ascenseur :</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['petit', 'moyen', 'grand'].map((size) => (
+                      <Button
+                        key={size}
+                        onClick={() => onUpdateQuoteForm('elevator_size', size)}
+                        variant={quoteForm.elevator_size === size ? "default" : "outline"}
+                        className={quoteForm.elevator_size === size ? "bg-orange-500 hover:bg-orange-600" : ""}
+                      >
+                        {size}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Zone Selection */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Zone d'intervention :</label>
+                <Select 
+                  value={quoteForm.zone} 
+                  onValueChange={(value) => onUpdateQuoteForm('zone', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner votre zone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(zones).map(([key, zone]) => (
+                      <SelectItem key={key} value={key}>
+                        {zone.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Textarea
+                placeholder="Détails importants (accès, contraintes particulières, marches, chemins divers...)"
+                value={quoteForm.additional_info}
+                onChange={(e) => onUpdateQuoteForm('additional_info', e.target.value)}
+                rows={3}
+              />
+
+              {/* Intervention Type */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Type d'intervention :</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    onClick={() => onUpdateQuoteForm('urgent', false)}
+                    variant={!quoteForm.urgent ? "default" : "outline"}
+                    className={!quoteForm.urgent ? "bg-teal-500 hover:bg-teal-600" : ""}
+                  >
+                    Intervention standard
+                  </Button>
+                  <Button
+                    onClick={() => onUpdateQuoteForm('urgent', true)}
+                    variant={quoteForm.urgent ? "destructive" : "outline"}
+                    className="w-full"
+                  >
+                    🚨 Intervention d'urgence
+                  </Button>
+                </div>
+              </div>
+
+              {/* Date Selection */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Date d'intervention souhaitée :</label>
+                <Input
+                  type="date"
+                  value={quoteForm.preferred_date}
+                  onChange={(e) => {
+                    onUpdateQuoteForm('preferred_date', e.target.value);
+                    if (e.target.value && quoteForm.zone) {
+                      onLoadAvailableSlots(e.target.value, quoteForm.zone);
+                    }
+                  }}
+                />
+                {!isPhotoQuote && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Disponibilités : Mardi, Mercredi, Jeudi de 7h à 20h
+                  </p>
+                )}
+              </div>
+
+              {/* Time Slots */}
+              {availableSlots.length > 0 && !isPhotoQuote && (
+                <div>
+                  <label className="block text-sm font-medium mb-2">Créneau horaire :</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {availableSlots.map((slot) => (
+                      <Button
+                        key={slot.time_slot}
+                        onClick={() => onUpdateQuoteForm('preferred_time_slot', slot.time_slot)}
+                        variant={quoteForm.preferred_time_slot === slot.time_slot ? "default" : "outline"}
+                        disabled={!slot.available}
+                        className={`text-xs ${
+                          quoteForm.preferred_time_slot === slot.time_slot 
+                            ? "bg-orange-500 hover:bg-orange-600" 
+                            : ""
+                        } ${!slot.available ? "opacity-50" : ""}`}
+                      >
+                        {slot.time_slot}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right side - Summary */}
+        <div className="lg:col-span-1">
+          <Card className="sticky top-8">
+            <CardHeader>
+              <CardTitle>Récapitulatif</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4">
+                <h4 className="font-medium mb-2">Articles sélectionnés :</h4>
+                <div className="space-y-2 max-h-60 overflow-y-auto">
+                  {selectedItems.map((item, index) => (
+                    <div key={`summary-${item.article_id}-${index}`} className="text-sm p-2 bg-gray-100 rounded">
+                      • {item.article_name} {item.quantity > 1 && `(x${item.quantity})`}
+                    </div>
+                  ))}
+                  
+                  {customItems.map((item, index) => (
+                    <div key={`summary-custom-${item.description}-${index}`} className="text-sm p-2 bg-orange-100 rounded">
+                      • {item.description} <span className="text-orange-600">(Supplément à confirmer)</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="border-t pt-4">
+                <Button
+                  onClick={onViewQuote}
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3"
+                  disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  Voir mon devis et prendre rendez-vous en ligne
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 // Quote Display Page component
 const QuoteDisplayPage = ({ quoteForm, selectedItems, customItems, calculateTotal, onGoBack, onAcceptQuote }) => (
   <div className="min-h-screen bg-gray-50">
