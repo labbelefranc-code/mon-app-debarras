@@ -1230,7 +1230,10 @@ function App() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
-            onClick={() => setCurrentStep('articles')}
+            onClick={() => {
+              setIsPhotoQuote(false);
+              setCurrentStep('articles');
+            }}
             variant="outline"
             className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
           >
