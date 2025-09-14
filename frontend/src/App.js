@@ -433,6 +433,7 @@ function App() {
     parking: '',
     floor: 0,
     elevator: false,
+    elevator_size: '',
     additional_info: '',
     zone: '',
     preferred_date: '',
