@@ -1273,7 +1273,7 @@ function App() {
                     type="email"
                     placeholder="Email *"
                     value={quoteForm.client_email}
-                    onChange={(e) => setQuoteForm({...quoteForm, client_email: e.target.value})}
+                    onChange={stableQuoteFormUpdaters.client_email}
                   />
                 </div>
                 
