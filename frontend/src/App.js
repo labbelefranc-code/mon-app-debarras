@@ -1275,10 +1275,10 @@ function App() {
                   onChange={(e) => setQuoteForm({...quoteForm, client_phone: e.target.value})}
                 />
                 
-                <OptimizedInput
+                <Input
                   placeholder="Adresse complète *"
                   value={quoteForm.address}
-                  onChange={quoteFormUpdaters.address}
+                  onChange={(e) => setQuoteForm({...quoteForm, address: e.target.value})}
                 />
 
                 {/* Access Info */}
