@@ -1381,11 +1381,92 @@ function App() {
     </div>
   );
 
-  const PhotoQuotePage = () => (
+// Photo Quote Page component - moved outside App to prevent re-creation
+const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
+  const [uploadedPhotos, setUploadedPhotos] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+
+  const handlePhotoUpload = useCallback((e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + uploadedPhotos.length > 10) {
+      alert('Vous ne pouvez télécharger que 10 photos maximum');
+      return;
+    }
+    
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUploadedPhotos(prev => [...prev, {
+          id: Date.now() + Math.random(),
+          file: file,
+          url: event.target.result,
+          name: file.name
+        }]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, [uploadedPhotos.length]);
+
+  const removePhoto = useCallback((photoId) => {
+    setUploadedPhotos(prev => prev.filter(photo => photo.id !== photoId));
+  }, []);
+
+  const validatePhotos = useCallback(() => {
+    if (uploadedPhotos.length === 0) {
+      alert('Veuillez sélectionner au moins une photo');
+      return;
+    }
+    setShowForm(true);
+  }, [uploadedPhotos.length]);
+
+  if (showForm) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
+          <Button
+            onClick={() => setShowForm(false)}
+            variant="outline"
+            className="mb-8 bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour aux photos
+          </Button>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center">Informations pour votre devis</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="text-center mb-6">
+                <p className="text-gray-600">{uploadedPhotos.length} photo(s) sélectionnée(s)</p>
+              </div>
+
+              <div className="space-y-4">
+                <Input placeholder="Nom complet" />
+                <Input type="email" placeholder="Email" />
+                <Input type="tel" placeholder="Téléphone" />
+                <Input placeholder="Adresse complète" />
+                <Textarea placeholder="Description des objets et informations complémentaires" rows={4} />
+              </div>
+
+              <Button 
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3"
+                onClick={() => alert('Devis envoyé !')}
+              >
+                Recevoir mon devis par mail
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Button
-          onClick={() => setCurrentStep('home')}
+          onClick={onGoHome}
           variant="outline"
           className="mb-8 bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
         >
@@ -1400,34 +1481,69 @@ function App() {
           <CardContent className="space-y-6">
             <div className="text-center">
               <p className="mb-4">Envoyez-nous jusqu'à 10 photos de vos objets à évacuer</p>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8">
+              
+              {/* Upload Area */}
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 mb-6">
                 <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                 <p className="text-gray-500 mb-4">Cliquez ou glissez vos photos ici</p>
-                <Button className="bg-orange-500 hover:bg-orange-600">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                  id="photo-upload"
+                />
+                <Button 
+                  className="bg-orange-500 hover:bg-orange-600"
+                  onClick={() => document.getElementById('photo-upload').click()}
+                >
                   Sélectionner les photos
                 </Button>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              
+              <p className="text-sm text-gray-500">
                 Plus de 10 photos ? Contactez-nous sur WhatsApp
               </p>
             </div>
 
-            <div className="space-y-4">
-              <Input placeholder="Nom complet" />
-              <Input type="email" placeholder="Email" />
-              <Input type="tel" placeholder="Téléphone" />
-              <Input placeholder="Adresse complète" />
-              <Textarea placeholder="Description des objets et informations complémentaires" rows={4} />
-            </div>
-
-            <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3">
-              Envoyer la demande de devis
-            </Button>
+            {/* Uploaded Photos Display */}
+            {uploadedPhotos.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Photos sélectionnées ({uploadedPhotos.length}/10)</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+                  {uploadedPhotos.map((photo) => (
+                    <div key={photo.id} className="relative group">
+                      <img
+                        src={photo.url}
+                        alt={photo.name}
+                        className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                      />
+                      <button
+                        onClick={() => removePhoto(photo.id)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                      <p className="text-xs text-gray-500 mt-1 truncate">{photo.name}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <Button 
+                  onClick={validatePhotos}
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3"
+                >
+                  Valider mes photos ({uploadedPhotos.length})
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
     </div>
   );
+};
 
   const ABCDCategoriesPage = () => (
     <div className="min-h-screen bg-gray-50">
