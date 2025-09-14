@@ -81,7 +81,7 @@ const ABCD_CATEGORIES = {
     id: 'D',
     name: 'AUTRES',
     color: 'from-purple-400 to-purple-500',
-    icon: '🎨',
+    icon: '🪞',
     items: [
       'Décoration',
       'accessoires',
