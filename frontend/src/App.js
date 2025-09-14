@@ -2581,7 +2581,7 @@ const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteA
   );
 };
 
-const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth }) => {
+const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode }) => {
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
 
