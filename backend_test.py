@@ -1067,4 +1067,9 @@ def main():
         return 1
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # Check if cleanup mode is requested
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "cleanup":
+        sys.exit(cleanup_database())
+    else:
+        sys.exit(main())
