@@ -1384,7 +1384,6 @@ function App() {
 // Photo Quote Page component - moved outside App to prevent re-creation
 const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
-  const [showForm, setShowForm] = useState(false);
 
   const handlePhotoUpload = useCallback((e) => {
     const files = Array.from(e.target.files);
