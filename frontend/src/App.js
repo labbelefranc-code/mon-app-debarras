@@ -3200,7 +3200,7 @@ function App() {
         headers: { Authorization: `Basic ${auth}` }
       });
       setIsAdminMode(true);
-      setCurrentStep('admin-photos');
+      setCurrentStep('admin-categories');
       loadAdminData();
     } catch (error) {
       alert('Identifiants admin incorrects');
