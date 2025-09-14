@@ -1763,13 +1763,13 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
           </div>
         </div>
 
-        {/* Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 text-white mb-4">
-            <div className="text-4xl mr-4">🛏️</div>
+        {/* Title - Compact Version */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center px-6 py-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 text-white mb-4">
+            <div className="text-2xl mr-3">🛏️</div>
             <div>
-              <div className="text-lg font-bold">ADMINISTRATION MOBILIER</div>
-              <div className="text-sm opacity-90">Gestion de l'arborescence complète</div>
+              <div className="text-base font-bold">ADMINISTRATION MOBILIER</div>
+              <div className="text-xs opacity-90">Gestion de l'arborescence complète</div>
             </div>
           </div>
         </div>
