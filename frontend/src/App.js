@@ -62,19 +62,15 @@ const ABCD_CATEGORIES = {
     icon: '⚡',
     items: [
       'Électroménager',
-      'Électronique',
+      'Électronique/multimédia',
       'Électrique',
-      'Chauffage',
-      'Climatisation',
-      'Ventilation'
+      'Chauffage/climatisation/ventilation'
     ],
     subcategories: [
       'Électroménager',
-      'Électronique',
+      'Électronique/multimédia',
       'Électrique',
-      'Chauffage',
-      'Climatisation',
-      'Ventilation'
+      'Chauffage/climatisation/ventilation'
     ]
   },
   'D': {
