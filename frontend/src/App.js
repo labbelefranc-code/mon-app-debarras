@@ -4267,6 +4267,11 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         value: 'admin-divers', 
         label: '🎨 Divers', 
         description: 'Décoration, Accessoires, Instruments'
+      },
+      { 
+        value: 'admin-jardin', 
+        label: '🌿 Jardin', 
+        description: 'Mobilier jardin, Outils, Bricolage'
       }
     ];
 
