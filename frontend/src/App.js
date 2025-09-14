@@ -4785,7 +4785,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         return <AdminPhotosPage />;
       case 'admin-categories':
         return <ModernAdminCategoriesPage 
-          onGoBack={() => setCurrentStep('admin-photos')}
+          onGoBack={() => setCurrentStep('admin-categories')}
           createArticle={createArticle}
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
@@ -4793,7 +4793,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         />;
       case 'admin-multimedia-electrique':
         return <ModernAdminMultimediaElectriqueePage 
-          onGoBack={() => setCurrentStep('admin-photos')}
+          onGoBack={() => setCurrentStep('admin-categories')}
           createArticle={createArticle}
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
@@ -4801,7 +4801,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         />;
       case 'admin-divers':
         return <ModernAdminDiversPage 
-          onGoBack={() => setCurrentStep('admin-photos')}
+          onGoBack={() => setCurrentStep('admin-categories')}
           createArticle={createArticle}
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
@@ -4809,7 +4809,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         />;
       case 'admin-jardin':
         return <ModernAdminJardinPage 
-          onGoBack={() => setCurrentStep('admin-photos')}
+          onGoBack={() => setCurrentStep('admin-categories')}
           createArticle={createArticle}
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
