@@ -1818,8 +1818,23 @@ const ModernAdminCategoriesPage = ({ onGoBack }) => {
                   </Button>
                   <Button
                     onClick={() => {
-                      // Save the item (for now just close the modal)
-                      alert('Modifications sauvegardées ! (Cette fonctionnalité sera connectée à la base de données)');
+                      // Convert static item data to proper article format and save
+                      const articleData = {
+                        name: editingItem.name,
+                        category_id: 'mobilier', // Default category for mobilier
+                        base_price: 0, // Default price
+                        materials: editingItem.materials || [],
+                        description: editingItem.note || '',
+                        requires_dismantling: false
+                      };
+                      
+                      if (editingItem.index !== undefined) {
+                        // This would be an update, but since we're working with static data,
+                        // we'll treat it as a new article for now
+                        createArticle(articleData);
+                      } else {
+                        createArticle(articleData);
+                      }
                       setEditingItem(null);
                     }}
                     className="bg-blue-600 hover:bg-blue-700"
