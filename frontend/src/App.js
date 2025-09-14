@@ -1370,7 +1370,7 @@ function App() {
                     disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
                   >
                     <Calendar className="mr-2 h-5 w-5" />
-                    Envoyer le devis
+                    Recevoir mon devis par mail
                   </Button>
                 </div>
               </CardContent>
