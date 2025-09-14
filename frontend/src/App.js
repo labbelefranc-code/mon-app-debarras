@@ -3344,7 +3344,9 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'admin-photos':
         return <AdminPhotosPage />;
       case 'admin-categories':
-        return <AdminCategoriesPage />;
+        return <ModernAdminCategoriesPage 
+          onGoBack={() => setCurrentStep('admin-photos')}
+        />;
       default:
         return <HomePage />;
     }
