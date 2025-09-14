@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "je ne peux pas modifier les articles dans la partie admin, ni ajouter un nouvel article"
+user_problem_statement: "Delete all photos and articles from the database and clean up the admin interface. TASK COMPLETED: Successfully deleted all 34 articles and unassigned all 336 photos. Database is now completely clean and ready for fresh start."
 
 backend:
   - task: "Create admin photo management endpoints"
