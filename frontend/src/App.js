@@ -361,6 +361,109 @@ const OptimizedTextarea = React.memo(React.forwardRef(({ value, onChange, ...pro
   );
 }));
 
+// Quote Display Page component
+const QuoteDisplayPage = ({ quoteForm, selectedItems, customItems, calculateTotal, onGoBack, onAcceptQuote }) => (
+  <div className="min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Button
+        onClick={onGoBack}
+        variant="outline"
+        className="mb-8 bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Retour aux informations
+      </Button>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">Votre Devis Personnalisé</CardTitle>
+          <p className="text-center text-gray-600">Allo Débarras Express</p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Client Info */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold mb-2">Informations client</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><strong>Nom :</strong> {quoteForm.client_name}</div>
+              <div><strong>Email :</strong> {quoteForm.client_email}</div>
+              <div><strong>Téléphone :</strong> {quoteForm.client_phone}</div>
+              <div><strong>Adresse :</strong> {quoteForm.address}</div>
+            </div>
+          </div>
+
+          {/* Intervention Details */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold mb-2">Détails de l'intervention</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><strong>Stationnement :</strong> {quoteForm.parking}</div>
+              <div><strong>Étage :</strong> {quoteForm.floor}</div>
+              <div><strong>Ascenseur :</strong> {quoteForm.elevator ? `Oui (${quoteForm.elevator_size})` : 'Non'}</div>
+              <div><strong>Zone :</strong> {quoteForm.zone}</div>
+              <div><strong>Type :</strong> {quoteForm.urgent ? '🚨 Urgence' : 'Standard'}</div>
+              <div><strong>Date souhaitée :</strong> {quoteForm.preferred_date}</div>
+            </div>
+          </div>
+
+          {/* Items List */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold mb-2">Articles à évacuer</h3>
+            <div className="space-y-2">
+              {selectedItems.map((item, index) => (
+                <div key={`display-${item.article_id}-${index}`} className="flex justify-between text-sm">
+                  <span>{item.quantity}x {item.article_name} {item.material && `(${item.material})`}</span>
+                  <span className="font-medium">{(item.price * item.quantity).toFixed(2)}€</span>
+                </div>
+              ))}
+              
+              {customItems.map((item, index) => (
+                <div key={`display-custom-${item.description}-${index}`} className="flex justify-between text-sm text-orange-600">
+                  <span>+ {item.description}</span>
+                  <span className="font-medium">Sur devis</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Total */}
+          <div className="bg-orange-50 p-4 rounded-lg border-2 border-orange-200">
+            <div className="flex justify-between items-center text-2xl font-bold">
+              <span>Total estimé :</span>
+              <span className="text-orange-600">{calculateTotal()}€</span>
+            </div>
+            {customItems.length > 0 && (
+              <p className="text-sm text-gray-600 mt-1">
+                + supplément pour objets personnalisés à confirmer
+              </p>
+            )}
+            {quoteForm.urgent && (
+              <p className="text-sm text-red-600 mt-1">
+                + supplément urgence inclus
+              </p>
+            )}
+          </div>
+
+          {/* Action Button */}
+          <Button
+            onClick={onAcceptQuote}
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 text-lg"
+          >
+            <Calendar className="mr-2 h-6 w-6" />
+            J'accepte le devis et je prends rendez-vous directement en ligne
+          </Button>
+
+          {/* Additional Info */}
+          {quoteForm.additional_info && (
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold mb-2">Informations complémentaires</h3>
+              <p className="text-sm">{quoteForm.additional_info}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+);
+
 // AdminLoginPage component - moved outside App to prevent re-creation on re-renders
 const AdminLoginPage = ({ adminAuth, onUsernameChange, onPasswordChange, onLogin, onGoHome }) => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
