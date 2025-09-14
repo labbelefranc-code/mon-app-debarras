@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Créer une interface admin avec glisser-déposer pour associer les photos des 4 ZIP extraits aux articles/catégories appropriés. L'utilisateur veut une solution intuitive pour mapper les photos aux bons objets sans avoir à nommer manuellement chaque fichier."
+user_problem_statement: "je ne peux pas modifier les articles dans la partie admin, ni ajouter un nouvel article"
 
 backend:
   - task: "Create admin photo management endpoints"
