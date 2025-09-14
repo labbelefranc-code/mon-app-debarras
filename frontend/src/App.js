@@ -2036,7 +2036,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2"
               onClick={() => {
                 setSelectedABCDSubcategory(subcategory);
-                setCurrentStep('abcd-objects');
+                // Special case for Électroménager
+                if (subcategory === 'Électroménager') {
+                  setCurrentStep('electromenager-types');
+                } else {
+                  setCurrentStep('abcd-objects');
+                }
               }}
             >
               <CardContent className={`p-4 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white h-32 flex flex-col justify-center`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
