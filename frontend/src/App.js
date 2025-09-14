@@ -4781,8 +4781,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           onLogin={handleAdminLogin}
           onGoHome={handleGoHome}
         />;
-      case 'admin-photos':
-        return <AdminPhotosPage />;
       case 'admin-categories':
         return <ModernAdminCategoriesPage 
           onGoBack={() => setCurrentStep('admin-categories')}
