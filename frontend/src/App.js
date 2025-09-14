@@ -576,6 +576,87 @@ const DIVERS_ADMIN_STRUCTURE = {
   }
 };
 
+// Structure hiérarchique complète pour JARDIN (Admin)
+const JARDIN_ADMIN_STRUCTURE = {
+  id: 'jardin',
+  name: 'JARDIN',
+  icon: '🌿',
+  color: 'from-green-400 to-green-500',
+  categories: {
+    'mobilier_jardin_contenants': {
+      id: 'mobilier_jardin_contenants',
+      name: 'MOBILIER DE JARDIN & CONTENANTS',
+      icon: '🪑',
+      items: [
+        { name: 'Table, table pliante, table de jardin, etabli, desserte, bar', variants: ['table simple', 'table pliante', 'table de jardin', 'etabli', 'desserte', 'bar'], materials: ['bois', 'métal', 'plastique', 'résine'] },
+        { name: 'Rangement', variants: ['meuble d\'appoint', 'armoire', 'casier'], materials: ['bois', 'métal', 'plastique', 'résine'] },
+        { name: 'Fauteuils, chaises, bancs, balancelle', variants: ['fauteuil', 'chaise', 'banc', 'balancelle'], materials: ['bois', 'métal', 'plastique', 'résine', 'tissu'] },
+        { name: 'Salon de jardin', variants: ['2 places', '4 places', '6 places', '8 places'], materials: ['résine', 'bois', 'métal'] },
+        { name: 'Transat pliant', variants: ['simple', 'double'] },
+        { name: 'Banc coffre', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Malle / coffre de jardin / valise', variants: ['malle', 'coffre de jardin', 'valise'] },
+        { name: 'Caisse bouteilles / casiers', variants: ['caisse bouteilles', 'casier plastique', 'casier métal'] },
+        { name: 'Poubelle / container / sceau', variants: ['poubelle', 'container', 'sceau'], materials: ['plastique', 'métal'] },
+        { name: 'Caddie', variants: [] },
+        { name: 'Cuve fioul', variants: ['petite', 'moyenne', 'grande'] }
+      ]
+    },
+    'jardin_exterieur': {
+      id: 'jardin_exterieur',
+      name: 'JARDIN & EXTÉRIEUR',
+      icon: '🌱',
+      items: [
+        { name: 'Parasol / pied de parasol', variants: ['parasol', 'pied de parasol'] },
+        { name: 'Composteur', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Cuve eau de pluie, bidon, fût', variants: ['cuve eau de pluie', 'bidon', 'fût'] },
+        { name: 'Tuyau d\'arrosage / Arrosoir', variants: ['tuyau d\'arrosage', 'arrosoir'] },
+        { name: 'Jardinières, pots de fleurs, bacs à fleurs', variants: ['jardinière', 'pot de fleurs', 'bac à fleurs'], materials: ['terre cuite', 'plastique', 'béton', 'bois'] },
+        { name: 'Séchoir / étendoir', variants: ['séchoir', 'étendoir'] },
+        { name: 'Portail / portillon', variants: ['portail', 'portillon'], materials: ['bois', 'métal', 'PVC'] },
+        { name: 'Pergola', variants: ['bois', 'métal', 'aluminium'] },
+        { name: 'Store/volets', variants: ['store', 'volets'], materials: ['bois', 'métal', 'PVC'] },
+        { name: 'Abri de jardin', variants: ['petit', 'moyen', 'grand'], note: 'Démontage inclus', materials: ['bois', 'métal', 'PVC'] },
+        { name: 'Appareils thermiques et électriques', variants: ['motoculteur', 'tondeuse à gazon', 'débroussailleuse', 'taille haie'] },
+        { name: 'Outils divers', variants: ['pelle', 'râteau', 'bêche', 'serfouette', 'sécateur'] },
+        { name: 'Barbecue', variants: ['gaz', 'charbon', 'électrique'], materials: ['métal', 'fonte'] },
+        { name: 'Carrelage/tuiles/pierre/parpaing/dalles', variants: ['carrelage', 'tuiles', 'pierre', 'parpaing', 'dalles'] },
+        { name: 'Brouette', variants: ['simple', 'double'] },
+        { name: 'Rouleau gazon', variants: [] },
+        { name: 'Vélo/solex/mobylette/scooter/pocket bike', variants: ['vélo', 'solex', 'mobylette', 'scooter', 'pocket bike'] }
+      ]
+    },
+    'bricolage_materiaux_energie': {
+      id: 'bricolage_materiaux_energie',
+      name: 'BRICOLAGE, MATÉRIAUX & ÉNERGIE',
+      icon: '🔨',
+      items: [
+        { name: 'Escabeau, échelle, marchepied', variants: ['escabeau', 'échelle', 'marchepied'], materials: ['bois', 'métal', 'aluminium'] },
+        { name: 'Palettes', variants: ['petite', 'moyenne', 'grande', 'européenne'] },
+        { name: 'Barres de fer', variants: ['courtes', 'longues'] },
+        { name: 'Étai', variants: [] },
+        { name: 'Ciment / sacs de ciment', variants: ['sac 25kg', 'sac 35kg', 'ciment en vrac'] },
+        { name: 'Contenants gravats', variants: ['sacs'] },
+        { name: 'Produits peinture, bidons de peinture', variants: ['pot peinture', 'bidon peinture'] },
+        { name: 'Produits inflammables', variants: [], note: 'Manipulation spéciale requise' },
+        { name: 'Moteur', variants: ['petit moteur', 'gros moteur'] },
+        { name: 'Portes, fenêtres, porte-fenêtre', variants: ['porte', 'fenêtre', 'porte-fenêtre'], materials: ['bois', 'PVC', 'aluminium'] },
+        { name: 'Baies vitrées', variants: ['simple', 'double', 'triple'] },
+        { name: 'Touret', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Remorque', variants: ['petite', 'moyenne', 'grande'] },
+        { name: 'Pneus / roues', variants: ['pneus voiture', 'pneus camion', 'roues complètes'] },
+        { name: 'Vélo', variants: ['vélo adulte', 'vélo enfant', 'VTT', 'vélo électrique'] },
+        { name: 'Solex / mobylette', variants: ['solex', 'mobylette'] },
+        { name: 'Bouteille de gaz', variants: ['petite', 'moyenne', 'grande'] },
+        { name: 'Panneau solaire', variants: ['petit', 'moyen', 'grand'] },
+        { name: 'Batterie', variants: ['voiture', 'camion', 'marine'] },
+        { name: 'Cumulus', variants: ['50L', '100L', '150L', '200L', '300L'], note: 'Déjà démonté' },
+        { name: 'Grosses machines', variants: ['bétonnière', 'compresseur', 'raboteuse', 'groupe électrogène'] },
+        { name: 'Panneau OSB, plaque Ba 13', variants: ['panneau OSB', 'plaque Ba 13 (placo)'] }
+      ]
+    }
+  }
+};
+
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
