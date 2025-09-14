@@ -1435,18 +1435,95 @@ const ModernAdminCategoriesPage = ({ onGoBack }) => {
         {/* Structure Navigation */}
         {renderMobilierStructure()}
 
-        {/* Edit Modal (placeholder) */}
+        {/* Edit/Add Modal */}
         {editingItem && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
               <CardHeader>
-                <CardTitle>Modifier l'article</CardTitle>
+                <CardTitle>
+                  {editingItem.name ? 'Modifier l\'article' : 'Nouvel article'}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
-                  Édition de: <strong>{editingItem.name}</strong>
-                </p>
-                <div className="flex space-x-4">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Nom de l'article
+                    </label>
+                    <Input
+                      value={editingItem.name || ''}
+                      onChange={(e) => setEditingItem(prev => ({...prev, name: e.target.value}))}
+                      placeholder="Nom de l'article"
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  {editingItem.materials && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Matériaux (séparés par des virgules)
+                      </label>
+                      <Input
+                        value={editingItem.materials?.join(', ') || ''}
+                        onChange={(e) => setEditingItem(prev => ({
+                          ...prev, 
+                          materials: e.target.value.split(',').map(m => m.trim()).filter(m => m)
+                        }))}
+                        placeholder="Bois, Métal, Plastique..."
+                        className="w-full"
+                      />
+                    </div>
+                  )}
+                  
+                  {editingItem.variants && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Variantes (séparées par des virgules)
+                      </label>
+                      <Input
+                        value={editingItem.variants?.join(', ') || ''}
+                        onChange={(e) => setEditingItem(prev => ({
+                          ...prev, 
+                          variants: e.target.value.split(',').map(v => v.trim()).filter(v => v)
+                        }))}
+                        placeholder="Petit, Moyen, Grand..."
+                        className="w-full"
+                      />
+                    </div>
+                  )}
+                  
+                  {editingItem.options && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Options (séparées par des virgules)
+                      </label>
+                      <Input
+                        value={editingItem.options?.join(', ') || ''}
+                        onChange={(e) => setEditingItem(prev => ({
+                          ...prev, 
+                          options: e.target.value.split(',').map(o => o.trim()).filter(o => o)
+                        }))}
+                        placeholder="+ bureau, + tiroirs..."
+                        className="w-full"
+                      />
+                    </div>
+                  )}
+                  
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Note (optionnelle)
+                    </label>
+                    <Textarea
+                      value={editingItem.note || ''}
+                      onChange={(e) => setEditingItem(prev => ({...prev, note: e.target.value}))}
+                      placeholder="Note ou description supplémentaire..."
+                      className="w-full"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex space-x-4 mt-6">
                   <Button
                     onClick={() => setEditingItem(null)}
                     variant="outline"
@@ -1455,7 +1532,8 @@ const ModernAdminCategoriesPage = ({ onGoBack }) => {
                   </Button>
                   <Button
                     onClick={() => {
-                      // Save logic here
+                      // Save the item (for now just close the modal)
+                      alert('Modifications sauvegardées ! (Cette fonctionnalité sera connectée à la base de données)');
                       setEditingItem(null);
                     }}
                     className="bg-blue-600 hover:bg-blue-700"
