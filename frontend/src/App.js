@@ -3792,7 +3792,14 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   variant={currentStep === 'admin-categories' ? 'default' : 'outline'}
                   className={currentStep === 'admin-categories' ? 'bg-teal-600 hover:bg-teal-700' : ''}
                 >
-                  Catégories
+                  Mobilier
+                </Button>
+                <Button
+                  onClick={() => setCurrentStep('admin-multimedia-electrique')}
+                  variant={currentStep === 'admin-multimedia-electrique' ? 'default' : 'outline'}
+                  className={currentStep === 'admin-multimedia-electrique' ? 'bg-teal-600 hover:bg-teal-700' : ''}
+                >
+                  Multimedia/Électrique
                 </Button>
               </div>
             </div>
