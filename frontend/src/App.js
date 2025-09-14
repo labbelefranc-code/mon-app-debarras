@@ -2492,7 +2492,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'photo-quote':
         return <PhotoQuotePage 
           onGoHome={() => setCurrentStep('home')}
-          onPhotosValidated={() => setCurrentStep('quote-form')}
+          onPhotosValidated={() => {
+            setIsPhotoQuote(true);
+            setCurrentStep('quote-form');
+          }}
         />;
       case 'abcd-categories':
         return <ABCDCategoriesPage />;
