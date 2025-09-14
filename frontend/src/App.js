@@ -1852,7 +1852,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     </div>
                     
                     <Button
-                      onClick={() => setCurrentStep('quote-form')}
+                      onClick={() => {
+                        setIsPhotoQuote(false);
+                        setCurrentStep('quote-form');
+                      }}
                       className="w-full bg-teal-600 hover:bg-teal-700 mt-4"
                     >
                       Continuer
