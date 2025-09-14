@@ -1372,7 +1372,7 @@ function App() {
                 <Textarea
                   placeholder="Détails importants (accès, contraintes particulières, marches, chemins divers...)"
                   value={quoteForm.additional_info}
-                  onChange={(e) => setQuoteForm({...quoteForm, additional_info: e.target.value})}
+                  onChange={stableQuoteFormUpdaters.additional_info}
                   rows={3}
                 />
 
