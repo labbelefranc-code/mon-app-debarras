@@ -4772,6 +4772,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'admin-multimedia-electrique':
         return <ModernAdminMultimediaElectriqueePage 
           onGoBack={() => setCurrentStep('admin-photos')}
+          createArticle={createArticle}
+          updateArticle={updateArticle}
+          deleteArticle={deleteArticle}
+          adminAuth={adminAuth}
         />;
       case 'admin-divers':
         return <ModernAdminDiversPage 
