@@ -2396,7 +2396,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       case 'photo-quote':
         return <PhotoQuotePage 
           onGoHome={() => setCurrentStep('home')}
-          onPhotosValidated={() => console.log('Photos validated')}
+          onPhotosValidated={() => setCurrentStep('quote-form')}
         />;
       case 'abcd-categories':
         return <ABCDCategoriesPage />;
