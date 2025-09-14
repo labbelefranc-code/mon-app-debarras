@@ -1354,7 +1354,7 @@ function App() {
                 </div>
 
                 <OptimizedTextarea
-                  placeholder="Détails importants (accès, contraintes particulières...)"
+                  placeholder="Détails importants (accès, contraintes particulières, marches, chemins divers...)"
                   value={quoteForm.additional_info}
                   onChange={quoteFormUpdaters.additional_info}
                   rows={3}
