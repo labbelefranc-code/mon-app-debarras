@@ -3881,6 +3881,11 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         value: 'admin-multimedia-electrique', 
         label: '⚡ Multimedia/Électrique', 
         description: 'TV, Électroménager, Chauffage'
+      },
+      { 
+        value: 'admin-divers', 
+        label: '🎨 Divers', 
+        description: 'Décoration, Accessoires, Instruments'
       }
     ];
 
