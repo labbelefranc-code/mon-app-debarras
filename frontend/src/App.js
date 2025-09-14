@@ -864,6 +864,8 @@ function App() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [selectedABCDCategory, setSelectedABCDCategory] = useState(null);
   const [selectedABCDSubcategory, setSelectedABCDSubcategory] = useState(null);
+  const [selectedElectroType, setSelectedElectroType] = useState(null); // froid, cuisine, salle_de_bain
+  const [selectedElectroItem, setSelectedElectroItem] = useState(null); // frigo, congelateur, etc.
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [articles, setArticles] = useState([]);
