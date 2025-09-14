@@ -1738,20 +1738,21 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold">Administration</h1>
+            <h1 className="text-xl font-bold">Administration</h1>
             <AdminNavigationDropdown 
               currentStep='admin-categories'
               onStepChange={setCurrentStep} 
             />
           </div>
           
-          <div className="flex space-x-4">
-            <Button variant="outline">
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm">
               Exporter structure
             </Button>
             <Button 
+              size="sm"
               className="bg-blue-600 hover:bg-blue-700"
               onClick={() => {
                 setIsAdminMode(false);
