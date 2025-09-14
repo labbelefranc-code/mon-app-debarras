@@ -2115,21 +2115,26 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button
-            onClick={onGoBack}
-            variant="outline"
-            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour admin
-          </Button>
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold">Administration</h1>
+            <AdminNavigationDropdown 
+              currentStep='admin-multimedia-electrique'
+              onStepChange={setCurrentStep} 
+            />
+          </div>
           
           <div className="flex space-x-4">
             <Button variant="outline">
               Exporter structure
             </Button>
-            <Button className="bg-yellow-600 hover:bg-yellow-700">
-              Sauvegarder modifications
+            <Button 
+              className="bg-yellow-600 hover:bg-yellow-700"
+              onClick={() => {
+                setIsAdminMode(false);
+                setCurrentStep('home');
+              }}
+            >
+              Déconnexion
             </Button>
           </div>
         </div>
