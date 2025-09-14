@@ -1416,8 +1416,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       alert('Veuillez sélectionner au moins une photo');
       return;
     }
-    setShowForm(true);
-  }, [uploadedPhotos.length]);
+    onPhotosValidated();
+  }, [uploadedPhotos.length, onPhotosValidated]);
 
   if (showForm) {
     return (
