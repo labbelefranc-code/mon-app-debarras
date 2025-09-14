@@ -3806,29 +3806,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <h1 className="text-3xl font-bold">Administration</h1>
-              <div className="flex space-x-2">
-                <Button
-                  onClick={() => setCurrentStep('admin-photos')}
-                  variant={currentStep === 'admin-photos' ? 'default' : 'outline'}
-                  className={currentStep === 'admin-photos' ? 'bg-teal-600 hover:bg-teal-700' : ''}
-                >
-                  Photos
-                </Button>
-                <Button
-                  onClick={() => setCurrentStep('admin-categories')}
-                  variant={currentStep === 'admin-categories' ? 'default' : 'outline'}
-                  className={currentStep === 'admin-categories' ? 'bg-teal-600 hover:bg-teal-700' : ''}
-                >
-                  Mobilier
-                </Button>
-                <Button
-                  onClick={() => setCurrentStep('admin-multimedia-electrique')}
-                  variant={currentStep === 'admin-multimedia-electrique' ? 'default' : 'outline'}
-                  className={currentStep === 'admin-multimedia-electrique' ? 'bg-teal-600 hover:bg-teal-700' : ''}
-                >
-                  Multimedia/Électrique
-                </Button>
-              </div>
+              <AdminNavigationDropdown 
+                currentStep={currentStep} 
+                onStepChange={setCurrentStep} 
+              />
             </div>
             <div className="flex space-x-2">
               <Button
