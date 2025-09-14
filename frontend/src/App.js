@@ -2165,20 +2165,21 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold">Administration</h1>
+            <h1 className="text-xl font-bold">Administration</h1>
             <AdminNavigationDropdown 
               currentStep='admin-multimedia-electrique'
               onStepChange={setCurrentStep} 
             />
           </div>
           
-          <div className="flex space-x-4">
-            <Button variant="outline">
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm">
               Exporter structure
             </Button>
             <Button 
+              size="sm"
               className="bg-yellow-600 hover:bg-yellow-700"
               onClick={() => {
                 setIsAdminMode(false);
@@ -2190,13 +2191,13 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
           </div>
         </div>
 
-        {/* Title */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white mb-4">
-            <div className="text-4xl mr-4">⚡</div>
+        {/* Title - Compact Version */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center px-6 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white mb-4">
+            <div className="text-2xl mr-3">⚡</div>
             <div>
-              <div className="text-lg font-bold">ADMINISTRATION MULTIMEDIA/ÉLECTRONIQUE/ÉLECTRIQUE</div>
-              <div className="text-sm opacity-90">Gestion de l'arborescence complète</div>
+              <div className="text-base font-bold">ADMINISTRATION MULTIMEDIA/ÉLECTRONIQUE/ÉLECTRIQUE</div>
+              <div className="text-xs opacity-90">Gestion de l'arborescence complète</div>
             </div>
           </div>
         </div>
