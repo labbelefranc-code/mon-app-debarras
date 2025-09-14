@@ -454,6 +454,7 @@ function App() {
     parking: updateQuoteFormField('parking'),
     floor: updateQuoteFormField('floor'),
     elevator: updateQuoteFormField('elevator'),
+    elevator_size: updateQuoteFormField('elevator_size'),
     additional_info: updateQuoteFormField('additional_info'),
     zone: updateQuoteFormField('zone'),
     preferred_date: updateQuoteFormField('preferred_date'),
