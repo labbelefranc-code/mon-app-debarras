@@ -4368,6 +4368,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         return <ModernAdminMultimediaElectriqueePage 
           onGoBack={() => setCurrentStep('admin-photos')}
         />;
+      case 'admin-divers':
+        return <ModernAdminDiversPage 
+          onGoBack={() => setCurrentStep('admin-photos')}
+        />;
       default:
         return <HomePage />;
     }
