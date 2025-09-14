@@ -1375,6 +1375,11 @@ const ModernAdminCategoriesPage = ({ onGoBack }) => {
                       size="sm"
                       variant="outline"
                       className="text-red-600 border-red-300 hover:bg-red-50"
+                      onClick={() => {
+                        if (confirm(`Êtes-vous sûr de vouloir supprimer "${item.name}" ?`)) {
+                          alert('Article supprimé ! (Cette fonctionnalité sera connectée à la base de données)');
+                        }
+                      }}
                     >
                       Supprimer
                     </Button>
