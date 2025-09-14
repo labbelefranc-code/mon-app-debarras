@@ -2478,6 +2478,15 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         return <ArticlesPage />;
       case 'quote-form':
         return <QuoteFormPage />;
+      case 'quote-display':
+        return <QuoteDisplayPage 
+          quoteForm={quoteForm}
+          selectedItems={selectedItems}
+          customItems={customItems}
+          calculateTotal={calculateTotal}
+          onGoBack={() => setCurrentStep('quote-form')}
+          onAcceptQuote={() => alert('Calendrier de rendez-vous à venir !')}
+        />;
       case 'photo-quote':
         return <PhotoQuotePage 
           onGoHome={() => setCurrentStep('home')}
