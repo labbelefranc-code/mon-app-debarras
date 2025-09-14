@@ -4291,11 +4291,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   const AdminNavigationDropdown = ({ currentStep, onStepChange }) => {
     const adminSections = [
       { 
-        value: 'admin-photos', 
-        label: '📷 Photos', 
-        description: 'Gestion des photos et associations'
-      },
-      { 
         value: 'admin-categories', 
         label: '🛏️ Mobilier', 
         description: 'Literie, Tables, Canapés, Rangements'
