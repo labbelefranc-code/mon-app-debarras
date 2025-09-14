@@ -908,51 +908,7 @@ function App() {
     </div>
   );
 
-  const CategoriesPage = () => (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            onClick={() => setCurrentStep('home')}
-            variant="outline"
-            className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour à l'accueil
-          </Button>
-          
-          {(selectedItems.length > 0 || customItems.length > 0) && (
-            <Button
-              onClick={() => setCurrentStep('selection')}
-              className="bg-orange-500 hover:bg-orange-600"
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Ma sélection ({selectedItems.length + customItems.length})
-            </Button>
-          )}
-        </div>
-
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <Card
-              key={category.id}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
-              onClick={() => handleCategoryClick(category)}
-            >
-              <CardContent className="p-8 text-center bg-gradient-to-r from-orange-400 to-orange-500">
-                <div className="text-4xl mb-4">{category.icon}</div>
-                <h3 className="text-xl font-bold text-black">
-                  {category.name}
-                </h3>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  // CategoriesPage removed - now using ABCDCategoriesPage
 
   const SubcategoriesPage = () => (
     <div className="min-h-screen bg-gray-50">
