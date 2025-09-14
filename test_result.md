@@ -177,7 +177,8 @@ metadata:
 test_plan:
   current_focus:
     - "Fix admin article management interface - modify and add article functionality"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Fix admin article management interface - modify and add article functionality"
   test_all: false
   test_priority: "high_first"
 
