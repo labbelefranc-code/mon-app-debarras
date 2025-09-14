@@ -2858,8 +2858,17 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                   </Button>
                   <Button
                     onClick={() => {
-                      // Save the item (for now just close the modal)
-                      alert('Modifications sauvegardées ! (Cette fonctionnalité sera connectée à la base de données)');
+                      // Convert static item data to proper article format and save
+                      const articleData = {
+                        name: editingItem.name,
+                        category_id: 'jardin', // Category for jardin
+                        base_price: 0, // Default price
+                        materials: editingItem.materials || [],
+                        description: editingItem.note || '',
+                        requires_dismantling: false
+                      };
+                      
+                      createArticle(articleData);
                       setEditingItem(null);
                     }}
                     className="bg-green-600 hover:bg-green-700"
