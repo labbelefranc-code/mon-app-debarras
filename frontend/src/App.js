@@ -1297,13 +1297,26 @@ function App() {
                   </div>
                 )}
 
-                <Button
-                  onClick={() => setQuoteForm({...quoteForm, urgent: !quoteForm.urgent})}
-                  variant={quoteForm.urgent ? "destructive" : "outline"}
-                  className="w-full"
-                >
-                  {quoteForm.urgent ? "🚨 Intervention d'urgence (supplément)" : "Intervention standard"}
-                </Button>
+                {/* Intervention Type */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Type d'intervention :</label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button
+                      onClick={() => setQuoteForm({...quoteForm, urgent: false})}
+                      variant={!quoteForm.urgent ? "default" : "outline"}
+                      className={!quoteForm.urgent ? "bg-teal-500 hover:bg-teal-600" : ""}
+                    >
+                      Intervention standard
+                    </Button>
+                    <Button
+                      onClick={() => setQuoteForm({...quoteForm, urgent: true})}
+                      variant={quoteForm.urgent ? "destructive" : "outline"}
+                      className="w-full"
+                    >
+                      🚨 Intervention d'urgence
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
