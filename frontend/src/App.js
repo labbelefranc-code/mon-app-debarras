@@ -1212,6 +1212,26 @@ function App() {
                   </div>
                 </div>
 
+                {/* Elevator Size Selection */}
+                {quoteForm.elevator && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Taille de l'ascenseur :</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['petit', 'moyen', 'grand'].map((size) => (
+                        <Button
+                          key={size}
+                          onClick={() => setQuoteForm({...quoteForm, elevator_size: size})}
+                          variant={quoteForm.elevator_size === size ? "default" : "outline"}
+                          className={quoteForm.elevator_size === size ? "bg-orange-500 hover:bg-orange-600" : ""}
+                        >
+                          {size}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                </div>
+
                 {/* Zone Selection */}
                 <div>
                   <label className="block text-sm font-medium mb-2">Zone d'intervention :</label>
