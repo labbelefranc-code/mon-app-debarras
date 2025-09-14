@@ -960,7 +960,7 @@ function App() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
-            onClick={() => setCurrentStep('categories')}
+            onClick={() => setCurrentStep('abcd-categories')}
             variant="outline"
             className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
           >
