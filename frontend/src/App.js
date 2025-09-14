@@ -860,14 +860,14 @@ function App() {
         {/* Options buttons */}
         <div className="flex flex-col items-center space-y-6 max-w-2xl mx-auto">
           <Button
-            onClick={() => setCurrentStep('whole-home')}
+            onClick={() => setCurrentStep('photo-quote')}
             className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
           >
             Un logement entier
           </Button>
           
           <Button
-            onClick={() => setCurrentStep('garage-cave')}
+            onClick={() => setCurrentStep('photo-quote')}
             className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
           >
             Un garage / une cave
