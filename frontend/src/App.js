@@ -1386,7 +1386,19 @@ const ModernAdminCategoriesPage = ({ onGoBack }) => {
           
           <Card className="border-2 border-dashed border-gray-300">
             <CardContent className="p-6 text-center">
-              <Button variant="outline" className="text-blue-600 border-blue-300">
+              <Button 
+                variant="outline" 
+                className="text-blue-600 border-blue-300"
+                onClick={() => setEditingItem({
+                  name: '',
+                  materials: [],
+                  variants: [],
+                  options: [],
+                  note: '',
+                  categoryKey: selectedMainCategory,
+                  subCategoryKey: selectedSubCategory
+                })}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Ajouter un nouvel article
               </Button>
