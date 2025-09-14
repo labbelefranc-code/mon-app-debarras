@@ -515,6 +515,7 @@ function App() {
   const [articles, setArticles] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [customItems, setCustomItems] = useState([]);
+  const [isPhotoQuote, setIsPhotoQuote] = useState(false);
   const [zones, setZones] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
   const [isAdminMode, setIsAdminMode] = useState(false);
