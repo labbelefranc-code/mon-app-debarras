@@ -187,7 +187,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix admin article management interface - modify and add article functionality"
+    - "Complete database cleanup - delete all photos and articles"
   stuck_tasks:
     - "Fix admin article management interface - modify and add article functionality"
   test_all: false
