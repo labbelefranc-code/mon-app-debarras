@@ -47,12 +47,12 @@ const ABCD_CATEGORIES = {
     items: [
       'Mobilier de jardin et contenants',
       'Jardin et extérieur',
-      'Bricolage/matériaux/ énergie'
+      'Bricolage / matériaux / énergie'
     ],
     subcategories: [
       'Mobilier de jardin et contenants',
       'Jardin et extérieur',
-      'Bricolage/matériaux/ énergie'
+      'Bricolage / matériaux / énergie'
     ]
   },
   'C': {
