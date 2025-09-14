@@ -4793,6 +4793,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           updateArticle={updateArticle}
           deleteArticle={deleteArticle}
           adminAuth={adminAuth}
+          setCurrentStep={setCurrentStep}
+          setIsAdminMode={setIsAdminMode}
         />;
       case 'admin-multimedia-electrique':
         return <ModernAdminMultimediaElectriqueePage 
