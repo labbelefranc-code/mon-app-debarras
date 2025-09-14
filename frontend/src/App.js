@@ -4358,57 +4358,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     );
   });
 
-  // Admin Navigation Dropdown Component
-  const AdminNavigationDropdown = ({ currentStep, onStepChange }) => {
-    const adminSections = [
-      { 
-        value: 'admin-categories', 
-        label: '🛏️ Mobilier', 
-        description: 'Literie, Tables, Canapés, Rangements'
-      },
-      { 
-        value: 'admin-multimedia-electrique', 
-        label: '⚡ Multimedia/Électrique', 
-        description: 'TV, Électroménager, Chauffage'
-      },
-      { 
-        value: 'admin-divers', 
-        label: '🎨 Divers', 
-        description: 'Décoration, Accessoires, Instruments'
-      },
-      { 
-        value: 'admin-jardin', 
-        label: '🌿 Jardin', 
-        description: 'Mobilier jardin, Outils, Bricolage'
-      }
-    ];
-
-    const getCurrentLabel = () => {
-      const current = adminSections.find(section => section.value === currentStep);
-      return current ? current.label : 'Sélectionner une section';
-    };
-
-    return (
-      <Select value={currentStep} onValueChange={onStepChange}>
-        <SelectTrigger className="w-80 bg-white border-2 border-teal-200 hover:border-teal-300">
-          <SelectValue>
-            <span className="font-medium">{getCurrentLabel()}</span>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent className="w-80">
-          {adminSections.map((section) => (
-            <SelectItem key={section.value} value={section.value} className="py-3">
-              <div className="flex flex-col">
-                <span className="font-medium">{section.label}</span>
-                <span className="text-xs text-gray-500 mt-1">{section.description}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    );
-  };
-
   const AdminPhotosPage = () => (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
