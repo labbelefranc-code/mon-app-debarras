@@ -4277,7 +4277,142 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       selectedABCDSubcategory
     });
     
-    // Récupérer les articles pour la catégorie et sous-catégorie sélectionnées
+    // Si nous avons une catégorie mais pas de sous-catégorie, afficher les sous-catégories d'abord
+    if (selectedABCDCategory && !selectedABCDSubcategory) {
+      // Afficher les sous-catégories pour navigation hiérarchique
+      const adminStructures = {
+        'A': MOBILIER_ADMIN_STRUCTURE,
+        'B': JARDIN_ADMIN_STRUCTURE, 
+        'C': MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE,
+        'D': DIVERS_ADMIN_STRUCTURE
+      };
+      
+      const currentStructure = adminStructures[selectedABCDCategory.id];
+      
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Left side - Subcategories */}
+              <div className="lg:col-span-3">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-8">
+                  <Button
+                    onClick={() => setCurrentStep('abcd-categories')}
+                    variant="outline"
+                    className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Retour aux catégories
+                  </Button>
+                </div>
+
+                {/* Category Info */}
+                <div className="mb-8">
+                  <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                    <div className="text-2xl mr-3">{selectedABCDCategory.icon}</div>
+                    <div className="font-bold">{selectedABCDCategory.name}</div>
+                  </div>
+                </div>
+
+                {/* Subcategories Selection */}
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                    Choisissez une sous-catégorie
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {currentStructure.categories && Object.entries(currentStructure.categories).map(([key, category]) => {
+                      // Compter les articles dans cette catégorie
+                      const articleCount = category.items ? category.items.length : 
+                        (category.subcategories ? Object.values(category.subcategories).reduce((sum, subcat) => sum + (subcat.items?.length || 0), 0) : 0);
+                      
+                      return (
+                        <Card key={key} className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
+                              onClick={() => {
+                                setSelectedABCDSubcategory(category.name);
+                                // Remain on the same page to show articles
+                              }}>
+                          <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
+                            <div className="text-3xl mb-3">{category.icon}</div>
+                            <h4 className="font-bold text-lg mb-2">{category.name}</h4>
+                            <div className="text-sm opacity-90">{articleCount} articles</div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Custom Item Input */}
+                <CustomItemInput onAddCustomItem={addCustomItem} />
+              </div>
+
+              {/* Right side - Selection Summary */}
+              <div className="lg:col-span-1">
+                <Card className="sticky top-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <List className="mr-2 h-5 w-5" />
+                      Ma liste ({selectedItems.length + customItems.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {selectedItems.length === 0 && customItems.length === 0 ? (
+                      <p className="text-gray-500 text-center py-8">
+                        Aucun article sélectionné
+                      </p>
+                    ) : (
+                      <div className="space-y-4">
+                        {/* Selected Items */}
+                        {selectedItems.map((item, index) => (
+                          <SelectionItem
+                            key={`selected-${item.article_id}-${index}`}
+                            item={item}
+                            index={index}
+                            onUpdateQuantity={updateItemQuantity}
+                            onRemove={removeFromSelection}
+                            onToggleDismantling={toggleDismantling}
+                          />
+                        ))}
+                        
+                        {/* Custom Items */}
+                        {customItems.map((item, index) => (
+                          <CustomItemCard
+                            key={`custom-${item.description}-${index}`}
+                            item={item}
+                            index={index}
+                            onRemove={removeCustomItem}
+                          />
+                        ))}
+                        
+                        <div className="border-t pt-4">
+                          <div className="text-center text-gray-600">
+                            <span>Prix calculé après validation des informations</span>
+                          </div>
+                        </div>
+                        
+                        <Button
+                          onClick={() => {
+                            setIsPhotoQuote(false);
+                            setCurrentStep('quote-form');
+                          }}
+                          className="w-full bg-teal-600 hover:bg-teal-700 mt-4"
+                        >
+                          Continuer
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    // Si nous avons une sous-catégorie, afficher les articles
     const availableArticles = getABCDCategoryArticles(
       selectedABCDCategory?.id, 
       selectedABCDSubcategory
