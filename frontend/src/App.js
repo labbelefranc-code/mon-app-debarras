@@ -2716,18 +2716,10 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">{item.name}</h3>
                     
-                    {item.variants && item.variants.length > 0 && (
-                      <div className="mb-2">
-                        <span className="text-sm font-medium text-gray-600">Variantes: </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.variants.map((variant, vIndex) => (
-                            <span key={vIndex} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                              {variant}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <div className="mb-2">
+                      <span className="text-sm font-medium text-gray-600">Prix de base: </span>
+                      <span className="text-sm font-semibold text-green-600">{item.base_price}€</span>
+                    </div>
                     
                     {item.materials && item.materials.length > 0 && (
                       <div className="mb-2">
@@ -2742,22 +2734,9 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                       </div>
                     )}
                     
-                    {item.options && item.options.length > 0 && (
-                      <div className="mb-2">
-                        <span className="text-sm font-medium text-gray-600">Options: </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.options.map((option, oIndex) => (
-                            <span key={oIndex} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
-                              {option}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {item.note && (
+                    {item.description && (
                       <div className="text-sm text-gray-600 italic">
-                        Note: {item.note}
+                        Description: {item.description}
                       </div>
                     )}
                   </div>
@@ -2776,7 +2755,7 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                       className="text-red-600 border-red-300 hover:bg-red-50"
                       onClick={() => {
                         if (confirm(`Êtes-vous sûr de vouloir supprimer "${item.name}" ?`)) {
-                          alert('Article supprimé ! (Cette fonctionnalité sera connectée à la base de données)');
+                          deleteArticle(item.id);
                         }
                       }}
                     >
