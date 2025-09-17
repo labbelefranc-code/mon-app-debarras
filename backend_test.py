@@ -1115,16 +1115,25 @@ def test_specific_article_creation_issue():
     
     print(f"   Testing with data: {json.dumps(test_article_data, indent=2)}")
     
-    success_create, created_article = tester.test_create_article(test_article_data)
+    success_create, article_id = tester.test_create_article(test_article_data)
     
-    if success_create:
-        article_id = created_article.get('id')
+    if success_create and article_id:
         print(f"✅ Article creation successful!")
         print(f"   Created article ID: {article_id}")
-        print(f"   Article name: {created_article.get('name')}")
-        print(f"   Category ID: {created_article.get('category_id')}")
-        print(f"   Base price: {created_article.get('base_price')}€")
-        print(f"   Materials: {created_article.get('materials')}")
+        
+        # Get the full article details
+        success_get_details, article_details = tester.run_test(
+            f"Get Created Article Details", 
+            "GET", 
+            f"articles/{article_id}", 
+            200
+        )
+        
+        if success_get_details:
+            print(f"   Article name: {article_details.get('name')}")
+            print(f"   Category ID: {article_details.get('category_id')}")
+            print(f"   Base price: {article_details.get('base_price')}€")
+            print(f"   Materials: {article_details.get('materials')}")
         
         # Step 4: Verify article is saved to database
         print(f"\n💾 Step 4: Verifying article is saved to database...")
