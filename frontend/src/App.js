@@ -3902,8 +3902,8 @@ function App() {
             <Card className="sticky top-8">
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <ShoppingCart className="mr-2 h-5 w-5" />
-                  Ma sélection ({selectedItems.length + customItems.length})
+                  <List className="mr-2 h-5 w-5" />
+                  Ma liste ({selectedItems.length + customItems.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
