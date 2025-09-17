@@ -2685,10 +2685,14 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
       );
     }
 
-    // Show items
+    // Show items - Load from database instead of static data
     const category = JARDIN_ADMIN_STRUCTURE.categories[selectedMainCategory];
-    const items = category.items;
     const categoryName = category.name;
+    
+    // Filter real articles from database that belong to this category
+    const items = allArticles ? allArticles.filter(article => 
+      article.category_id === 'exterieur_jardin' // Filter by the actual category ID
+    ) : [];
 
     return (
       <div>
