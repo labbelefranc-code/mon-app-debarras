@@ -2945,19 +2945,26 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                   </Button>
                   <Button
                     onClick={() => {
-                      // Convert static item data to proper article format and save
-                      const articleData = {
-                        name: editingItem.name,
-                        category_id: 'jardin', // Category for jardin
-                        base_price: 0, // Default price
-                        materials: editingItem.materials || [],
-                        description: editingItem.note || '',
-                        requires_dismantling: false
-                      };
-                      
-                      createArticle(articleData);
-                      setEditingItem(null);
-                    }}
+                    onClick={async () => {
+                      try {
+                        // Convert static item data to proper article format and save
+                        const articleData = {
+                          name: editingItem.name,
+                          category_id: 'exterieur_jardin', // Valid category for jardin
+                          base_price: 0, // Default price
+                          materials: editingItem.materials || [],
+                          description: editingItem.note || '',
+                          requires_dismantling: false
+                        };
+                        
+                        await createArticle(articleData);
+                        setEditingItem(null);
+                        alert('Article ajouté avec succès !');
+                      } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Erreur lors de l\'ajout de l\'article');
+                      }
+                    }}}
                     className="bg-green-600 hover:bg-green-700"
                   >
                     Sauvegarder
