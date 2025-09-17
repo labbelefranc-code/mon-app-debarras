@@ -154,7 +154,7 @@ frontend:
         comment: "Backend photo management system tested successfully - 23/23 tests passed, 336 photos detected, authentication working"
   - task: "Fix admin article management interface - modify and add article functionality"
     implemented: true
-    working: true
+    working: false
     file: "App.js"
     stuck_count: 1
     priority: "high"
