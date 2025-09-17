@@ -4466,19 +4466,34 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       <CardContent className="p-4">
                         <div className="flex flex-col h-full">
                           {/* Article Name */}
-                          <h4 className="font-bold text-lg mb-2 text-gray-800">
+                          <h4 className="font-bold text-lg mb-3 text-gray-800">
                             {article.name}
                           </h4>
                           
-                          {/* Materials */}
+                          {/* Materials - Now as selectable buttons */}
                           {article.materials && article.materials.length > 0 && (
-                            <div className="mb-2">
-                              <span className="text-sm font-medium text-gray-600">Matériaux: </span>
-                              <div className="flex flex-wrap gap-1 mt-1">
+                            <div className="mb-3">
+                              <span className="text-sm font-medium text-gray-600 mb-2 block">Matériaux :</span>
+                              <div className="flex flex-wrap gap-2">
                                 {article.materials.map((material, idx) => (
-                                  <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                                  <button
+                                    key={idx}
+                                    className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm rounded-full border border-blue-300 hover:border-blue-400 transition-colors"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      // Toggle selection of material
+                                      const button = e.target;
+                                      if (button.classList.contains('bg-blue-500')) {
+                                        button.classList.remove('bg-blue-500', 'text-white');
+                                        button.classList.add('bg-blue-100', 'text-blue-800');
+                                      } else {
+                                        button.classList.remove('bg-blue-100', 'text-blue-800');
+                                        button.classList.add('bg-blue-500', 'text-white');
+                                      }
+                                    }}
+                                  >
                                     {material}
-                                  </span>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -4486,13 +4501,28 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           
                           {/* Options */}
                           {article.options && article.options.length > 0 && (
-                            <div className="mb-2">
-                              <span className="text-sm font-medium text-gray-600">Options: </span>
-                              <div className="flex flex-wrap gap-1 mt-1">
+                            <div className="mb-3">
+                              <span className="text-sm font-medium text-gray-600 mb-2 block">Options :</span>
+                              <div className="flex flex-wrap gap-2">
                                 {article.options.map((option, idx) => (
-                                  <span key={idx} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
+                                  <button
+                                    key={idx}
+                                    className="px-3 py-1 bg-orange-100 hover:bg-orange-200 text-orange-800 text-sm rounded-full border border-orange-300 hover:border-orange-400 transition-colors"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      // Toggle selection of option
+                                      const button = e.target;
+                                      if (button.classList.contains('bg-orange-500')) {
+                                        button.classList.remove('bg-orange-500', 'text-white');
+                                        button.classList.add('bg-orange-100', 'text-orange-800');
+                                      } else {
+                                        button.classList.remove('bg-orange-100', 'text-orange-800');
+                                        button.classList.add('bg-orange-500', 'text-white');
+                                      }
+                                    }}
+                                  >
                                     {option}
-                                  </span>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -4504,11 +4534,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                               {article.note}
                             </div>
                           )}
-                          
-                          {/* Price */}
-                          <div className="text-sm text-gray-600 mb-3">
-                            Prix indicatif: <span className="font-bold text-green-600">{article.base_price}€</span>
-                          </div>
                           
                           {/* Add to Selection Button */}
                           <div className="mt-auto">
@@ -4552,7 +4577,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     <div className="text-6xl mb-4">📦</div>
                     <h4 className="text-xl font-bold mb-4">Aucun objet trouvé</h4>
                     <p className="text-gray-600 mb-6">
-                      Aucun article n'a été trouvé pour cette catégorie.
+                      Aucun article n'a été trouvé pour cette sous-catégorie.
                       Vous pouvez décrire vos objets ci-dessous.
                     </p>
                   </CardContent>
