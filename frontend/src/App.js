@@ -2689,10 +2689,9 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
     const category = JARDIN_ADMIN_STRUCTURE.categories[selectedMainCategory];
     const categoryName = category.name;
     
-    // Filter real articles from database that belong to this category
-    const items = allArticles ? allArticles.filter(article => 
-      article.category_id === 'exterieur_jardin' // Filter by the actual category ID
-    ) : [];
+    // Show ALL articles instead of filtering by specific category
+    // This allows newly created articles to appear immediately
+    const items = allArticles || [];
 
     return (
       <div>
