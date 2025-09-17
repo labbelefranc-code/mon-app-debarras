@@ -3008,9 +3008,20 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                     onClick={async () => {
                       try {
                         // Convert static item data to proper article format and save
+                        // Map subcategories to appropriate category_ids
+                        let categoryId = 'exterieur_jardin'; // Default for jardin
+                        
+                        if (editingItem.categoryKey === 'mobilier_jardin_contenants') {
+                          categoryId = 'exterieur_jardin';
+                        } else if (editingItem.categoryKey === 'jardin_exterieur') {
+                          categoryId = 'exterieur_jardin';
+                        } else if (editingItem.categoryKey === 'bricolage_materiaux_energie') {
+                          categoryId = 'exterieur_jardin';
+                        }
+                        
                         const articleData = {
                           name: editingItem.name,
-                          category_id: 'exterieur_jardin', // Correct category for jardin
+                          category_id: categoryId,
                           base_price: 0,
                           materials: editingItem.materials || [],
                           description: editingItem.note || '',
