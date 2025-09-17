@@ -4309,16 +4309,13 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   );
 
   const ABCDObjectsPage = () => {
-    // Si nous avons une catégorie mais pas de sous-catégorie, afficher les sous-catégories d'abord
+    // Niveau 1 : Si nous avons une catégorie mais pas de sous-catégorie, afficher les sous-catégories
     if (selectedABCDCategory && !selectedABCDSubcategory) {
-      // Afficher les sous-catégories pour navigation hiérarchique
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Left side - Subcategories */}
               <div className="lg:col-span-3">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                   <Button
                     onClick={() => setCurrentStep('abcd-categories')}
@@ -4330,7 +4327,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </Button>
                 </div>
 
-                {/* Category Info */}
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
                     <div className="text-2xl mr-3">{selectedABCDCategory.icon}</div>
@@ -4338,7 +4334,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </div>
                 </div>
 
-                {/* Subcategories Selection */}
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
                     Choisissez une sous-catégorie
@@ -4346,18 +4341,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {(() => {
-                      // Récupérer les sous-catégories ABCD appropriées
                       const mapping = getABCDCategoryMapping(selectedABCDCategory.id);
                       if (!mapping) return null;
                       
                       const subcategories = Object.keys(mapping.subcategoryMapping);
                       
                       return subcategories.map((subcategoryName) => {
-                        // Compter les articles dans cette sous-catégorie
-                        const articles = getABCDCategoryArticles(selectedABCDCategory.id, subcategoryName);
-                        const articleCount = articles.length;
-
-                        // Définir une icône pour chaque sous-catégorie
                         const subcategoryIcons = {
                           'Literie / Canapés / Fauteuils': '🛏️',
                           'Tables et assises': '🪑', 
@@ -4382,7 +4371,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                             <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
                               <div className="text-3xl mb-3">{subcategoryIcons[subcategoryName] || '📦'}</div>
                               <h4 className="font-bold text-lg mb-2">{subcategoryName}</h4>
-                              <div className="text-sm opacity-90">{articleCount} articles</div>
+                              <div className="text-sm opacity-90">Voir les options →</div>
                             </CardContent>
                           </Card>
                         );
@@ -4391,7 +4380,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </div>
                 </div>
 
-                {/* Custom Item Input */}
                 <CustomItemInput onAddCustomItem={addCustomItem} />
               </div>
 
@@ -4411,7 +4399,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       </p>
                     ) : (
                       <div className="space-y-4">
-                        {/* Selected Items */}
                         {selectedItems.map((item, index) => (
                           <SelectionItem
                             key={`selected-${item.article_id}-${index}`}
@@ -4423,7 +4410,157 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           />
                         ))}
                         
-                        {/* Custom Items */}
+                        {customItems.map((item, index) => (
+                          <CustomItemCard
+                            key={`custom-${item.description}-${index}`}
+                            item={item}
+                            index={index}
+                            onRemove={removeCustomItem}
+                          />
+                        ))}
+                        
+                        <div className="border-t pt-4">
+                          <div className="text-center text-gray-600">
+                            <span>Prix calculé après validation des informations</span>
+                          </div>
+                        </div>
+                        
+                        <Button
+                          onClick={() => {
+                            setIsPhotoQuote(false);
+                            setCurrentStep('quote-form');
+                          }}
+                          className="w-full bg-teal-600 hover:bg-teal-700 mt-4"
+                        >
+                          Continuer
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Niveau 2 : Si nous avons sous-catégorie mais pas sous-sous-catégorie, afficher les sous-sous-catégories 
+    if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory) {
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              <div className="lg:col-span-3">
+                <div className="flex items-center justify-between mb-8">
+                  <Button
+                    onClick={() => {
+                      setSelectedABCDSubcategory(null);
+                    }}
+                    variant="outline"
+                    className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Retour aux sous-catégories
+                  </Button>
+                </div>
+
+                <div className="mb-8">
+                  <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                    <div className="text-2xl mr-3">{selectedABCDCategory.icon}</div>
+                    <div>
+                      <div className="font-bold">{selectedABCDCategory.name}</div>
+                      <div className="text-sm opacity-90">→ {selectedABCDSubcategory}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                    Choisissez le type d'objet
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {(() => {
+                      const mapping = getABCDCategoryMapping(selectedABCDCategory.id);
+                      if (!mapping) return null;
+                      
+                      const subSubcategories = Object.keys(mapping.subcategoryMapping[selectedABCDSubcategory] || {});
+                      
+                      return subSubcategories.map((subSubcategoryName) => {
+                        // Calculer le nombre d'articles pour chaque sous-sous-catégorie
+                        const articles = getABCDCategoryArticles(selectedABCDCategory.id, selectedABCDSubcategory, subSubcategoryName);
+                        const articleCount = articles.length;
+
+                        const subSubcategoryIcons = {
+                          'Literie': '🛏️',
+                          'Canapés': '🛋️',
+                          'Fauteuils': '🪑',
+                          'Tables': '🍽️',
+                          'Assises': '🪑',
+                          'Tous les rangements': '🗄️',
+                          'Tous les accessoires': '🎨',
+                          'Tous les électroménagers': '⚡',
+                          'Tout le mobilier jardin': '🪴',
+                          'Tout jardin & extérieur': '🌿',
+                          'Tout bricolage & matériaux': '🔧',
+                          'Électroménager froid': '🧊',
+                          'Électroménager cuisson': '🔥',
+                          'Électroménager lavage': '🌊',
+                          'Tout multimédia': '📺',
+                          'Toute la décoration': '🖼️',
+                          'Tout sport & loisirs': '⚽',
+                          'Tous les autres objets': '📦'
+                        };
+                        
+                        return (
+                          <Card key={subSubcategoryName} 
+                                className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
+                                onClick={() => {
+                                  setSelectedABCDSubSubcategory(subSubcategoryName);
+                                }}>
+                            <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
+                              <div className="text-3xl mb-3">{subSubcategoryIcons[subSubcategoryName] || '📦'}</div>
+                              <h4 className="font-bold text-lg mb-2">{subSubcategoryName}</h4>
+                              <div className="text-sm opacity-90">{articleCount} articles</div>
+                            </CardContent>
+                          </Card>
+                        );
+                      });
+                    })()}
+                  </div>
+                </div>
+
+                <CustomItemInput onAddCustomItem={addCustomItem} />
+              </div>
+
+              {/* Right side - Selection Summary */}
+              <div className="lg:col-span-1">
+                <Card className="sticky top-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <List className="mr-2 h-5 w-5" />
+                      Ma liste ({selectedItems.length + customItems.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {selectedItems.length === 0 && customItems.length === 0 ? (
+                      <p className="text-gray-500 text-center py-8">
+                        Aucun article sélectionné
+                      </p>
+                    ) : (
+                      <div className="space-y-4">
+                        {selectedItems.map((item, index) => (
+                          <SelectionItem
+                            key={`selected-${item.article_id}-${index}`}
+                            item={item}
+                            index={index}
+                            onUpdateQuantity={updateItemQuantity}
+                            onRemove={removeFromSelection}
+                            onToggleDismantling={toggleDismantling}
+                          />
+                        ))}
+                        
                         {customItems.map((item, index) => (
                           <CustomItemCard
                             key={`custom-${item.description}-${index}`}
@@ -4459,10 +4596,11 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Si nous avons une sous-catégorie, afficher les articles
+    // Niveau 3 : Afficher les articles finaux
     const availableArticles = getABCDCategoryArticles(
       selectedABCDCategory?.id, 
-      selectedABCDSubcategory
+      selectedABCDSubcategory,
+      selectedABCDSubSubcategory
     );
 
     return (
