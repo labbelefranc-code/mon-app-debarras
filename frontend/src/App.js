@@ -2944,7 +2944,6 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                     Annuler
                   </Button>
                   <Button
-                    onClick={() => {
                     onClick={async () => {
                       try {
                         // Convert static item data to proper article format and save
@@ -2964,7 +2963,7 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                         console.error('Erreur:', error);
                         alert('Erreur lors de l\'ajout de l\'article');
                       }
-                    }}}
+                    }}
                     className="bg-green-600 hover:bg-green-700"
                   >
                     Sauvegarder
