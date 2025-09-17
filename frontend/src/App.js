@@ -4429,12 +4429,20 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Button
-                onClick={() => setCurrentStep(selectedABCDCategory?.subcategories.length > 0 ? 'abcd-subcategories' : 'abcd-categories')}
+                onClick={() => {
+                  if (selectedABCDSubcategory) {
+                    // Si on est dans les articles, retourner aux sous-catégories
+                    setSelectedABCDSubcategory(null);
+                  } else {
+                    // Sinon retourner aux catégories ABCD
+                    setCurrentStep('abcd-categories');
+                  }
+                }}
                 variant="outline"
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Retour
+                {selectedABCDSubcategory ? 'Retour aux sous-catégories' : 'Retour aux catégories'}
               </Button>
             </div>
 
