@@ -1435,6 +1435,232 @@ def test_urgent_article_creation_issue():
         print(f"\n⚠️  BACKEND NEEDS IMMEDIATE ATTENTION")
         return 1
 
+def test_data_corruption_analysis():
+    """URGENT: Analyze data corruption issue - articles appearing in wrong categories"""
+    print("🚨 DATA CORRUPTION ANALYSIS")
+    print("=" * 70)
+    print("🎯 USER REPORT: Articles added in 'mobilier literie' appear in 'jardin' section")
+    print("📝 ISSUE: All articles seem to have category_id 'exterieur_jardin'")
+    print("🔍 ANALYSIS: Check current database state and category mappings")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    analysis_results = {
+        'total_articles': 0,
+        'category_distribution': {},
+        'articles_by_category': {},
+        'categories_available': {},
+        'corruption_detected': False,
+        'issues_found': []
+    }
+    
+    # Step 1: Authenticate admin
+    print(f"\n🔐 Step 1: Admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ CRITICAL: Admin authentication failed!")
+        return analysis_results
+    print("✅ Admin authentication successful")
+    
+    # Step 2: Get all categories to understand the structure
+    print(f"\n📁 Step 2: Analyzing category structure...")
+    success_cats, categories = tester.test_get_categories()
+    if success_cats:
+        print(f"   Found {len(categories)} categories in database:")
+        for cat in categories:
+            cat_id = cat.get('id', 'unknown')
+            cat_name = cat.get('name', 'Unknown')
+            analysis_results['categories_available'][cat_id] = cat_name
+            print(f"   - {cat_id}: {cat_name}")
+    else:
+        print("❌ Could not retrieve categories")
+        analysis_results['issues_found'].append("Cannot retrieve categories")
+        return analysis_results
+    
+    # Step 3: Get all articles and analyze their category assignments
+    print(f"\n📄 Step 3: Analyzing all articles and their category assignments...")
+    success_arts, articles = tester.test_get_articles()
+    if success_arts:
+        analysis_results['total_articles'] = len(articles)
+        print(f"   Found {len(articles)} articles in database")
+        
+        if len(articles) == 0:
+            print("   ⚠️  Database is empty - no articles to analyze")
+            return analysis_results
+        
+        # Analyze category distribution
+        for article in articles:
+            article_id = article.get('id', 'unknown')
+            article_name = article.get('name', 'Unknown')
+            category_id = article.get('category_id', 'unknown')
+            
+            # Count articles per category
+            if category_id not in analysis_results['category_distribution']:
+                analysis_results['category_distribution'][category_id] = 0
+                analysis_results['articles_by_category'][category_id] = []
+            
+            analysis_results['category_distribution'][category_id] += 1
+            analysis_results['articles_by_category'][category_id].append({
+                'id': article_id,
+                'name': article_name,
+                'base_price': article.get('base_price', 0),
+                'materials': article.get('materials', [])
+            })
+        
+        # Print category distribution analysis
+        print(f"\n📊 CATEGORY DISTRIBUTION ANALYSIS:")
+        for category_id, count in analysis_results['category_distribution'].items():
+            category_name = analysis_results['categories_available'].get(category_id, 'UNKNOWN CATEGORY')
+            print(f"   {category_id} ({category_name}): {count} articles")
+        
+        # Check for corruption indicators
+        print(f"\n🔍 CORRUPTION ANALYSIS:")
+        
+        # Check if all articles have the same category_id
+        unique_categories = set(analysis_results['category_distribution'].keys())
+        if len(unique_categories) == 1:
+            single_category = list(unique_categories)[0]
+            analysis_results['corruption_detected'] = True
+            analysis_results['issues_found'].append(f"ALL ARTICLES HAVE SAME CATEGORY: {single_category}")
+            print(f"   🚨 CORRUPTION DETECTED: All {len(articles)} articles have category_id '{single_category}'")
+            
+            if single_category == 'exterieur_jardin':
+                print(f"   🚨 CONFIRMED: All articles assigned to 'exterieur_jardin' as reported by user")
+                analysis_results['issues_found'].append("All articles incorrectly assigned to exterieur_jardin")
+        
+        # Check for 'exterieur_jardin' dominance
+        exterieur_count = analysis_results['category_distribution'].get('exterieur_jardin', 0)
+        if exterieur_count > 0:
+            percentage = (exterieur_count / len(articles)) * 100
+            print(f"   📈 'exterieur_jardin' contains {exterieur_count}/{len(articles)} articles ({percentage:.1f}%)")
+            
+            if percentage > 80:
+                analysis_results['corruption_detected'] = True
+                analysis_results['issues_found'].append(f"Excessive articles in exterieur_jardin: {percentage:.1f}%")
+                print(f"   🚨 SUSPICIOUS: {percentage:.1f}% of articles in 'exterieur_jardin' category")
+        
+        # List all articles with their details
+        print(f"\n📋 DETAILED ARTICLE LISTING:")
+        for i, article in enumerate(articles, 1):
+            article_name = article.get('name', 'Unknown')
+            category_id = article.get('category_id', 'unknown')
+            category_name = analysis_results['categories_available'].get(category_id, 'UNKNOWN')
+            base_price = article.get('base_price', 0)
+            materials = article.get('materials', [])
+            
+            print(f"   {i}. {article_name}")
+            print(f"      Category: {category_id} ({category_name})")
+            print(f"      Price: {base_price}€")
+            print(f"      Materials: {materials}")
+            print(f"      ID: {article.get('id', 'unknown')}")
+            print()
+        
+    else:
+        print("❌ Could not retrieve articles")
+        analysis_results['issues_found'].append("Cannot retrieve articles")
+        return analysis_results
+    
+    # Step 4: Test article creation to see if new articles get wrong category
+    print(f"\n🧪 Step 4: Testing article creation to identify category assignment issue...")
+    
+    # Test creating article in different categories
+    test_categories = ['mobilier', 'assises', 'tables', 'lits_couchage']
+    
+    for test_cat in test_categories:
+        if test_cat in analysis_results['categories_available']:
+            print(f"\n   Testing article creation in category '{test_cat}'...")
+            
+            test_article = {
+                "name": f"Test Article for {test_cat}",
+                "category_id": test_cat,
+                "base_price": 50.0,
+                "materials": ["test"],
+                "description": f"Test article for category {test_cat}",
+                "requires_dismantling": False
+            }
+            
+            success_create, article_id = tester.test_create_article(test_article)
+            
+            if success_create and article_id:
+                # Immediately check what category it was actually assigned
+                success_check, created_article = tester.run_test(
+                    f"Check Created Article Category", 
+                    "GET", 
+                    f"articles/{article_id}", 
+                    200
+                )
+                
+                if success_check:
+                    actual_category = created_article.get('category_id')
+                    if actual_category == test_cat:
+                        print(f"   ✅ Article correctly assigned to '{test_cat}'")
+                    else:
+                        print(f"   🚨 CORRUPTION: Article intended for '{test_cat}' assigned to '{actual_category}'")
+                        analysis_results['corruption_detected'] = True
+                        analysis_results['issues_found'].append(f"Article creation assigns wrong category: {test_cat} -> {actual_category}")
+                
+                # Clean up test article
+                tester.test_delete_article(article_id)
+            else:
+                print(f"   ❌ Could not create test article for category '{test_cat}'")
+            
+            break  # Only test one category for now
+    
+    # Step 5: Check specific categories mentioned by user
+    print(f"\n🎯 Step 5: Checking specific categories mentioned by user...")
+    
+    # Check 'mobilier literie' related categories
+    mobilier_categories = ['mobilier', 'lits_couchage']  # Categories related to bedroom furniture
+    jardin_categories = ['exterieur_jardin', 'mobilier_detente']  # Garden categories
+    
+    print(f"\n   MOBILIER/LITERIE CATEGORIES:")
+    for cat_id in mobilier_categories:
+        if cat_id in analysis_results['articles_by_category']:
+            articles_in_cat = analysis_results['articles_by_category'][cat_id]
+            print(f"   - {cat_id}: {len(articles_in_cat)} articles")
+            for art in articles_in_cat[:3]:  # Show first 3
+                print(f"     * {art['name']} - {art['base_price']}€")
+        else:
+            print(f"   - {cat_id}: 0 articles")
+    
+    print(f"\n   JARDIN CATEGORIES:")
+    for cat_id in jardin_categories:
+        if cat_id in analysis_results['articles_by_category']:
+            articles_in_cat = analysis_results['articles_by_category'][cat_id]
+            print(f"   - {cat_id}: {len(articles_in_cat)} articles")
+            for art in articles_in_cat[:5]:  # Show first 5
+                print(f"     * {art['name']} - {art['base_price']}€")
+                # Check if this looks like bedroom furniture
+                if any(keyword in art['name'].lower() for keyword in ['lit', 'matelas', 'mobilier', 'chambre']):
+                    print(f"       🚨 SUSPICIOUS: This looks like bedroom furniture in garden category!")
+                    analysis_results['corruption_detected'] = True
+                    analysis_results['issues_found'].append(f"Bedroom furniture in garden category: {art['name']}")
+        else:
+            print(f"   - {cat_id}: 0 articles")
+    
+    # Final analysis summary
+    print(f"\n📊 FINAL ANALYSIS SUMMARY:")
+    print(f"   Total articles analyzed: {analysis_results['total_articles']}")
+    print(f"   Categories with articles: {len(analysis_results['category_distribution'])}")
+    print(f"   Corruption detected: {'YES' if analysis_results['corruption_detected'] else 'NO'}")
+    print(f"   Issues found: {len(analysis_results['issues_found'])}")
+    
+    if analysis_results['issues_found']:
+        print(f"\n🚨 ISSUES IDENTIFIED:")
+        for i, issue in enumerate(analysis_results['issues_found'], 1):
+            print(f"   {i}. {issue}")
+    
+    if analysis_results['corruption_detected']:
+        print(f"\n🎯 RECOMMENDATIONS:")
+        print(f"   1. Check frontend article creation code for hardcoded category_id")
+        print(f"   2. Verify admin interface sends correct category_id to backend")
+        print(f"   3. Check if backend article creation endpoint respects category_id parameter")
+        print(f"   4. Consider data migration to fix existing corrupted articles")
+    else:
+        print(f"\n✅ NO CORRUPTION DETECTED - Database appears to be in good state")
+    
+    return analysis_results
+
 if __name__ == "__main__":
     # Check if specific test mode is requested
     import sys
@@ -1445,5 +1671,11 @@ if __name__ == "__main__":
             sys.exit(test_specific_article_creation_issue())
         elif sys.argv[1] == "urgent":
             sys.exit(test_urgent_article_creation_issue())
+        elif sys.argv[1] == "corruption":
+            results = test_data_corruption_analysis()
+            if results['corruption_detected']:
+                sys.exit(1)
+            else:
+                sys.exit(0)
     else:
         sys.exit(main())
