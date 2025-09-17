@@ -4244,11 +4244,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   );
 
   const ABCDObjectsPage = () => {
-    console.log('🎯 ABCDObjectsPage rendering with:', {
-      selectedABCDCategory,
-      selectedABCDSubcategory
-    });
-    
     // Si nous avons une catégorie mais pas de sous-catégorie, afficher les sous-catégories d'abord
     if (selectedABCDCategory && !selectedABCDSubcategory) {
       // Afficher les sous-catégories pour navigation hiérarchique
