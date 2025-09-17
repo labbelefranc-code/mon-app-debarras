@@ -725,22 +725,16 @@ const getArticlesFromAdminStructures = () => {
   };
 
   // Traiter MOBILIER_ADMIN_STRUCTURE -> Catégorie A
-  console.log('🏠 Processing MOBILIER_ADMIN_STRUCTURE:', MOBILIER_ADMIN_STRUCTURE);
   processCategory(MOBILIER_ADMIN_STRUCTURE, 'mobilier', 30);
 
   // Traiter JARDIN_ADMIN_STRUCTURE -> Catégorie B
-  console.log('🌿 Processing JARDIN_ADMIN_STRUCTURE:', JARDIN_ADMIN_STRUCTURE);
   processCategory(JARDIN_ADMIN_STRUCTURE, 'exterieur_jardin', 25);
 
   // Traiter MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE -> Catégorie C
-  console.log('⚡ Processing MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE:', MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE);
   processCategory(MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE, 'electromenager_gros', 35);
 
   // Traiter DIVERS_ADMIN_STRUCTURE -> Catégorie D
-  console.log('📦 Processing DIVERS_ADMIN_STRUCTURE:', DIVERS_ADMIN_STRUCTURE);
   processCategory(DIVERS_ADMIN_STRUCTURE, 'divers', 20);
-
-  console.log('🎯 Total articles generated:', allArticles.length);
 
   return allArticles;
 };
