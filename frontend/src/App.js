@@ -2300,19 +2300,25 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
                     Annuler
                   </Button>
                   <Button
-                    onClick={() => {
-                      // Convert static item data to proper article format and save
-                      const articleData = {
-                        name: editingItem.name,
-                        category_id: 'multimedia_electrique', // Category for multimedia/electrique
-                        base_price: 0, // Default price
-                        materials: editingItem.materials || [],
-                        description: editingItem.note || '',
-                        requires_dismantling: false
-                      };
-                      
-                      createArticle(articleData);
-                      setEditingItem(null);
+                    onClick={async () => {
+                      try {
+                        // Convert static item data to proper article format and save
+                        const articleData = {
+                          name: editingItem.name,
+                          category_id: 'multimedia_electrique', // Category for multimedia/electrique
+                          base_price: 0, // Default price
+                          materials: editingItem.materials || [],
+                          description: editingItem.note || '',
+                          requires_dismantling: false
+                        };
+                        
+                        await createArticle(articleData);
+                        setEditingItem(null);
+                        alert('Article ajouté avec succès !');
+                      } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Erreur lors de l\'ajout de l\'article');
+                      }
                     }}
                     className="bg-yellow-600 hover:bg-yellow-700"
                   >
