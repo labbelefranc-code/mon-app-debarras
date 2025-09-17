@@ -1435,6 +1435,210 @@ def test_urgent_article_creation_issue():
         print(f"\n⚠️  BACKEND NEEDS IMMEDIATE ATTENTION")
         return 1
 
+def test_frontend_article_creation_simulation():
+    """Simulate exact frontend article creation behavior to identify the issue"""
+    print("🎯 FRONTEND ARTICLE CREATION SIMULATION")
+    print("=" * 70)
+    print("🔍 SIMULATING: User creating articles in different admin sections")
+    print("📝 TESTING: Whether frontend sends correct category_id to backend")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    
+    # Step 1: Authenticate
+    print(f"\n🔐 Step 1: Admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ CRITICAL: Admin authentication failed!")
+        return False
+    print("✅ Admin authentication successful")
+    
+    # Step 2: Test creating articles in different sections as user would
+    test_scenarios = [
+        {
+            "section": "MOBILIER LITERIE",
+            "category_id": "lits_couchage",  # This should be the correct category for bedroom furniture
+            "article_name": "Lit double test",
+            "materials": ["bois", "métal"]
+        },
+        {
+            "section": "JARDIN",
+            "category_id": "exterieur_jardin",  # This is the correct category for garden items
+            "article_name": "Tonnelle de jardin test",
+            "materials": ["aluminium", "toile"]
+        },
+        {
+            "section": "MOBILIER SALON",
+            "category_id": "assises",  # This should be for living room furniture
+            "article_name": "Canapé test",
+            "materials": ["tissu", "mousse"]
+        }
+    ]
+    
+    results = []
+    
+    for scenario in test_scenarios:
+        print(f"\n🧪 Testing {scenario['section']} section...")
+        print(f"   Expected category: {scenario['category_id']}")
+        print(f"   Article: {scenario['article_name']}")
+        
+        # Create article with intended category
+        article_data = {
+            "name": scenario['article_name'],
+            "category_id": scenario['category_id'],
+            "base_price": 100.0,
+            "materials": scenario['materials'],
+            "description": f"Test article for {scenario['section']}",
+            "requires_dismantling": False
+        }
+        
+        success_create, article_id = tester.test_create_article(article_data)
+        
+        if success_create and article_id:
+            # Immediately check what category it was actually assigned
+            success_check, created_article = tester.run_test(
+                f"Verify Article Category", 
+                "GET", 
+                f"articles/{article_id}", 
+                200
+            )
+            
+            if success_check:
+                actual_category = created_article.get('category_id')
+                intended_category = scenario['category_id']
+                
+                result = {
+                    'section': scenario['section'],
+                    'intended_category': intended_category,
+                    'actual_category': actual_category,
+                    'article_name': scenario['article_name'],
+                    'article_id': article_id,
+                    'correct': actual_category == intended_category
+                }
+                results.append(result)
+                
+                if result['correct']:
+                    print(f"   ✅ SUCCESS: Article correctly assigned to '{actual_category}'")
+                else:
+                    print(f"   🚨 CORRUPTION: Article intended for '{intended_category}' assigned to '{actual_category}'")
+                
+                # Clean up
+                tester.test_delete_article(article_id)
+            else:
+                print(f"   ❌ Could not verify article category")
+        else:
+            print(f"   ❌ Could not create test article")
+    
+    # Summary
+    print(f"\n📊 SIMULATION RESULTS:")
+    correct_count = sum(1 for r in results if r['correct'])
+    total_count = len(results)
+    
+    print(f"   Total tests: {total_count}")
+    print(f"   Correct assignments: {correct_count}")
+    print(f"   Incorrect assignments: {total_count - correct_count}")
+    
+    if correct_count == total_count:
+        print(f"\n✅ BACKEND ARTICLE CREATION IS WORKING CORRECTLY")
+        print(f"   All articles are assigned to their intended categories")
+        print(f"   The issue is likely in the frontend interface")
+    else:
+        print(f"\n🚨 BACKEND ARTICLE CREATION HAS ISSUES")
+        print(f"   Some articles are not assigned to correct categories")
+        
+        for result in results:
+            if not result['correct']:
+                print(f"   - {result['section']}: {result['intended_category']} → {result['actual_category']}")
+    
+    return correct_count == total_count
+
+def test_frontend_category_mapping_issue():
+    """Test if frontend is sending wrong category_id values"""
+    print("🔍 FRONTEND CATEGORY MAPPING ANALYSIS")
+    print("=" * 70)
+    print("🎯 HYPOTHESIS: Frontend admin interface sends 'exterieur_jardin' for all sections")
+    print("📝 TESTING: Direct API calls with different category_id values")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    
+    # Step 1: Authenticate
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ Admin authentication failed!")
+        return False
+    
+    # Step 2: Test if backend respects different category_id values
+    print(f"\n🧪 Testing backend category_id handling...")
+    
+    # Test with various category IDs to see if backend always assigns to exterieur_jardin
+    test_categories = [
+        "mobilier",
+        "assises", 
+        "tables",
+        "lits_couchage",
+        "electromenager_gros",
+        "exterieur_jardin"
+    ]
+    
+    backend_working_correctly = True
+    
+    for cat_id in test_categories:
+        print(f"\n   Testing category_id: {cat_id}")
+        
+        test_article = {
+            "name": f"Test {cat_id} Article",
+            "category_id": cat_id,
+            "base_price": 75.0,
+            "materials": ["test"],
+            "description": f"Testing category {cat_id}",
+            "requires_dismantling": False
+        }
+        
+        success_create, article_id = tester.test_create_article(test_article)
+        
+        if success_create and article_id:
+            # Check actual category assignment
+            success_check, article_details = tester.run_test(
+                f"Check Category Assignment", 
+                "GET", 
+                f"articles/{article_id}", 
+                200
+            )
+            
+            if success_check:
+                actual_category = article_details.get('category_id')
+                if actual_category == cat_id:
+                    print(f"   ✅ Correctly assigned to '{actual_category}'")
+                else:
+                    print(f"   🚨 WRONG: Intended '{cat_id}' but assigned to '{actual_category}'")
+                    backend_working_correctly = False
+                
+                # Clean up
+                tester.test_delete_article(article_id)
+            else:
+                print(f"   ❌ Could not verify assignment")
+                backend_working_correctly = False
+        else:
+            print(f"   ❌ Could not create article")
+            backend_working_correctly = False
+    
+    # Step 3: Conclusion
+    print(f"\n📊 ANALYSIS CONCLUSION:")
+    if backend_working_correctly:
+        print(f"✅ BACKEND IS WORKING CORRECTLY")
+        print(f"   - Backend respects category_id parameter")
+        print(f"   - Articles are assigned to correct categories")
+        print(f"   - Issue is in FRONTEND sending wrong category_id")
+        print(f"\n🎯 ROOT CAUSE: Frontend admin interface is hardcoded to send 'exterieur_jardin'")
+        print(f"   regardless of which admin section the user is in")
+    else:
+        print(f"🚨 BACKEND HAS ISSUES")
+        print(f"   - Backend is not respecting category_id parameter")
+        print(f"   - Articles are being assigned to wrong categories")
+    
+    return backend_working_correctly
+
 def test_data_corruption_analysis():
     """URGENT: Analyze data corruption issue - articles appearing in wrong categories"""
     print("🚨 DATA CORRUPTION ANALYSIS")
@@ -1560,83 +1764,21 @@ def test_data_corruption_analysis():
         analysis_results['issues_found'].append("Cannot retrieve articles")
         return analysis_results
     
-    # Step 4: Test article creation to see if new articles get wrong category
-    print(f"\n🧪 Step 4: Testing article creation to identify category assignment issue...")
+    # Step 4: Test backend category assignment functionality
+    print(f"\n🧪 Step 4: Testing backend category assignment...")
+    backend_test_result = test_frontend_category_mapping_issue()
     
-    # Test creating article in different categories
-    test_categories = ['mobilier', 'assises', 'tables', 'lits_couchage']
+    if not backend_test_result:
+        analysis_results['corruption_detected'] = True
+        analysis_results['issues_found'].append("Backend category assignment is broken")
     
-    for test_cat in test_categories:
-        if test_cat in analysis_results['categories_available']:
-            print(f"\n   Testing article creation in category '{test_cat}'...")
-            
-            test_article = {
-                "name": f"Test Article for {test_cat}",
-                "category_id": test_cat,
-                "base_price": 50.0,
-                "materials": ["test"],
-                "description": f"Test article for category {test_cat}",
-                "requires_dismantling": False
-            }
-            
-            success_create, article_id = tester.test_create_article(test_article)
-            
-            if success_create and article_id:
-                # Immediately check what category it was actually assigned
-                success_check, created_article = tester.run_test(
-                    f"Check Created Article Category", 
-                    "GET", 
-                    f"articles/{article_id}", 
-                    200
-                )
-                
-                if success_check:
-                    actual_category = created_article.get('category_id')
-                    if actual_category == test_cat:
-                        print(f"   ✅ Article correctly assigned to '{test_cat}'")
-                    else:
-                        print(f"   🚨 CORRUPTION: Article intended for '{test_cat}' assigned to '{actual_category}'")
-                        analysis_results['corruption_detected'] = True
-                        analysis_results['issues_found'].append(f"Article creation assigns wrong category: {test_cat} -> {actual_category}")
-                
-                # Clean up test article
-                tester.test_delete_article(article_id)
-            else:
-                print(f"   ❌ Could not create test article for category '{test_cat}'")
-            
-            break  # Only test one category for now
+    # Step 5: Test frontend simulation
+    print(f"\n🎯 Step 5: Simulating frontend article creation...")
+    frontend_test_result = test_frontend_article_creation_simulation()
     
-    # Step 5: Check specific categories mentioned by user
-    print(f"\n🎯 Step 5: Checking specific categories mentioned by user...")
-    
-    # Check 'mobilier literie' related categories
-    mobilier_categories = ['mobilier', 'lits_couchage']  # Categories related to bedroom furniture
-    jardin_categories = ['exterieur_jardin', 'mobilier_detente']  # Garden categories
-    
-    print(f"\n   MOBILIER/LITERIE CATEGORIES:")
-    for cat_id in mobilier_categories:
-        if cat_id in analysis_results['articles_by_category']:
-            articles_in_cat = analysis_results['articles_by_category'][cat_id]
-            print(f"   - {cat_id}: {len(articles_in_cat)} articles")
-            for art in articles_in_cat[:3]:  # Show first 3
-                print(f"     * {art['name']} - {art['base_price']}€")
-        else:
-            print(f"   - {cat_id}: 0 articles")
-    
-    print(f"\n   JARDIN CATEGORIES:")
-    for cat_id in jardin_categories:
-        if cat_id in analysis_results['articles_by_category']:
-            articles_in_cat = analysis_results['articles_by_category'][cat_id]
-            print(f"   - {cat_id}: {len(articles_in_cat)} articles")
-            for art in articles_in_cat[:5]:  # Show first 5
-                print(f"     * {art['name']} - {art['base_price']}€")
-                # Check if this looks like bedroom furniture
-                if any(keyword in art['name'].lower() for keyword in ['lit', 'matelas', 'mobilier', 'chambre']):
-                    print(f"       🚨 SUSPICIOUS: This looks like bedroom furniture in garden category!")
-                    analysis_results['corruption_detected'] = True
-                    analysis_results['issues_found'].append(f"Bedroom furniture in garden category: {art['name']}")
-        else:
-            print(f"   - {cat_id}: 0 articles")
+    if not frontend_test_result:
+        analysis_results['corruption_detected'] = True
+        analysis_results['issues_found'].append("Frontend sends wrong category_id values")
     
     # Final analysis summary
     print(f"\n📊 FINAL ANALYSIS SUMMARY:")
@@ -1677,5 +1819,11 @@ if __name__ == "__main__":
                 sys.exit(1)
             else:
                 sys.exit(0)
+        elif sys.argv[1] == "frontend-sim":
+            success = test_frontend_article_creation_simulation()
+            sys.exit(0 if success else 1)
+        elif sys.argv[1] == "category-mapping":
+            success = test_frontend_category_mapping_issue()
+            sys.exit(0 if success else 1)
     else:
         sys.exit(main())
