@@ -4815,6 +4815,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           adminAuth={adminAuth}
           setCurrentStep={setCurrentStep}
           setIsAdminMode={setIsAdminMode}
+          loadAdminData={loadAdminData}
         />;
       case 'admin-multimedia-electrique':
         return <ModernAdminMultimediaElectriqueePage 
