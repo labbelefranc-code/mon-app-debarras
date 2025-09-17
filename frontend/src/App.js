@@ -765,20 +765,28 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
   return mappings[abcdCategoryId] || null;
 };
 
-const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
+const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubcategoryName = null) => {
   const mapping = getABCDCategoryMapping(abcdCategoryId);
   if (!mapping) return [];
 
   const { structure, subcategoryMapping } = mapping;
   let allArticles = [];
 
-  // Si aucune sous-catégorie spécifiée, retourner un résumé
+  // Si aucune sous-catégorie spécifiée, retourner vide
   if (!subcategoryName) {
     return [];
   }
 
-  // Récupérer les articles pour la sous-catégorie spécifiée
-  const relevantMappings = subcategoryMapping[subcategoryName] || [];
+  // Si aucune sous-sous-catégorie spécifiée, retourner vide (on veut forcer la navigation à 3 niveaux)
+  if (!subSubcategoryName) {
+    return [];
+  }
+
+  // Récupérer les articles pour la sous-sous-catégorie spécifiée
+  const subcategoryData = subcategoryMapping[subcategoryName];
+  if (!subcategoryData) return [];
+
+  const relevantMappings = subcategoryData[subSubcategoryName] || [];
   
   relevantMappings.forEach(({ categoryKey, subcategoryKey }) => {
     const category = structure.categories[categoryKey];
