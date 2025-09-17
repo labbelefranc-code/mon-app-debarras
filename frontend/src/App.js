@@ -4394,25 +4394,49 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {currentStructure.categories && Object.entries(currentStructure.categories).map(([key, category]) => {
-                      // Compter les articles dans cette catégorie
-                      const articleCount = category.items ? category.items.length : 
-                        (category.subcategories ? Object.values(category.subcategories).reduce((sum, subcat) => sum + (subcat.items?.length || 0), 0) : 0);
+                    {(() => {
+                      // Récupérer les sous-catégories ABCD appropriées
+                      const mapping = getABCDCategoryMapping(selectedABCDCategory.id);
+                      if (!mapping) return null;
                       
-                      return (
-                        <Card key={key} className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
-                              onClick={() => {
-                                setSelectedABCDSubcategory(category.name);
-                                // Remain on the same page to show articles
-                              }}>
-                          <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
-                            <div className="text-3xl mb-3">{category.icon}</div>
-                            <h4 className="font-bold text-lg mb-2">{category.name}</h4>
-                            <div className="text-sm opacity-90">{articleCount} articles</div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                      const subcategories = Object.keys(mapping.subcategoryMapping);
+                      
+                      return subcategories.map((subcategoryName) => {
+                        // Compter les articles dans cette sous-catégorie
+                        const articles = getABCDCategoryArticles(selectedABCDCategory.id, subcategoryName);
+                        const articleCount = articles.length;
+
+                        // Définir une icône pour chaque sous-catégorie
+                        const subcategoryIcons = {
+                          'Literie / Canapés / Fauteuils': '🛏️',
+                          'Tables et assises': '🪑', 
+                          'Rangements': '🗄️',
+                          'Décorations & accessoires': '🎨',
+                          'Électroménager': '⚡',
+                          'Mobilier de jardin et contenants': '🪴',
+                          'Jardin & extérieur': '🌿',
+                          'Bricolage, matériaux & énergie': '🔧',
+                          'Multimédia & électronique': '📺',
+                          'Décoration': '🖼️',
+                          'Sport & loisirs': '⚽',
+                          'Autres objets': '📦'
+                        };
+                        
+                        return (
+                          <Card key={subcategoryName} 
+                                className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
+                                onClick={() => {
+                                  setSelectedABCDSubcategory(subcategoryName);
+                                }}>
+                            <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
+                              <div className="text-3xl mb-3">{subcategoryIcons[subcategoryName] || '📦'}</div>
+                              <h4 className="font-bold text-lg mb-2">{subcategoryName}</h4>
+                              <div className="text-sm opacity-90">{articleCount} articles</div>
+                            </CardContent>
+                          </Card>
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
 
