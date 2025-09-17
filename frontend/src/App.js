@@ -664,15 +664,12 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       structure: MOBILIER_ADMIN_STRUCTURE,
       subcategoryMapping: {
         'Literie / Canapés / Fauteuils': [
-          { categoryKey: 'lits_couchage', subcategoryKey: null }, // Toute la catégorie lits_couchage
-          { categoryKey: 'salon_et_assises', subcategoryKey: 'canapes_banquettes' },
-          { categoryKey: 'salon_et_assises', subcategoryKey: 'fauteuils_salon' }
+          { categoryKey: 'literie', subcategoryKey: null }, // Toute la catégorie literie
+          { categoryKey: 'canape_fauteuils', subcategoryKey: null } // Toute la catégorie canapé/fauteuils
         ],
         'Tables et assises': [
           { categoryKey: 'tables', subcategoryKey: null }, // Toute la catégorie tables
-          { categoryKey: 'assises', subcategoryKey: 'chaises' },
-          { categoryKey: 'assises', subcategoryKey: 'fauteuils_assises' },
-          { categoryKey: 'assises', subcategoryKey: 'banc_divers' }
+          { categoryKey: 'assises', subcategoryKey: null } // Toute la catégorie assises
         ],
         'Rangements': [
           { categoryKey: 'meubles_rangement', subcategoryKey: null }
