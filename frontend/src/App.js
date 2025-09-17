@@ -4272,11 +4272,18 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   );
 
   const ABCDObjectsPage = () => {
+    console.log('🎯 ABCDObjectsPage rendering with:', {
+      selectedABCDCategory,
+      selectedABCDSubcategory
+    });
+    
     // Récupérer les articles pour la catégorie et sous-catégorie sélectionnées
     const availableArticles = getABCDCategoryArticles(
       selectedABCDCategory?.id, 
       selectedABCDSubcategory
     );
+
+    console.log('📦 Available articles for display:', availableArticles);
 
     return (
     <div className="min-h-screen bg-gray-50">
