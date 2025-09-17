@@ -2314,6 +2314,7 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
                         };
                         
                         await createArticle(articleData);
+                        await loadAdminData(); // Refresh the article list
                         setEditingItem(null);
                         alert('Article ajouté avec succès !');
                       } catch (error) {
