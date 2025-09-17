@@ -4269,15 +4269,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     // Si nous avons une catégorie mais pas de sous-catégorie, afficher les sous-catégories d'abord
     if (selectedABCDCategory && !selectedABCDSubcategory) {
       // Afficher les sous-catégories pour navigation hiérarchique
-      const adminStructures = {
-        'A': MOBILIER_ADMIN_STRUCTURE,
-        'B': JARDIN_ADMIN_STRUCTURE, 
-        'C': MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE,
-        'D': DIVERS_ADMIN_STRUCTURE
-      };
-      
-      const currentStructure = adminStructures[selectedABCDCategory.id];
-      
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
