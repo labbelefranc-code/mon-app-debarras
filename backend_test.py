@@ -1213,6 +1213,272 @@ def test_specific_article_creation_issue():
         print(f"   This indicates a backend issue with POST /api/admin/articles")
         return 1
 
+def test_jardin_admin_interface():
+    """Test the restored Jardin administration interface functionality"""
+    print("🌳 TESTING JARDIN ADMINISTRATION INTERFACE")
+    print("=" * 70)
+    print("🎯 TASK: Test restored Jardin admin interface with hierarchical structure")
+    print("📝 REQUIREMENTS:")
+    print("   1. Test navigation to Jardin section from admin dropdown")
+    print("   2. Test hierarchical structure display (3 main categories)")
+    print("   3. Test navigation within categories to see articles")
+    print("   4. Test 'Ajouter un nouvel article' with correct category_id")
+    print("   5. Test data consistency - articles saved with correct category_id")
+    print("🔐 Using admin credentials: labbelefranc@gmail.com / admin06")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    results = {
+        'auth_working': False,
+        'categories_structure': False,
+        'jardin_categories': [],
+        'article_creation': False,
+        'data_consistency': False,
+        'created_articles': [],
+        'errors': []
+    }
+    
+    # Step 1: Test admin authentication
+    print(f"\n🔐 Step 1: Testing admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    results['auth_working'] = success_auth
+    
+    if not success_auth:
+        print("❌ CRITICAL ERROR: Admin authentication failed!")
+        results['errors'].append("Admin authentication failed")
+        return results
+    
+    print("✅ Admin authentication successful")
+    
+    # Step 2: Test hierarchical category structure
+    print(f"\n🌳 Step 2: Testing hierarchical category structure...")
+    success_tree, tree_data = tester.test_get_categories_tree()
+    
+    if success_tree and tree_data:
+        print(f"   Found {len(tree_data)} root categories")
+        
+        # Look for the main Jardin category structure
+        expected_jardin_categories = [
+            "MOBILIER DE JARDIN & CONTENANTS",
+            "JARDIN & EXTÉRIEUR", 
+            "BRICOLAGE, MATÉRIAUX & ÉNERGIE"
+        ]
+        
+        # Find exterieur_jardin category and its structure
+        jardin_root = None
+        for root_cat in tree_data:
+            if root_cat.get('id') == 'exterieur_jardin' or 'jardin' in root_cat.get('name', '').lower():
+                jardin_root = root_cat
+                break
+        
+        if jardin_root:
+            print(f"✅ Found Jardin root category: {jardin_root.get('name')}")
+            results['categories_structure'] = True
+            results['jardin_categories'] = jardin_root.get('children', [])
+            
+            # Check for expected subcategories
+            subcategories = jardin_root.get('children', [])
+            print(f"   Jardin subcategories found: {len(subcategories)}")
+            
+            for subcat in subcategories:
+                subcat_name = subcat.get('name', 'Unknown')
+                articles_count = len(subcat.get('articles', []))
+                print(f"   - {subcat_name}: {articles_count} articles")
+        else:
+            print("❌ Jardin root category not found in hierarchy")
+            results['errors'].append("Jardin root category not found")
+    else:
+        print("❌ Could not retrieve category tree structure")
+        results['errors'].append("Category tree structure not accessible")
+    
+    # Step 3: Test article creation with correct category_id (exterieur_jardin)
+    print(f"\n🔧 Step 3: Testing article creation with correct category_id...")
+    
+    # Test articles for each expected Jardin category type
+    test_articles = [
+        {
+            "name": "Salon de jardin en résine",
+            "category_id": "exterieur_jardin",
+            "base_price": 180.0,
+            "materials": ["résine tressée", "aluminium"],
+            "description": "Salon de jardin 4 places avec table et chaises",
+            "requires_dismantling": False
+        },
+        {
+            "name": "Tonnelle de jardin",
+            "category_id": "exterieur_jardin", 
+            "base_price": 120.0,
+            "materials": ["aluminium", "toile polyester"],
+            "description": "Tonnelle démontable 3x3m avec structure aluminium",
+            "requires_dismantling": True
+        },
+        {
+            "name": "Barbecue à gaz",
+            "category_id": "exterieur_jardin",
+            "base_price": 85.0,
+            "materials": ["inox", "fonte"],
+            "description": "Barbecue à gaz 3 brûleurs avec plancha",
+            "requires_dismantling": False
+        }
+    ]
+    
+    created_count = 0
+    for article_data in test_articles:
+        print(f"\n   Testing creation of: {article_data['name']}")
+        success_create, article_id = tester.test_create_article(article_data)
+        
+        if success_create and article_id:
+            created_count += 1
+            results['created_articles'].append({
+                'id': article_id,
+                'name': article_data['name'],
+                'category_id': article_data['category_id']
+            })
+            print(f"   ✅ Created: {article_data['name']} (ID: {article_id})")
+        else:
+            print(f"   ❌ Failed to create: {article_data['name']}")
+            results['errors'].append(f"Failed to create article: {article_data['name']}")
+    
+    results['article_creation'] = created_count > 0
+    print(f"\n   Article creation summary: {created_count}/{len(test_articles)} articles created")
+    
+    # Step 4: Test data consistency - verify articles are saved with correct category_id
+    print(f"\n💾 Step 4: Testing data consistency...")
+    
+    if results['created_articles']:
+        # Test GET /api/articles
+        success_all, all_articles = tester.test_get_articles()
+        if success_all:
+            print(f"   Total articles in database: {len(all_articles)}")
+            
+            # Verify each created article
+            consistent_count = 0
+            for created_article in results['created_articles']:
+                found_article = next((art for art in all_articles if art.get('id') == created_article['id']), None)
+                if found_article:
+                    stored_category = found_article.get('category_id')
+                    expected_category = created_article['category_id']
+                    
+                    if stored_category == expected_category:
+                        consistent_count += 1
+                        print(f"   ✅ {created_article['name']}: category_id = {stored_category} (correct)")
+                    else:
+                        print(f"   ❌ {created_article['name']}: category_id = {stored_category}, expected = {expected_category}")
+                        results['errors'].append(f"Category mismatch for {created_article['name']}")
+                else:
+                    print(f"   ❌ {created_article['name']}: not found in database")
+                    results['errors'].append(f"Article not found: {created_article['name']}")
+            
+            results['data_consistency'] = consistent_count == len(results['created_articles'])
+            print(f"   Data consistency: {consistent_count}/{len(results['created_articles'])} articles have correct category_id")
+        else:
+            print("   ❌ Could not verify data consistency - cannot retrieve articles")
+            results['errors'].append("Cannot retrieve articles for consistency check")
+    
+    # Step 5: Test category-specific article retrieval
+    print(f"\n🏷️ Step 5: Testing category-specific article retrieval...")
+    
+    success_cat, jardin_articles = tester.test_get_articles_by_category("exterieur_jardin")
+    if success_cat:
+        print(f"   Articles in 'exterieur_jardin' category: {len(jardin_articles)}")
+        
+        # Verify our created articles are in the category
+        found_in_category = 0
+        for created_article in results['created_articles']:
+            found = next((art for art in jardin_articles if art.get('id') == created_article['id']), None)
+            if found:
+                found_in_category += 1
+                print(f"   ✅ Found in category: {found.get('name')}")
+            else:
+                print(f"   ❌ Not found in category: {created_article['name']}")
+        
+        print(f"   Category retrieval: {found_in_category}/{len(results['created_articles'])} articles found")
+    else:
+        print("   ❌ Could not retrieve articles by category")
+        results['errors'].append("Category-specific article retrieval failed")
+    
+    # Step 6: Test admin categories tree endpoint (used by frontend)
+    print(f"\n🌳 Step 6: Testing admin categories tree endpoint...")
+    
+    headers = tester.get_admin_auth_headers()
+    success_admin_tree, admin_tree = tester.run_test(
+        "Get Admin Categories Tree",
+        "GET",
+        "admin/categories-tree",
+        200,
+        headers=headers
+    )
+    
+    if success_admin_tree and admin_tree:
+        print(f"   Admin tree endpoint working: {len(admin_tree)} root categories")
+        
+        # Find jardin articles in admin tree
+        jardin_articles_in_tree = 0
+        for root_cat in admin_tree:
+            if root_cat.get('id') == 'exterieur_jardin':
+                jardin_articles_in_tree = len(root_cat.get('articles', []))
+                print(f"   Jardin articles in admin tree: {jardin_articles_in_tree}")
+                
+                # Show sample articles
+                for article in root_cat.get('articles', [])[:3]:
+                    print(f"     - {article.get('name', 'Unknown')} - {article.get('base_price', 0)}€")
+                break
+    else:
+        print("   ❌ Admin categories tree endpoint failed")
+        results['errors'].append("Admin categories tree endpoint failed")
+    
+    # Clean up created test articles
+    print(f"\n🧹 Step 7: Cleaning up test articles...")
+    cleaned_count = 0
+    for created_article in results['created_articles']:
+        success_delete, _ = tester.test_delete_article(created_article['id'])
+        if success_delete:
+            cleaned_count += 1
+            print(f"   ✅ Cleaned up: {created_article['name']}")
+        else:
+            print(f"   ⚠️  Could not clean up: {created_article['name']}")
+    
+    print(f"   Cleanup: {cleaned_count}/{len(results['created_articles'])} articles cleaned")
+    
+    # Final results
+    print(f"\n📊 JARDIN ADMIN INTERFACE TEST RESULTS:")
+    print(f"   ✅ Admin Authentication: {'Working' if results['auth_working'] else 'Failed'}")
+    print(f"   ✅ Category Structure: {'Working' if results['categories_structure'] else 'Failed'}")
+    print(f"   ✅ Article Creation: {'Working' if results['article_creation'] else 'Failed'}")
+    print(f"   ✅ Data Consistency: {'Working' if results['data_consistency'] else 'Failed'}")
+    print(f"   ❌ Errors: {len(results['errors'])}")
+    
+    if results['errors']:
+        print(f"\n🚨 ERRORS ENCOUNTERED:")
+        for error in results['errors']:
+            print(f"   - {error}")
+    
+    # Overall success determination
+    success_criteria = [
+        results['auth_working'],
+        results['categories_structure'], 
+        results['article_creation'],
+        results['data_consistency']
+    ]
+    
+    overall_success = all(success_criteria) and len(results['errors']) == 0
+    
+    if overall_success:
+        print(f"\n🎉 JARDIN ADMIN INTERFACE TEST SUCCESSFUL!")
+        print(f"   ✅ All backend APIs supporting Jardin admin interface are working")
+        print(f"   ✅ Article creation with correct category_id working")
+        print(f"   ✅ Data consistency maintained")
+        print(f"   ✅ Category hierarchy accessible")
+        print(f"   🚀 Backend is ready for Jardin admin interface")
+    else:
+        failed_criteria = sum(1 for criteria in success_criteria if not criteria)
+        print(f"\n⚠️ JARDIN ADMIN INTERFACE TEST COMPLETED WITH ISSUES")
+        print(f"   ❌ {failed_criteria}/{len(success_criteria)} criteria failed")
+        print(f"   ❌ {len(results['errors'])} errors encountered")
+        print(f"   🔧 Backend needs attention for full Jardin admin functionality")
+    
+    return results
+
 def test_urgent_article_creation_issue():
     """URGENT TEST: Address user's critical article creation issue"""
     print("🚨 URGENT ARTICLE CREATION ISSUE TESTING")
