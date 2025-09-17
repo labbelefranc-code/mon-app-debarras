@@ -2665,6 +2665,7 @@ const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteA
 
 const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode, allArticles, loadAdminData }) => {
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
 
   const renderJardinStructure = () => {
@@ -2682,7 +2683,10 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                 <div className="text-4xl mb-3">{category.icon}</div>
                 <h3 className="text-lg font-bold mb-2">{category.name}</h3>
                 <div className="text-sm opacity-90">
-                  {category.items?.length || 0} articles
+                  {category.subcategories ? 
+                    `${Object.keys(category.subcategories).length} sous-catégories` :
+                    `${category.items?.length || 0} articles`
+                  }
                 </div>
               </CardContent>
             </Card>
@@ -2691,21 +2695,71 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
       );
     }
 
-    // Show items
     const category = JARDIN_ADMIN_STRUCTURE.categories[selectedMainCategory];
-    const items = category.items;
-    const categoryName = category.name;
+    
+    if (category.subcategories && !selectedSubCategory) {
+      // Show subcategories
+      return (
+        <div>
+          <div className="mb-6">
+            <Button
+              onClick={() => setSelectedMainCategory(null)}
+              variant="outline"
+              className="mb-4"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Retour aux catégories principales
+            </Button>
+            <h2 className="text-2xl font-bold text-gray-800">{category.name}</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(category.subcategories).map(([key, subcategory]) => (
+              <Card
+                key={key}
+                className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2 hover:border-green-300"
+                onClick={() => setSelectedSubCategory(key)}
+              >
+                <CardContent className="p-6 text-center bg-gradient-to-r from-green-400 to-green-500 text-white">
+                  <div className="text-3xl mb-3">🌿</div>
+                  <h3 className="text-lg font-bold mb-2" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+                    {subcategory.name}
+                  </h3>
+                  <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                    {subcategory.items?.length || 0} articles
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Show items
+    const items = category.subcategories 
+      ? category.subcategories[selectedSubCategory]?.items 
+      : category.items;
+    const categoryName = category.subcategories 
+      ? category.subcategories[selectedSubCategory]?.name 
+      : category.name;
 
     return (
       <div>
         <div className="mb-6">
           <Button
-            onClick={() => setSelectedMainCategory(null)}
+            onClick={() => {
+              if (category.subcategories && selectedSubCategory) {
+                setSelectedSubCategory(null);
+              } else {
+                setSelectedMainCategory(null);
+              }
+            }}
             variant="outline"
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour aux catégories principales
+            {category.subcategories && selectedSubCategory ? 'Retour aux sous-catégories' : 'Retour aux catégories principales'}
           </Button>
           <h2 className="text-2xl font-bold text-gray-800">{categoryName}</h2>
         </div>
@@ -2768,7 +2822,7 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => setEditingItem({...item, index, categoryKey: selectedMainCategory})}
+                      onClick={() => setEditingItem({...item, index, categoryKey: selectedMainCategory, subCategoryKey: selectedSubCategory})}
                     >
                       Modifier
                     </Button>
@@ -2801,7 +2855,8 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                   variants: [],
                   options: [],
                   note: '',
-                  categoryKey: selectedMainCategory
+                  categoryKey: selectedMainCategory,
+                  subCategoryKey: selectedSubCategory
                 })}
               >
                 <Plus className="mr-2 h-4 w-4" />
