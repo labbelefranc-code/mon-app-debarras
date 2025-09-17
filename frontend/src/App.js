@@ -740,64 +740,169 @@ const getArticlesFromAdminStructures = () => {
 };
 
 // Fonction pour mapper les catégories ABCD aux structures admin
-const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
-  const adminArticles = getArticlesFromAdminStructures();
-  
-  // Mapping des catégories ABCD vers les category_id backend
-  const categoryMapping = {
-    'A': ['mobilier', 'lits_couchage', 'assises', 'tables'], // MOBILIER
-    'B': ['exterieur_jardin'], // JARDIN
-    'C': ['electromenager_gros', 'multimedia_electrique'], // ELEC
-    'D': ['divers'] // AUTRES
-  };
-
-  const relevantCategoryIds = categoryMapping[abcdCategoryId] || [];
-  
-  // Filtrer les articles selon la catégorie ABCD
-  let filteredArticles = adminArticles.filter(article => 
-    relevantCategoryIds.includes(article.category_id)
-  );
-
-  // Si une sous-catégorie spécifique est demandée, filtrer davantage
-  if (subcategoryName) {
-    // Mapping plus fin basé sur les noms de sous-catégories
-    const subcategoryMapping = {
-      'Literie / Canapés / Fauteuils': (article) => 
-        article.base_name.toLowerCase().includes('lit') || 
-        article.base_name.toLowerCase().includes('matelas') ||
-        article.base_name.toLowerCase().includes('sommier') ||
-        article.base_name.toLowerCase().includes('canapé') ||
-        article.base_name.toLowerCase().includes('fauteuil'),
-      'Tables et assises': (article) => 
-        article.base_name.toLowerCase().includes('table') ||
-        article.base_name.toLowerCase().includes('chaise') ||
-        article.base_name.toLowerCase().includes('banc'),
-      'Rangements': (article) => 
-        article.base_name.toLowerCase().includes('armoire') ||
-        article.base_name.toLowerCase().includes('commode') ||
-        article.base_name.toLowerCase().includes('rangement') ||
-        article.base_name.toLowerCase().includes('bibliothèque'),
-      'Mobilier de jardin et contenants': (article) => 
-        article.base_name.toLowerCase().includes('jardin') ||
-        article.base_name.toLowerCase().includes('salon de jardin') ||
-        article.base_name.toLowerCase().includes('transat'),
-      'Électroménager': (article) => 
-        article.base_name.toLowerCase().includes('frigo') ||
-        article.base_name.toLowerCase().includes('four') ||
-        article.base_name.toLowerCase().includes('lave'),
-      'Décoration': (article) => 
-        article.base_name.toLowerCase().includes('miroir') ||
-        article.base_name.toLowerCase().includes('tableau') ||
-        article.base_name.toLowerCase().includes('vase')
-    };
-
-    const filterFunction = subcategoryMapping[subcategoryName];
-    if (filterFunction) {
-      filteredArticles = filteredArticles.filter(filterFunction);
+// Fonction pour mapper les catégories ABCD aux structures admin réelles
+const getABCDCategoryMapping = (abcdCategoryId) => {
+  const mappings = {
+    'A': { // MOBILIER
+      structure: MOBILIER_ADMIN_STRUCTURE,
+      subcategoryMapping: {
+        'Literie / Canapés / Fauteuils': [
+          { categoryKey: 'lits_couchage', subcategoryKey: null }, // Toute la catégorie lits_couchage
+          { categoryKey: 'salon_et_assises', subcategoryKey: 'canapes_banquettes' },
+          { categoryKey: 'salon_et_assises', subcategoryKey: 'fauteuils_salon' }
+        ],
+        'Tables et assises': [
+          { categoryKey: 'tables', subcategoryKey: null }, // Toute la catégorie tables
+          { categoryKey: 'assises', subcategoryKey: 'chaises' },
+          { categoryKey: 'assises', subcategoryKey: 'fauteuils_assises' },
+          { categoryKey: 'assises', subcategoryKey: 'banc_divers' }
+        ],
+        'Rangements': [
+          { categoryKey: 'meubles_rangement', subcategoryKey: null }
+        ],
+        'Décorations & accessoires': [
+          { categoryKey: 'decorations_accessoires', subcategoryKey: null }
+        ],
+        'Électroménager': [
+          { categoryKey: 'electromenager', subcategoryKey: null }
+        ]
+      }
+    },
+    'B': { // JARDIN
+      structure: JARDIN_ADMIN_STRUCTURE,
+      subcategoryMapping: {
+        'Mobilier de jardin et contenants': [
+          { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: null }
+        ],
+        'Jardin & extérieur': [
+          { categoryKey: 'jardin_exterieur', subcategoryKey: null }
+        ],
+        'Bricolage, matériaux & énergie': [
+          { categoryKey: 'bricolage_materiaux_energie', subcategoryKey: null }
+        ]
+      }
+    },
+    'C': { // ELEC
+      structure: MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE,
+      subcategoryMapping: {
+        'Électroménager': [
+          { categoryKey: 'electromenager_froid', subcategoryKey: null },
+          { categoryKey: 'electromenager_cuisson', subcategoryKey: null },
+          { categoryKey: 'electromenager_lavage', subcategoryKey: null }
+        ],
+        'Multimédia & électronique': [
+          { categoryKey: 'multimedia_electronique', subcategoryKey: null }
+        ]
+      }
+    },
+    'D': { // DIVERS
+      structure: DIVERS_ADMIN_STRUCTURE,
+      subcategoryMapping: {
+        'Décoration': [
+          { categoryKey: 'decoration', subcategoryKey: null }
+        ],
+        'Sport & loisirs': [
+          { categoryKey: 'sport_loisirs', subcategoryKey: null }
+        ],
+        'Autres objets': [
+          { categoryKey: 'autres_objets', subcategoryKey: null }
+        ]
+      }
     }
+  };
+  
+  return mappings[abcdCategoryId] || null;
+};
+
+const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
+  const mapping = getABCDCategoryMapping(abcdCategoryId);
+  if (!mapping) return [];
+
+  const { structure, subcategoryMapping } = mapping;
+  let allArticles = [];
+
+  // Si aucune sous-catégorie spécifiée, retourner un résumé
+  if (!subcategoryName) {
+    return [];
   }
 
-  return filteredArticles;
+  // Récupérer les articles pour la sous-catégorie spécifiée
+  const relevantMappings = subcategoryMapping[subcategoryName] || [];
+  
+  relevantMappings.forEach(({ categoryKey, subcategoryKey }) => {
+    const category = structure.categories[categoryKey];
+    if (!category) return;
+
+    if (subcategoryKey && category.subcategories) {
+      // Articles d'une sous-catégorie spécifique
+      const subcategory = category.subcategories[subcategoryKey];
+      if (subcategory && subcategory.items) {
+        subcategory.items.forEach(item => {
+          allArticles.push(...expandItemVariants(item, abcdCategoryId, category.name, subcategory.name));
+        });
+      }
+    } else if (category.items) {
+      // Articles directs de la catégorie
+      category.items.forEach(item => {
+        allArticles.push(...expandItemVariants(item, abcdCategoryId, category.name, null));
+      });
+    } else if (category.subcategories) {
+      // Tous les articles de toutes les sous-catégories
+      Object.values(category.subcategories).forEach(subcategory => {
+        if (subcategory.items) {
+          subcategory.items.forEach(item => {
+            allArticles.push(...expandItemVariants(item, abcdCategoryId, category.name, subcategory.name));
+          });
+        }
+      });
+    }
+  });
+
+  return allArticles;
+};
+
+// Fonction pour transformer un item avec ses variantes en articles distincts
+const expandItemVariants = (item, categoryId, categoryName, subcategoryName) => {
+  const articles = [];
+  const basePrice = 25; // Prix de base
+  
+  if (item.variants && item.variants.length > 0) {
+    // Créer un article distinct pour chaque variante
+    item.variants.forEach(variant => {
+      articles.push({
+        id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${variant.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+        name: `${item.name} ${variant}`,
+        base_name: item.name,
+        variant: variant,
+        category_id: categoryId,
+        category_name: categoryName,
+        subcategory_name: subcategoryName,
+        base_price: basePrice,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      });
+    });
+  } else {
+    // Créer un article simple sans variante
+    articles.push({
+      id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+      name: item.name,
+      base_name: item.name,
+      variant: null,
+      category_id: categoryId,
+      category_name: categoryName,
+      subcategory_name: subcategoryName,
+      base_price: basePrice,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    });
+  }
+  
+  return articles;
 };
 
 // Isolated component for custom item input to prevent re-renders
