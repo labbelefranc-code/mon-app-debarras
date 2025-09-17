@@ -2305,7 +2305,7 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
                         // Convert static item data to proper article format and save
                         const articleData = {
                           name: editingItem.name,
-                          category_id: 'multimedia_electrique', // Category for multimedia/electrique
+                          category_id: 'exterieur_jardin', // Valid category
                           base_price: 0, // Default price
                           materials: editingItem.materials || [],
                           description: editingItem.note || '',
