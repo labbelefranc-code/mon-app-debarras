@@ -4385,8 +4385,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       selectedABCDSubcategory
     );
 
-    console.log('📦 Available articles for display:', availableArticles);
-
     return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
