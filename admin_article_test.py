@@ -11,7 +11,7 @@ import sys
 from datetime import datetime
 
 class AdminArticleCreationTester:
-    def __init__(self, base_url="https://item-removal-app.preview.emergentagent.com"):
+    def __init__(self, base_url="https://admin-category-fix.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
