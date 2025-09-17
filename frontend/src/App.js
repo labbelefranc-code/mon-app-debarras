@@ -2699,8 +2699,8 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
           <div className="inline-flex items-center px-6 py-2 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white mb-4">
             <div className="text-2xl mr-3">🌿</div>
             <div>
-              <div className="text-base font-bold">TOUS LES ARTICLES</div>
-              <div className="text-xs opacity-90">Articles de la base de données</div>
+              <div className="text-base font-bold">ADMINISTRATION JARDIN</div>
+              <div className="text-xs opacity-90">Articles de jardin uniquement</div>
             </div>
           </div>
         </div>
