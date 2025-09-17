@@ -2623,19 +2623,25 @@ const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteA
                     Annuler
                   </Button>
                   <Button
-                    onClick={() => {
-                      // Convert static item data to proper article format and save
-                      const articleData = {
-                        name: editingItem.name,
-                        category_id: 'divers', // Category for divers
-                        base_price: 0, // Default price
-                        materials: editingItem.materials || [],
-                        description: editingItem.note || '',
-                        requires_dismantling: false
-                      };
-                      
-                      createArticle(articleData);
-                      setEditingItem(null);
+                    onClick={async () => {
+                      try {
+                        // Convert static item data to proper article format and save
+                        const articleData = {
+                          name: editingItem.name,
+                          category_id: 'divers', // Category for divers
+                          base_price: 0, // Default price
+                          materials: editingItem.materials || [],
+                          description: editingItem.note || '',
+                          requires_dismantling: false
+                        };
+                        
+                        await createArticle(articleData);
+                        setEditingItem(null);
+                        alert('Article ajouté avec succès !');
+                      } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Erreur lors de l\'ajout de l\'article');
+                      }
                     }}
                     className="bg-purple-600 hover:bg-purple-700"
                   >
