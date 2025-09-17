@@ -4613,19 +4613,13 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  if (selectedABCDSubcategory) {
-                    // Si on est dans les articles, retourner aux sous-catégories
-                    setSelectedABCDSubcategory(null);
-                  } else {
-                    // Sinon retourner aux catégories ABCD
-                    setCurrentStep('abcd-categories');
-                  }
+                  setSelectedABCDSubSubcategory(null);
                 }}
                 variant="outline"
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                {selectedABCDSubcategory ? 'Retour aux sous-catégories' : 'Retour aux catégories'}
+                Retour aux types d'objets
               </Button>
             </div>
 
@@ -4636,9 +4630,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   <div className="text-2xl mr-3" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedABCDCategory.icon}</div>
                   <div>
                     <div className="font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>{selectedABCDCategory.name}</div>
-                    {selectedABCDSubcategory && (
-                      <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>→ {selectedABCDSubcategory}</div>
-                    )}
+                    <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>→ {selectedABCDSubcategory} → {selectedABCDSubSubcategory}</div>
                   </div>
                 </div>
               </div>
