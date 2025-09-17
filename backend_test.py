@@ -1066,10 +1066,151 @@ def main():
             print("🚨 Significant issues detected, major fixes needed.")
         return 1
 
+def test_specific_article_creation_issue():
+    """Test the specific issue reported by user about article creation not working"""
+    print("🔍 TESTING SPECIFIC ARTICLE CREATION ISSUE")
+    print("=" * 70)
+    print("🎯 TASK: Verify if articles are actually being saved when using admin interface")
+    print("📝 USER REPORT: Adding articles through admin interface doesn't work")
+    print("🔐 Using admin credentials: labbelefranc@gmail.com / admin06")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    
+    # Step 1: Test admin authentication
+    print(f"\n🔐 Step 1: Testing admin authentication...")
+    success_auth, _ = tester.test_admin_authentication()
+    if not success_auth:
+        print("❌ CRITICAL ERROR: Admin authentication failed!")
+        return 1
+    print("✅ Admin authentication successful")
+    
+    # Step 2: Check current articles in database (should be 0 since cleaned)
+    print(f"\n📊 Step 2: Checking current articles in database...")
+    success_articles, current_articles = tester.test_get_articles()
+    if success_articles:
+        print(f"   Current articles in database: {len(current_articles)}")
+        if len(current_articles) == 0:
+            print("✅ Database is clean as expected (0 articles)")
+        else:
+            print(f"⚠️  Found {len(current_articles)} existing articles:")
+            for art in current_articles[:5]:  # Show first 5
+                print(f"      - {art.get('name', 'Unknown')} (ID: {art.get('id', 'Unknown')})")
+    else:
+        print("❌ Could not retrieve current articles")
+        return 1
+    
+    # Step 3: Test POST /api/admin/articles with exact frontend data
+    print(f"\n🔧 Step 3: Testing POST /api/admin/articles with exact frontend data...")
+    
+    # Use the exact data structure that the frontend is sending
+    test_article_data = {
+        "name": "Test Article Frontend",
+        "category_id": "exterieur_jardin",
+        "base_price": 0,
+        "materials": ["test", "material"],
+        "description": "Test de sauvegarde frontend",
+        "requires_dismantling": False
+    }
+    
+    print(f"   Testing with data: {json.dumps(test_article_data, indent=2)}")
+    
+    success_create, created_article = tester.test_create_article(test_article_data)
+    
+    if success_create:
+        article_id = created_article.get('id')
+        print(f"✅ Article creation successful!")
+        print(f"   Created article ID: {article_id}")
+        print(f"   Article name: {created_article.get('name')}")
+        print(f"   Category ID: {created_article.get('category_id')}")
+        print(f"   Base price: {created_article.get('base_price')}€")
+        print(f"   Materials: {created_article.get('materials')}")
+        
+        # Step 4: Verify article is saved to database
+        print(f"\n💾 Step 4: Verifying article is saved to database...")
+        success_verify, updated_articles = tester.test_get_articles()
+        
+        if success_verify:
+            # Look for our created article
+            found_article = next((art for art in updated_articles if art.get('id') == article_id), None)
+            if found_article:
+                print(f"✅ Article successfully saved to database!")
+                print(f"   Found article: {found_article.get('name')}")
+                print(f"   Database now contains {len(updated_articles)} articles")
+            else:
+                print(f"❌ CRITICAL: Article not found in database after creation!")
+                print(f"   Database contains {len(updated_articles)} articles but our article is missing")
+                return 1
+        else:
+            print(f"❌ Could not verify database state after article creation")
+            return 1
+        
+        # Step 5: Test GET /api/articles returns the newly created article
+        print(f"\n🔍 Step 5: Testing GET /api/articles returns newly created article...")
+        success_get, all_articles = tester.test_get_articles()
+        
+        if success_get:
+            found_in_public = next((art for art in all_articles if art.get('id') == article_id), None)
+            if found_in_public:
+                print(f"✅ Article accessible via public GET /api/articles endpoint!")
+                print(f"   Article: {found_in_public.get('name')} - {found_in_public.get('base_price')}€")
+            else:
+                print(f"❌ Article not accessible via public GET /api/articles endpoint!")
+                return 1
+        else:
+            print(f"❌ Could not test public articles endpoint")
+            return 1
+        
+        # Step 6: Test specific category endpoint
+        print(f"\n🏷️ Step 6: Testing GET /api/categories/exterieur_jardin/articles...")
+        success_cat, category_articles = tester.test_get_articles_by_category("exterieur_jardin")
+        
+        if success_cat:
+            found_in_category = next((art for art in category_articles if art.get('id') == article_id), None)
+            if found_in_category:
+                print(f"✅ Article accessible via category-specific endpoint!")
+                print(f"   Found in 'exterieur_jardin' category: {found_in_category.get('name')}")
+            else:
+                print(f"❌ Article not found in category-specific endpoint!")
+                print(f"   Category 'exterieur_jardin' contains {len(category_articles)} articles")
+                return 1
+        else:
+            print(f"❌ Could not test category-specific articles endpoint")
+            return 1
+        
+        # Step 7: Clean up - delete the test article
+        print(f"\n🧹 Step 7: Cleaning up test article...")
+        success_delete, _ = tester.test_delete_article(article_id)
+        if success_delete:
+            print(f"✅ Test article cleaned up successfully")
+        else:
+            print(f"⚠️  Could not clean up test article (ID: {article_id})")
+        
+        print(f"\n🎉 ARTICLE CREATION TEST COMPLETED SUCCESSFULLY!")
+        print(f"✅ Admin authentication working")
+        print(f"✅ POST /api/admin/articles working correctly")
+        print(f"✅ Article saved to database successfully")
+        print(f"✅ Article accessible via GET /api/articles")
+        print(f"✅ Article accessible via category endpoint")
+        print(f"✅ All backend APIs for article creation are working perfectly")
+        print(f"\n💡 CONCLUSION: Backend article creation is working correctly.")
+        print(f"   If users cannot save articles, the issue is in the frontend")
+        print(f"   implementation or frontend-backend communication.")
+        
+        return 0
+        
+    else:
+        print(f"❌ CRITICAL: Article creation failed!")
+        print(f"   This indicates a backend issue with POST /api/admin/articles")
+        return 1
+
 if __name__ == "__main__":
-    # Check if cleanup mode is requested
+    # Check if specific test mode is requested
     import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "cleanup":
-        sys.exit(cleanup_database())
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "cleanup":
+            sys.exit(cleanup_database())
+        elif sys.argv[1] == "article-test":
+            sys.exit(test_specific_article_creation_issue())
     else:
         sys.exit(main())
