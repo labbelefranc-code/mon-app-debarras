@@ -2628,7 +2628,7 @@ const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteA
                         // Convert static item data to proper article format and save
                         const articleData = {
                           name: editingItem.name,
-                          category_id: 'divers', // Category for divers
+                          category_id: 'exterieur_jardin', // Valid category
                           base_price: 0, // Default price
                           materials: editingItem.materials || [],
                           description: editingItem.note || '',
