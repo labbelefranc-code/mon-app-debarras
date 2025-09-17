@@ -2335,7 +2335,7 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
   );
 };
 
-const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode }) => {
+const ModernAdminDiversPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode, loadAdminData }) => {
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
 
