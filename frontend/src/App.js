@@ -4243,7 +4243,14 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     </div>
   );
 
-  const ABCDObjectsPage = () => (
+  const ABCDObjectsPage = () => {
+    // Récupérer les articles pour la catégorie et sous-catégorie sélectionnées
+    const availableArticles = getABCDCategoryArticles(
+      selectedABCDCategory?.id, 
+      selectedABCDSubcategory
+    );
+
+    return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -4282,17 +4289,105 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 Sélectionnez vos objets
               </h3>
               
-              {/* Pour le moment, on affiche un message */}
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <div className="text-6xl mb-4">📦</div>
-                  <h4 className="text-xl font-bold mb-4">Objets disponibles prochainement</h4>
-                  <p className="text-gray-600 mb-6">
-                    Les objets spécifiques pour cette catégorie seront bientôt disponibles.
-                    En attendant, vous pouvez décrire vos objets ci-dessous.
-                  </p>
-                </CardContent>
-              </Card>
+              {availableArticles.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {availableArticles.map((article) => (
+                    <Card key={article.id} className="hover:shadow-lg transition-all duration-200">
+                      <CardContent className="p-4">
+                        <div className="flex flex-col h-full">
+                          {/* Article Name */}
+                          <h4 className="font-bold text-lg mb-2 text-gray-800">
+                            {article.name}
+                          </h4>
+                          
+                          {/* Materials */}
+                          {article.materials && article.materials.length > 0 && (
+                            <div className="mb-2">
+                              <span className="text-sm font-medium text-gray-600">Matériaux: </span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {article.materials.map((material, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                                    {material}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Options */}
+                          {article.options && article.options.length > 0 && (
+                            <div className="mb-2">
+                              <span className="text-sm font-medium text-gray-600">Options: </span>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {article.options.map((option, idx) => (
+                                  <span key={idx} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
+                                    {option}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Note */}
+                          {article.note && (
+                            <div className="mb-3 text-sm text-gray-600 italic">
+                              {article.note}
+                            </div>
+                          )}
+                          
+                          {/* Price */}
+                          <div className="text-sm text-gray-600 mb-3">
+                            Prix indicatif: <span className="font-bold text-green-600">{article.base_price}€</span>
+                          </div>
+                          
+                          {/* Add to Selection Button */}
+                          <div className="mt-auto">
+                            <Button
+                              onClick={() => {
+                                const existingItem = selectedItems.find(item => item.article_id === article.id);
+                                if (existingItem) {
+                                  // Si déjà sélectionné, augmenter la quantité
+                                  updateItemQuantity(selectedItems.indexOf(existingItem), existingItem.quantity + 1);
+                                } else {
+                                  // Ajouter nouvel item
+                                  setSelectedItems(prev => [...prev, {
+                                    article_id: article.id,
+                                    name: article.name,
+                                    base_price: article.base_price,
+                                    quantity: 1,
+                                    requires_dismantling: article.requires_dismantling || false,
+                                    materials: article.materials || [],
+                                    options: article.options || []
+                                  }]);
+                                }
+                              }}
+                              className="w-full bg-teal-600 hover:bg-teal-700"
+                              size="sm"
+                            >
+                              <Plus className="mr-2 h-4 w-4" />
+                              {selectedItems.find(item => item.article_id === article.id) 
+                                ? `Ajouté (${selectedItems.find(item => item.article_id === article.id)?.quantity || 1})`
+                                : 'Ajouter à ma liste'
+                              }
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <div className="text-6xl mb-4">📦</div>
+                    <h4 className="text-xl font-bold mb-4">Aucun objet trouvé</h4>
+                    <p className="text-gray-600 mb-6">
+                      Aucun article n'a été trouvé pour cette catégorie.
+                      Vous pouvez décrire vos objets ci-dessous.
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             {/* Custom Item Input */}
@@ -4361,6 +4456,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       </div>
     </div>
   );
+  };
 
   // Stable admin login handlers - using regular Input components to avoid cursor issues
   const handleAdminUsernameChange = useCallback((e) => {
