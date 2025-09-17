@@ -4852,6 +4852,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           setCurrentStep={setCurrentStep}
           setIsAdminMode={setIsAdminMode}
           allArticles={allArticles}
+          loadAdminData={loadAdminData}
         />;
       default:
         return <HomePage />;
