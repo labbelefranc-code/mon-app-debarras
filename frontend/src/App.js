@@ -743,6 +743,13 @@ const getArticlesFromAdminStructures = () => {
 const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
   const adminArticles = getArticlesFromAdminStructures();
   
+  console.log('🔍 Debug getABCDCategoryArticles:', {
+    abcdCategoryId,
+    subcategoryName,
+    totalAdminArticles: adminArticles.length,
+    sampleArticles: adminArticles.slice(0, 3)
+  });
+  
   // Mapping des catégories ABCD vers les category_id backend
   const categoryMapping = {
     'A': ['mobilier', 'lits_couchage', 'assises', 'tables'], // MOBILIER
@@ -753,10 +760,20 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
 
   const relevantCategoryIds = categoryMapping[abcdCategoryId] || [];
   
+  console.log('🎯 Category mapping:', {
+    abcdCategoryId,
+    relevantCategoryIds
+  });
+  
   // Filtrer les articles selon la catégorie ABCD
   let filteredArticles = adminArticles.filter(article => 
     relevantCategoryIds.includes(article.category_id)
   );
+
+  console.log('✅ Filtered articles:', {
+    count: filteredArticles.length,
+    articles: filteredArticles.slice(0, 5)
+  });
 
   // Si une sous-catégorie spécifique est demandée, filtrer davantage
   if (subcategoryName) {
@@ -794,6 +811,11 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
     const filterFunction = subcategoryMapping[subcategoryName];
     if (filterFunction) {
       filteredArticles = filteredArticles.filter(filterFunction);
+      console.log('🎯 Subcategory filtered articles:', {
+        subcategoryName,
+        count: filteredArticles.length,
+        articles: filteredArticles.slice(0, 3)
+      });
     }
   }
 
