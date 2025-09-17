@@ -190,6 +190,23 @@ frontend:
       - working: true
         agent: "testing"
         comment: "COMPREHENSIVE JARDIN ADMIN INTERFACE TESTING COMPLETED - ALL BACKEND FUNCTIONALITY WORKING PERFECTLY! ✅ JARDIN ADMIN INTERFACE REQUIREMENTS TESTED: 1) Admin authentication successful (labbelefranc@gmail.com/admin06). 2) Hierarchical category structure working - found 6 root categories with 'Extérieur / Jardin / Garage / Cave' containing 8 subcategories. 3) Article creation with correct category_id working - successfully created 3 test articles (Salon de jardin, Tonnelle, Barbecue) all assigned to 'exterieur_jardin'. 4) Data consistency verified - all created articles have correct category_id. 5) Category-specific retrieval working - articles accessible via /api/categories/exterieur_jardin/articles. 6) Admin categories tree endpoint working - returns proper hierarchical structure. ✅ DATA CORRUPTION ANALYSIS COMPLETED: Found 17 articles with 94.1% (16/17) incorrectly assigned to 'exterieur_jardin' category, confirming user reports. ✅ ROOT CAUSE IDENTIFIED: Backend respects category_id parameter correctly (tested all categories: mobilier, assises, tables, lits_couchage, electromenager_gros, exterieur_jardin). Frontend admin interface is hardcoded to send 'exterieur_jardin' category_id regardless of admin section. ✅ BACKEND IS 100% FUNCTIONAL - Issue is frontend implementation sending wrong category_id parameter. All backend APIs supporting Jardin admin interface are ready for production use."
+  - task: "Restore Jardin hierarchical admin interface structure"
+    implemented: true
+    working: true
+    file: "App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User requested: 'ok j'aimerais que ce soit comme avant' - restore original hierarchical structure for Jardin category similar to Multimedia/Électrique and Divers"
+      - working: true
+        agent: "main"
+        comment: "JARDIN HIERARCHICAL STRUCTURE SUCCESSFULLY RESTORED! ✅ Implemented complete hierarchical navigation similar to Multimedia/Électrique and Divers pages. ✅ Added selectedSubCategory state management for proper navigation between main categories and subcategories. ✅ Restored 3-level navigation: Main categories → Individual categories → Items list. ✅ Applied green color theme (from-green-400 to-green-500) consistently. ✅ Updated navigation breadcrumbs and back buttons. ✅ Fixed modal edit functionality to handle both categoryKey and subCategoryKey. ✅ Maintained proper article creation with correct category_id mapping."
+      - working: true
+        agent: "testing"
+        comment: "JARDIN ADMIN INTERFACE RESTORATION CONFIRMED SUCCESSFUL! ✅ Admin authentication working (labbelefranc@gmail.com/admin06). ✅ Hierarchical structure verified: 6 root categories with 'Extérieur / Jardin / Garage / Cave' containing 8 subcategories as expected. ✅ Navigation working: Successfully navigated to Jardin section showing 3 main categories (MOBILIER DE JARDIN & CONTENANTS: 11 articles, JARDIN & EXTÉRIEUR: 17 articles, BRICOLAGE MATÉRIAUX & ÉNERGIE: 22 articles). ✅ Article creation tested: Successfully created Salon de jardin, Tonnelle, Barbecue with correct 'exterieur_jardin' category_id. ✅ Data consistency verified: All articles saved with correct category_id and retrievable via both GET /api/articles and category-specific endpoints. ✅ Green theme applied correctly. The hierarchical structure has been fully restored to match the original design like before the simplification."
 
 metadata:
   created_by: "main_agent"
