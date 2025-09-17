@@ -657,70 +657,107 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
-// Fonction pour mapper les catégories ABCD aux structures admin réelles
+// Fonction pour mapper les catégories ABCD aux structures admin réelles avec 3 niveaux
 const getABCDCategoryMapping = (abcdCategoryId) => {
   const mappings = {
     'A': { // MOBILIER
       structure: MOBILIER_ADMIN_STRUCTURE,
       subcategoryMapping: {
-        'Literie / Canapés / Fauteuils': [
-          { categoryKey: 'literie', subcategoryKey: null }, // Toute la catégorie literie
-          { categoryKey: 'canape_fauteuils', subcategoryKey: null } // Toute la catégorie canapé/fauteuils
-        ],
-        'Tables et assises': [
-          { categoryKey: 'tables', subcategoryKey: null }, // Toute la catégorie tables
-          { categoryKey: 'assises', subcategoryKey: null } // Toute la catégorie assises
-        ],
-        'Rangements': [
-          { categoryKey: 'meubles_rangement', subcategoryKey: null }
-        ],
-        'Décorations & accessoires': [
-          { categoryKey: 'decorations_accessoires', subcategoryKey: null }
-        ],
-        'Électroménager': [
-          { categoryKey: 'electromenager', subcategoryKey: null }
-        ]
+        'Literie / Canapés / Fauteuils': {
+          'Literie': [
+            { categoryKey: 'literie', subcategoryKey: null }
+          ],
+          'Canapés': [
+            { categoryKey: 'canape_fauteuils', subcategoryKey: 'canapes' }
+          ],
+          'Fauteuils': [
+            { categoryKey: 'canape_fauteuils', subcategoryKey: 'fauteuils' }
+          ]
+        },
+        'Tables et assises': {
+          'Tables': [
+            { categoryKey: 'tables', subcategoryKey: null }
+          ],
+          'Assises': [
+            { categoryKey: 'assises', subcategoryKey: null }
+          ]
+        },
+        'Rangements': {
+          'Tous les rangements': [
+            { categoryKey: 'meubles_rangement', subcategoryKey: null }
+          ]
+        },
+        'Décorations & accessoires': {
+          'Tous les accessoires': [
+            { categoryKey: 'decorations_accessoires', subcategoryKey: null }
+          ]
+        },
+        'Électroménager': {
+          'Tous les électroménagers': [
+            { categoryKey: 'electromenager', subcategoryKey: null }
+          ]
+        }
       }
     },
     'B': { // JARDIN
       structure: JARDIN_ADMIN_STRUCTURE,
       subcategoryMapping: {
-        'Mobilier de jardin et contenants': [
-          { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: null }
-        ],
-        'Jardin & extérieur': [
-          { categoryKey: 'jardin_exterieur', subcategoryKey: null }
-        ],
-        'Bricolage, matériaux & énergie': [
-          { categoryKey: 'bricolage_materiaux_energie', subcategoryKey: null }
-        ]
+        'Mobilier de jardin et contenants': {
+          'Tout le mobilier jardin': [
+            { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: null }
+          ]
+        },
+        'Jardin & extérieur': {
+          'Tout jardin & extérieur': [
+            { categoryKey: 'jardin_exterieur', subcategoryKey: null }
+          ]
+        },
+        'Bricolage, matériaux & énergie': {
+          'Tout bricolage & matériaux': [
+            { categoryKey: 'bricolage_materiaux_energie', subcategoryKey: null }
+          ]
+        }
       }
     },
     'C': { // ELEC
       structure: MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE,
       subcategoryMapping: {
-        'Électroménager': [
-          { categoryKey: 'electromenager_froid', subcategoryKey: null },
-          { categoryKey: 'electromenager_cuisson', subcategoryKey: null },
-          { categoryKey: 'electromenager_lavage', subcategoryKey: null }
-        ],
-        'Multimédia & électronique': [
-          { categoryKey: 'multimedia_electronique', subcategoryKey: null }
-        ]
+        'Électroménager': {
+          'Électroménager froid': [
+            { categoryKey: 'electromenager_froid', subcategoryKey: null }
+          ],
+          'Électroménager cuisson': [
+            { categoryKey: 'electromenager_cuisson', subcategoryKey: null }
+          ],
+          'Électroménager lavage': [
+            { categoryKey: 'electromenager_lavage', subcategoryKey: null }
+          ]
+        },
+        'Multimédia & électronique': {
+          'Tout multimédia': [
+            { categoryKey: 'multimedia_electronique', subcategoryKey: null }
+          ]
+        }
       }
     },
     'D': { // DIVERS
       structure: DIVERS_ADMIN_STRUCTURE,
       subcategoryMapping: {
-        'Décoration': [
-          { categoryKey: 'decoration', subcategoryKey: null }
-        ],
-        'Sport & loisirs': [
-          { categoryKey: 'sport_loisirs', subcategoryKey: null }
-        ],
-        'Autres objets': [
-          { categoryKey: 'autres_objets', subcategoryKey: null }
-        ]
+        'Décoration': {
+          'Toute la décoration': [
+            { categoryKey: 'decoration', subcategoryKey: null }
+          ]
+        },
+        'Sport & loisirs': {
+          'Tout sport & loisirs': [
+            { categoryKey: 'sport_loisirs', subcategoryKey: null }
+          ]
+        },
+        'Autres objets': {
+          'Tous les autres objets': [
+            { categoryKey: 'autres_objets', subcategoryKey: null }
+          ]
+        }
       }
     }
   };
