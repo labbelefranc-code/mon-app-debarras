@@ -4624,6 +4624,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           adminAuth={adminAuth}
           setCurrentStep={setCurrentStep}
           setIsAdminMode={setIsAdminMode}
+          allArticles={allArticles}
           loadAdminData={loadAdminData}
         />;
       case 'admin-multimedia-electrique':
