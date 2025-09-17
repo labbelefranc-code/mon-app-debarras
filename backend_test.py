@@ -1213,6 +1213,228 @@ def test_specific_article_creation_issue():
         print(f"   This indicates a backend issue with POST /api/admin/articles")
         return 1
 
+def test_urgent_article_creation_issue():
+    """URGENT TEST: Address user's critical article creation issue"""
+    print("🚨 URGENT ARTICLE CREATION ISSUE TESTING")
+    print("=" * 70)
+    print("🎯 USER REPORT: 'toujours pas !!!!!!!! rien n'a changé depuis une demi heure'")
+    print("📝 ISSUE: Admin article creation has been broken for 30 minutes")
+    print("🔐 Using admin credentials: labbelefranc@gmail.com / admin06")
+    print("⚡ PROVIDING DEFINITIVE ANSWERS TO USER'S QUESTIONS")
+    print("=" * 70)
+    
+    tester = AlloDebarrasAPITester()
+    results = {
+        'auth_working': False,
+        'articles_in_db': 0,
+        'can_create_articles': False,
+        'articles_persist': False,
+        'get_articles_working': False,
+        'created_article_id': None,
+        'backend_logs': [],
+        'errors': []
+    }
+    
+    # QUESTION 1: Verify admin authentication is working
+    print(f"\n🔐 QUESTION 1: Is admin authentication working?")
+    success_auth, _ = tester.test_admin_authentication()
+    results['auth_working'] = success_auth
+    
+    if success_auth:
+        print("✅ ANSWER: YES - Admin authentication is working correctly")
+        print("   Credentials labbelefranc@gmail.com/admin06 are valid")
+    else:
+        print("❌ ANSWER: NO - Admin authentication is BROKEN")
+        results['errors'].append("Admin authentication failed")
+        return results
+    
+    # QUESTION 2: How many articles are currently in the database?
+    print(f"\n📊 QUESTION 2: How many articles are currently in the database?")
+    success_count, current_articles = tester.test_get_articles()
+    
+    if success_count:
+        results['articles_in_db'] = len(current_articles)
+        print(f"✅ ANSWER: {len(current_articles)} articles are currently in the database")
+        
+        if len(current_articles) > 0:
+            print("   Current articles:")
+            for i, art in enumerate(current_articles[:10], 1):  # Show first 10
+                print(f"   {i}. {art.get('name', 'Unknown')} (ID: {art.get('id', 'Unknown')[:8]}...)")
+                print(f"      Category: {art.get('category_id', 'Unknown')}")
+                print(f"      Price: {art.get('base_price', 0)}€")
+        else:
+            print("   Database is empty - no articles found")
+    else:
+        print("❌ ANSWER: CANNOT DETERMINE - Error retrieving articles from database")
+        results['errors'].append("Cannot retrieve articles from database")
+        return results
+    
+    # QUESTION 3: Can new articles be created via API?
+    print(f"\n🔧 QUESTION 3: Can new articles be created via API?")
+    
+    # Test with realistic article data similar to what user would create
+    test_article = {
+        "name": "Tonnelle de jardin",
+        "category_id": "exterieur_jardin",
+        "base_price": 120.0,
+        "materials": ["aluminium", "toile polyester"],
+        "description": "Tonnelle de jardin démontable avec structure aluminium",
+        "requires_dismantling": True
+    }
+    
+    print(f"   Testing article creation with: {test_article['name']}")
+    success_create, article_id = tester.test_create_article(test_article)
+    results['can_create_articles'] = success_create
+    results['created_article_id'] = article_id
+    
+    if success_create and article_id:
+        print("✅ ANSWER: YES - Articles can be created successfully via API")
+        print(f"   Created article ID: {article_id}")
+        print(f"   Article name: {test_article['name']}")
+        print(f"   Category: {test_article['category_id']}")
+        print(f"   Price: {test_article['base_price']}€")
+    else:
+        print("❌ ANSWER: NO - Article creation via API is BROKEN")
+        results['errors'].append("Article creation API is not working")
+        return results
+    
+    # QUESTION 4: Are articles being saved and persisting?
+    print(f"\n💾 QUESTION 4: Are articles being saved and persisting in database?")
+    
+    # Wait a moment then check if article persists
+    import time
+    time.sleep(1)
+    
+    success_persist, updated_articles = tester.test_get_articles()
+    if success_persist:
+        # Look for our created article
+        found_article = next((art for art in updated_articles if art.get('id') == article_id), None)
+        results['articles_persist'] = found_article is not None
+        
+        if found_article:
+            print("✅ ANSWER: YES - Articles are being saved and persist in database")
+            print(f"   Found created article: {found_article.get('name')}")
+            print(f"   Database now contains: {len(updated_articles)} articles")
+            print(f"   Article data persisted correctly:")
+            print(f"     - Name: {found_article.get('name')}")
+            print(f"     - Category: {found_article.get('category_id')}")
+            print(f"     - Price: {found_article.get('base_price')}€")
+            print(f"     - Materials: {found_article.get('materials')}")
+        else:
+            print("❌ ANSWER: NO - Articles are NOT persisting in database")
+            print(f"   Article was created but disappeared from database")
+            results['errors'].append("Articles not persisting in database")
+    else:
+        print("❌ ANSWER: CANNOT VERIFY - Error checking database persistence")
+        results['errors'].append("Cannot verify database persistence")
+    
+    # QUESTION 5: Can the frontend retrieve articles via GET /api/articles?
+    print(f"\n🔍 QUESTION 5: Can frontend retrieve articles via GET /api/articles?")
+    
+    success_get, retrieved_articles = tester.test_get_articles()
+    results['get_articles_working'] = success_get
+    
+    if success_get:
+        print("✅ ANSWER: YES - GET /api/articles endpoint is working")
+        print(f"   Endpoint returns {len(retrieved_articles)} articles")
+        
+        # Check if our created article is accessible
+        if article_id:
+            found_via_get = next((art for art in retrieved_articles if art.get('id') == article_id), None)
+            if found_via_get:
+                print(f"   ✅ Created article is accessible via GET endpoint")
+                print(f"   Article: {found_via_get.get('name')} - {found_via_get.get('base_price')}€")
+            else:
+                print(f"   ❌ Created article NOT accessible via GET endpoint")
+                results['errors'].append("Created article not accessible via GET endpoint")
+    else:
+        print("❌ ANSWER: NO - GET /api/articles endpoint is BROKEN")
+        results['errors'].append("GET /api/articles endpoint not working")
+    
+    # BONUS: Test category-specific endpoint
+    print(f"\n🏷️ BONUS: Testing category-specific article retrieval...")
+    success_cat, category_articles = tester.test_get_articles_by_category("exterieur_jardin")
+    
+    if success_cat and article_id:
+        found_in_category = next((art for art in category_articles if art.get('id') == article_id), None)
+        if found_in_category:
+            print(f"✅ Created article accessible via category endpoint")
+            print(f"   Found in 'exterieur_jardin': {found_in_category.get('name')}")
+        else:
+            print(f"❌ Created article NOT found in category endpoint")
+            print(f"   Category contains {len(category_articles)} articles")
+    
+    # Test exact createArticle endpoint the frontend calls
+    print(f"\n🎯 TESTING EXACT FRONTEND CREATEARTICLE ENDPOINT...")
+    
+    # Test with exact frontend data structure
+    frontend_article = {
+        "name": "Test Article Frontend Interface",
+        "category_id": "exterieur_jardin", 
+        "base_price": 0,
+        "materials": ["test", "frontend"],
+        "description": "Test from frontend interface",
+        "requires_dismantling": False
+    }
+    
+    success_frontend, frontend_article_id = tester.test_create_article(frontend_article)
+    
+    if success_frontend and frontend_article_id:
+        print("✅ Frontend createArticle endpoint working correctly")
+        print(f"   Created frontend test article: {frontend_article_id}")
+        
+        # Verify it's immediately retrievable
+        success_immediate, immediate_articles = tester.test_get_articles()
+        if success_immediate:
+            found_immediate = next((art for art in immediate_articles if art.get('id') == frontend_article_id), None)
+            if found_immediate:
+                print("✅ Article immediately available after creation")
+            else:
+                print("❌ Article not immediately available after creation")
+        
+        # Clean up frontend test article
+        tester.test_delete_article(frontend_article_id)
+    else:
+        print("❌ Frontend createArticle endpoint has issues")
+        results['errors'].append("Frontend createArticle endpoint not working")
+    
+    # Clean up main test article
+    if article_id:
+        print(f"\n🧹 Cleaning up test article...")
+        success_cleanup, _ = tester.test_delete_article(article_id)
+        if success_cleanup:
+            print("✅ Test article cleaned up")
+        else:
+            print("⚠️  Could not clean up test article")
+    
+    # FINAL SUMMARY
+    print(f"\n" + "=" * 70)
+    print(f"📋 DEFINITIVE ANSWERS TO USER'S QUESTIONS:")
+    print(f"=" * 70)
+    print(f"1. Admin authentication: {'✅ WORKING' if results['auth_working'] else '❌ BROKEN'}")
+    print(f"2. Articles in database: {results['articles_in_db']} articles")
+    print(f"3. Can create articles: {'✅ YES' if results['can_create_articles'] else '❌ NO'}")
+    print(f"4. Articles persist: {'✅ YES' if results['articles_persist'] else '❌ NO'}")
+    print(f"5. GET articles working: {'✅ YES' if results['get_articles_working'] else '❌ NO'}")
+    
+    if len(results['errors']) == 0:
+        print(f"\n🎉 BACKEND IS WORKING PERFECTLY!")
+        print(f"✅ All backend APIs for article creation are functional")
+        print(f"✅ Articles are being saved and persisting correctly")
+        print(f"✅ No backend issues detected")
+        print(f"\n💡 CONCLUSION: If users cannot save articles, the issue is:")
+        print(f"   - Frontend interface not calling backend correctly")
+        print(f"   - Frontend not refreshing/displaying saved articles")
+        print(f"   - Frontend using hardcoded data instead of database")
+        print(f"\n🚀 BACKEND IS READY - ISSUE IS IN FRONTEND IMPLEMENTATION")
+        return 0
+    else:
+        print(f"\n🚨 BACKEND ISSUES DETECTED:")
+        for error in results['errors']:
+            print(f"   ❌ {error}")
+        print(f"\n⚠️  BACKEND NEEDS IMMEDIATE ATTENTION")
+        return 1
+
 if __name__ == "__main__":
     # Check if specific test mode is requested
     import sys
@@ -1221,5 +1443,7 @@ if __name__ == "__main__":
             sys.exit(cleanup_database())
         elif sys.argv[1] == "article-test":
             sys.exit(test_specific_article_creation_issue())
+        elif sys.argv[1] == "urgent":
+            sys.exit(test_urgent_article_creation_issue())
     else:
         sys.exit(main())
