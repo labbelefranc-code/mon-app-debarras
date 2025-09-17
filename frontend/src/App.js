@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./App.css";
 import axios from "axios";
 import { 
-  Truck, Phone, Calendar, MapPin, ShoppingCart, ArrowLeft, Check, Upload, 
+  Truck, Phone, Calendar, MapPin, List, ArrowLeft, Check, Upload, 
   Plus, Minus, X, Home, Clock, User, Settings, AlertTriangle
 } from "lucide-react";
 import { Button } from "./components/ui/button";
