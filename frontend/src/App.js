@@ -3770,8 +3770,8 @@ function App() {
               onClick={() => setCurrentStep('selection')}
               className="bg-orange-500 hover:bg-orange-600"
             >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Ma sélection ({selectedItems.length + customItems.length})
+              <List className="mr-2 h-4 w-4" />
+              Ma liste ({selectedItems.length + customItems.length})
             </Button>
           )}
         </div>
