@@ -657,6 +657,149 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
+// Fonction pour connecter les structures admin aux catégories ABCD et transformer les variantes en articles distincts
+const getArticlesFromAdminStructures = () => {
+  const allArticles = [];
+
+  // Fonction pour transformer un item avec ses variantes en articles distincts
+  const expandItemVariants = (item, categoryId, basePrice = 25) => {
+    const articles = [];
+    
+    if (item.variants && item.variants.length > 0) {
+      // Créer un article distinct pour chaque variante
+      item.variants.forEach(variant => {
+        articles.push({
+          id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${variant.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+          name: `${item.name} ${variant}`,
+          base_name: item.name,
+          variant: variant,
+          category_id: categoryId,
+          base_price: basePrice,
+          materials: item.materials || [],
+          options: item.options || [],
+          note: item.note || '',
+          requires_dismantling: false
+        });
+      });
+    } else {
+      // Créer un article simple sans variante
+      articles.push({
+        id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+        name: item.name,
+        base_name: item.name,
+        variant: null,
+        category_id: categoryId,
+        base_price: basePrice,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      });
+    }
+    
+    return articles;
+  };
+
+  // Fonction récursive pour parcourir les structures hiérarchiques
+  const processCategory = (category, categoryId, basePrice = 25) => {
+    if (category.items) {
+      // Si la catégorie a des items directs
+      category.items.forEach(item => {
+        allArticles.push(...expandItemVariants(item, categoryId, basePrice));
+      });
+    }
+
+    if (category.subcategories) {
+      // Si la catégorie a des sous-catégories, les traiter récursivement
+      Object.entries(category.subcategories).forEach(([subKey, subcategory]) => {
+        processCategory(subcategory, categoryId, basePrice);
+      });
+    }
+
+    if (category.categories) {
+      // Pour les structures avec categories (comme MOBILIER_ADMIN_STRUCTURE)
+      Object.entries(category.categories).forEach(([catKey, cat]) => {
+        processCategory(cat, categoryId, basePrice);
+      });
+    }
+  };
+
+  // Traiter MOBILIER_ADMIN_STRUCTURE -> Catégorie A
+  processCategory(MOBILIER_ADMIN_STRUCTURE, 'mobilier', 30);
+
+  // Traiter JARDIN_ADMIN_STRUCTURE -> Catégorie B
+  processCategory(JARDIN_ADMIN_STRUCTURE, 'exterieur_jardin', 25);
+
+  // Traiter MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE -> Catégorie C
+  processCategory(MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE, 'electromenager_gros', 35);
+
+  // Traiter DIVERS_ADMIN_STRUCTURE -> Catégorie D
+  processCategory(DIVERS_ADMIN_STRUCTURE, 'divers', 20);
+
+  return allArticles;
+};
+
+// Fonction pour mapper les catégories ABCD aux structures admin
+const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null) => {
+  const adminArticles = getArticlesFromAdminStructures();
+  
+  // Mapping des catégories ABCD vers les category_id backend
+  const categoryMapping = {
+    'A': ['mobilier', 'lits_couchage', 'assises', 'tables'], // MOBILIER
+    'B': ['exterieur_jardin'], // JARDIN
+    'C': ['electromenager_gros', 'multimedia_electrique'], // ELEC
+    'D': ['divers'] // AUTRES
+  };
+
+  const relevantCategoryIds = categoryMapping[abcdCategoryId] || [];
+  
+  // Filtrer les articles selon la catégorie ABCD
+  let filteredArticles = adminArticles.filter(article => 
+    relevantCategoryIds.includes(article.category_id)
+  );
+
+  // Si une sous-catégorie spécifique est demandée, filtrer davantage
+  if (subcategoryName) {
+    // Mapping plus fin basé sur les noms de sous-catégories
+    const subcategoryMapping = {
+      'Literie / Canapés / Fauteuils': (article) => 
+        article.base_name.toLowerCase().includes('lit') || 
+        article.base_name.toLowerCase().includes('matelas') ||
+        article.base_name.toLowerCase().includes('sommier') ||
+        article.base_name.toLowerCase().includes('canapé') ||
+        article.base_name.toLowerCase().includes('fauteuil'),
+      'Tables et assises': (article) => 
+        article.base_name.toLowerCase().includes('table') ||
+        article.base_name.toLowerCase().includes('chaise') ||
+        article.base_name.toLowerCase().includes('banc'),
+      'Rangements': (article) => 
+        article.base_name.toLowerCase().includes('armoire') ||
+        article.base_name.toLowerCase().includes('commode') ||
+        article.base_name.toLowerCase().includes('rangement') ||
+        article.base_name.toLowerCase().includes('bibliothèque'),
+      'Mobilier de jardin et contenants': (article) => 
+        article.base_name.toLowerCase().includes('jardin') ||
+        article.base_name.toLowerCase().includes('salon de jardin') ||
+        article.base_name.toLowerCase().includes('transat'),
+      'Électroménager': (article) => 
+        article.base_name.toLowerCase().includes('frigo') ||
+        article.base_name.toLowerCase().includes('four') ||
+        article.base_name.toLowerCase().includes('lave'),
+      'Décoration': (article) => 
+        article.base_name.toLowerCase().includes('miroir') ||
+        article.base_name.toLowerCase().includes('tableau') ||
+        article.base_name.toLowerCase().includes('vase')
+    };
+
+    const filterFunction = subcategoryMapping[subcategoryName];
+    if (filterFunction) {
+      filteredArticles = filteredArticles.filter(filterFunction);
+    }
+  }
+
+  return filteredArticles;
+};
+
 // Isolated component for custom item input to prevent re-renders
 const CustomItemInput = React.memo(({ onAddCustomItem }) => {
   const [inputValue, setInputValue] = useState('');
