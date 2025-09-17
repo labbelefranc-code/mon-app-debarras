@@ -2705,10 +2705,12 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
           </div>
         </div>
 
-        {/* Articles List - Direct from Database */}
+        {/* Articles List - Filtered by Garden Category */}
         <div className="space-y-4">
           {allArticles && allArticles.length > 0 ? (
-            allArticles.map((item, index) => (
+            allArticles
+              .filter(item => item.category_id === 'exterieur_jardin') // Only show garden articles
+              .map((item, index) => (
               <Card key={item.id || index} className="border-l-4 border-l-green-500">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
@@ -2766,7 +2768,7 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
               </Card>
             ))
           ) : (
-            <div className="text-center text-gray-500">Aucun article trouvé</div>
+            <div className="text-center text-gray-500">Aucun article de jardin trouvé</div>
           )}
           
           <Card className="border-2 border-dashed border-gray-300">
