@@ -1530,210 +1530,10 @@ const AdminNavigationDropdown = ({ currentStep, onStepChange }) => {
   );
 };
 
-const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode, loadAdminData }) => {
-  const [selectedMainCategory, setSelectedMainCategory] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode, allArticles, loadAdminData }) => {
   const [editingItem, setEditingItem] = useState(null);
 
-  const renderMobilierStructure = () => {
-    if (!selectedMainCategory) {
-      // Show main categories
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(MOBILIER_ADMIN_STRUCTURE.categories).map(([key, category]) => (
-            <Card
-              key={key}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
-              onClick={() => setSelectedMainCategory(key)}
-            >
-              <CardContent className={`p-6 text-center bg-gradient-to-r ${MOBILIER_ADMIN_STRUCTURE.color} text-white`}>
-                <div className="text-4xl mb-3">{category.icon}</div>
-                <h3 className="text-lg font-bold mb-2">{category.name}</h3>
-                <div className="text-sm opacity-90">
-                  {category.subcategories ? 
-                    `${Object.keys(category.subcategories).length} sous-catégories` :
-                    `${category.items?.length || 0} articles`
-                  }
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      );
-    }
-
-    const category = MOBILIER_ADMIN_STRUCTURE.categories[selectedMainCategory];
-    
-    if (category.subcategories && !selectedSubCategory) {
-      // Show subcategories
-      return (
-        <div>
-          <div className="mb-6">
-            <Button
-              onClick={() => setSelectedMainCategory(null)}
-              variant="outline"
-              className="mb-4"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Retour aux catégories principales
-            </Button>
-            <h2 className="text-2xl font-bold text-gray-800">{category.name}</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {Object.entries(category.subcategories).map(([key, subcategory]) => (
-              <Card
-                key={key}
-                className="cursor-pointer hover:shadow-lg transition-all duration-200"
-                onClick={() => setSelectedSubCategory(key)}
-              >
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-bold mb-2">{subcategory.name}</h3>
-                  <div className="text-sm text-gray-600">
-                    {subcategory.items?.length || 0} articles
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Show items
-    const items = selectedSubCategory ? 
-      category.subcategories[selectedSubCategory].items :
-      category.items;
-    
-    const categoryName = selectedSubCategory ? 
-      category.subcategories[selectedSubCategory].name :
-      category.name;
-
-    return (
-      <div>
-        <div className="mb-6">
-          <Button
-            onClick={() => {
-              if (selectedSubCategory) {
-                setSelectedSubCategory(null);
-              } else {
-                setSelectedMainCategory(null);
-              }
-            }}
-            variant="outline"
-            className="mb-4"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour
-          </Button>
-          <h2 className="text-2xl font-bold text-gray-800">{categoryName}</h2>
-        </div>
-        
-        <div className="space-y-4">
-          {items?.map((item, index) => (
-            <Card key={index} className="border-l-4 border-l-blue-500">
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold mb-2">{item.name}</h3>
-                    
-                    {item.variants && item.variants.length > 0 && (
-                      <div className="mb-2">
-                        <span className="text-sm font-medium text-gray-600">Variantes: </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.variants.map((variant, vIndex) => (
-                            <span key={vIndex} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                              {variant}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {item.materials && item.materials.length > 0 && (
-                      <div className="mb-2">
-                        <span className="text-sm font-medium text-gray-600">Matériaux: </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.materials.map((material, mIndex) => (
-                            <span key={mIndex} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                              {material}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {item.options && item.options.length > 0 && (
-                      <div className="mb-2">
-                        <span className="text-sm font-medium text-gray-600">Options: </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.options.map((option, oIndex) => (
-                            <span key={oIndex} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
-                              {option}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {item.note && (
-                      <div className="text-sm text-gray-600 italic">
-                        Note: {item.note}
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex space-x-2 ml-4">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setEditingItem({...item, index, categoryKey: selectedMainCategory, subCategoryKey: selectedSubCategory})}
-                    >
-                      Modifier
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="text-red-600 border-red-300 hover:bg-red-50"
-                      onClick={() => {
-                        if (confirm(`Êtes-vous sûr de vouloir supprimer "${item.name}" ?`)) {
-                          alert('Article supprimé ! (Cette fonctionnalité sera connectée à la base de données)');
-                        }
-                      }}
-                    >
-                      Supprimer
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-          
-          <Card className="border-2 border-dashed border-gray-300">
-            <CardContent className="p-6 text-center">
-              <Button 
-                variant="outline" 
-                className="text-blue-600 border-blue-300"
-                onClick={() => setEditingItem({
-                  name: '',
-                  materials: [],
-                  variants: [],
-                  options: [],
-                  note: '',
-                  categoryKey: selectedMainCategory,
-                  subCategoryKey: selectedSubCategory
-                })}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Ajouter un nouvel article
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  };
-
+  // Directly show mobilier articles from database
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -1770,13 +1570,102 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
             <div className="text-2xl mr-3">🛏️</div>
             <div>
               <div className="text-base font-bold">ADMINISTRATION MOBILIER</div>
-              <div className="text-xs opacity-90">Gestion de l'arborescence complète</div>
+              <div className="text-xs opacity-90">Articles de mobilier uniquement</div>
             </div>
           </div>
         </div>
 
-        {/* Structure Navigation */}
-        {renderMobilierStructure()}
+        {/* Articles List - Filtered by Mobilier Categories */}
+        <div className="space-y-4">
+          {allArticles && allArticles.length > 0 ? (
+            allArticles
+              .filter(item => ['lits_couchage', 'assises', 'tables', 'mobilier'].includes(item.category_id)) // Only show mobilier articles
+              .map((item, index) => (
+              <Card key={item.id || index} className="border-l-4 border-l-blue-500">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold mb-2">{item.name}</h3>
+                      
+                      <div className="mb-2">
+                        <span className="text-sm font-medium text-gray-600">Prix: </span>
+                        <span className="text-sm font-semibold text-blue-600">{item.base_price || 0}€</span>
+                      </div>
+
+                      <div className="mb-2">
+                        <span className="text-sm font-medium text-gray-600">Catégorie: </span>
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                          {item.category_id}
+                        </span>
+                      </div>
+                      
+                      {item.materials && item.materials.length > 0 && (
+                        <div className="mb-2">
+                          <span className="text-sm font-medium text-gray-600">Matériaux: </span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {item.materials.map((material, mIndex) => (
+                              <span key={mIndex} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                                {material}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {item.description && (
+                        <div className="text-sm text-gray-600 italic">
+                          Description: {item.description}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex space-x-2 ml-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setEditingItem(item)}
+                      >
+                        Modifier
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 border-red-300 hover:bg-red-50"
+                        onClick={() => {
+                          if (confirm(`Êtes-vous sûr de vouloir supprimer "${item.name}" ?`)) {
+                            deleteArticle(item.id);
+                          }
+                        }}
+                      >
+                        Supprimer
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <div className="text-center text-gray-500">Aucun article de mobilier trouvé</div>
+          )}
+          
+          <Card className="border-2 border-dashed border-gray-300">
+            <CardContent className="p-6 text-center">
+              <Button 
+                variant="outline" 
+                className="text-blue-600 border-blue-300"
+                onClick={() => setEditingItem({
+                  name: '',
+                  materials: [],
+                  description: '',
+                  base_price: 0
+                })}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Ajouter un nouvel article mobilier
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Edit/Add Modal */}
         {editingItem && (
@@ -1784,7 +1673,7 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
             <Card className="max-w-2xl w-full max-h-[80vh] overflow-y-auto">
               <CardHeader>
                 <CardTitle>
-                  {editingItem.name ? 'Modifier l\'article' : 'Nouvel article'}
+                  {editingItem.id ? 'Modifier l\'article' : 'Nouvel article mobilier'}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -1801,65 +1690,42 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
                     />
                   </div>
                   
-                  {editingItem.materials && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Matériaux (séparés par des virgules)
-                      </label>
-                      <Input
-                        value={editingItem.materials?.join(', ') || ''}
-                        onChange={(e) => setEditingItem(prev => ({
-                          ...prev, 
-                          materials: e.target.value.split(',').map(m => m.trim()).filter(m => m)
-                        }))}
-                        placeholder="Bois, Métal, Plastique..."
-                        className="w-full"
-                      />
-                    </div>
-                  )}
-                  
-                  {editingItem.variants && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Variantes (séparées par des virgules)
-                      </label>
-                      <Input
-                        value={editingItem.variants?.join(', ') || ''}
-                        onChange={(e) => setEditingItem(prev => ({
-                          ...prev, 
-                          variants: e.target.value.split(',').map(v => v.trim()).filter(v => v)
-                        }))}
-                        placeholder="Petit, Moyen, Grand..."
-                        className="w-full"
-                      />
-                    </div>
-                  )}
-                  
-                  {editingItem.options && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Options (séparées par des virgules)
-                      </label>
-                      <Input
-                        value={editingItem.options?.join(', ') || ''}
-                        onChange={(e) => setEditingItem(prev => ({
-                          ...prev, 
-                          options: e.target.value.split(',').map(o => o.trim()).filter(o => o)
-                        }))}
-                        placeholder="+ bureau, + tiroirs..."
-                        className="w-full"
-                      />
-                    </div>
-                  )}
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Prix de base (€)
+                    </label>
+                    <Input
+                      type="number"
+                      value={editingItem.base_price || 0}
+                      onChange={(e) => setEditingItem(prev => ({...prev, base_price: parseFloat(e.target.value) || 0}))}
+                      placeholder="0"
+                      className="w-full"
+                    />
+                  </div>
                   
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Note (optionnelle)
+                      Matériaux (séparés par des virgules)
+                    </label>
+                    <Input
+                      value={editingItem.materials?.join(', ') || ''}
+                      onChange={(e) => setEditingItem(prev => ({
+                        ...prev, 
+                        materials: e.target.value.split(',').map(m => m.trim()).filter(m => m)
+                      }))}
+                      placeholder="Bois, Métal, Plastique..."
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Description
                     </label>
                     <Textarea
-                      value={editingItem.note || ''}
-                      onChange={(e) => setEditingItem(prev => ({...prev, note: e.target.value}))}
-                      placeholder="Note ou description supplémentaire..."
+                      value={editingItem.description || ''}
+                      onChange={(e) => setEditingItem(prev => ({...prev, description: e.target.value}))}
+                      placeholder="Description de l'article..."
                       className="w-full"
                       rows={3}
                     />
@@ -1876,23 +1742,26 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
                   <Button
                     onClick={async () => {
                       try {
-                        // Convert static item data to proper article format and save
                         const articleData = {
                           name: editingItem.name,
-                          category_id: 'exterieur_jardin', // Valid category
-                          base_price: 0, // Default price
+                          category_id: 'lits_couchage', // Default mobilier category
+                          base_price: editingItem.base_price || 0,
                           materials: editingItem.materials || [],
-                          description: editingItem.note || '',
+                          description: editingItem.description || '',
                           requires_dismantling: false
                         };
                         
-                        await createArticle(articleData);
-                        await loadAdminData(); // Refresh the article list
+                        if (editingItem.id) {
+                          await updateArticle(editingItem.id, articleData);
+                        } else {
+                          await createArticle(articleData);
+                        }
+                        await loadAdminData();
                         setEditingItem(null);
-                        alert('Article ajouté avec succès !');
+                        alert('Article sauvegardé avec succès !');
                       } catch (error) {
                         console.error('Erreur:', error);
-                        alert('Erreur lors de l\'ajout de l\'article');
+                        alert('Erreur lors de la sauvegarde');
                       }
                     }}
                     className="bg-blue-600 hover:bg-blue-700"
