@@ -2091,5 +2091,10 @@ if __name__ == "__main__":
         elif sys.argv[1] == "category-mapping":
             success = test_frontend_category_mapping_issue()
             sys.exit(0 if success else 1)
+        elif sys.argv[1] == "jardin":
+            results = test_jardin_admin_interface()
+            success = all([results['auth_working'], results['categories_structure'], 
+                          results['article_creation'], results['data_consistency']])
+            sys.exit(0 if success else 1)
     else:
         sys.exit(main())
