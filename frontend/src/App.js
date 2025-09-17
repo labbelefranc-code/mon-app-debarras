@@ -1530,7 +1530,7 @@ const AdminNavigationDropdown = ({ currentStep, onStepChange }) => {
   );
 };
 
-const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode }) => {
+const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, deleteArticle, adminAuth, setCurrentStep, setIsAdminMode, loadAdminData }) => {
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
