@@ -2867,7 +2867,7 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
                       try {
                         const articleData = {
                           name: editingItem.name,
-                          category_id: 'lits_couchage', // Correct category for mobilier
+                          category_id: 'exterieur_jardin', // Correct category for jardin
                           base_price: editingItem.base_price || 0,
                           materials: editingItem.materials || [],
                           description: editingItem.description || '',
