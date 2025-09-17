@@ -1874,25 +1874,25 @@ const ModernAdminCategoriesPage = ({ onGoBack, createArticle, updateArticle, del
                     Annuler
                   </Button>
                   <Button
-                    onClick={() => {
-                      // Convert static item data to proper article format and save
-                      const articleData = {
-                        name: editingItem.name,
-                        category_id: 'mobilier', // Default category for mobilier
-                        base_price: 0, // Default price
-                        materials: editingItem.materials || [],
-                        description: editingItem.note || '',
-                        requires_dismantling: false
-                      };
-                      
-                      if (editingItem.index !== undefined) {
-                        // This would be an update, but since we're working with static data,
-                        // we'll treat it as a new article for now
-                        createArticle(articleData);
-                      } else {
-                        createArticle(articleData);
+                    onClick={async () => {
+                      try {
+                        // Convert static item data to proper article format and save
+                        const articleData = {
+                          name: editingItem.name,
+                          category_id: 'mobilier', // Category for mobilier
+                          base_price: 0, // Default price
+                          materials: editingItem.materials || [],
+                          description: editingItem.note || '',
+                          requires_dismantling: false
+                        };
+                        
+                        await createArticle(articleData);
+                        setEditingItem(null);
+                        alert('Article ajouté avec succès !');
+                      } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Erreur lors de l\'ajout de l\'article');
                       }
-                      setEditingItem(null);
                     }}
                     className="bg-blue-600 hover:bg-blue-700"
                   >
