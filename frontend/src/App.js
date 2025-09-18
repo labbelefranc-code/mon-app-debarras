@@ -5703,6 +5703,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     ))}
                   </div>
                 </div>
+
+                <CustomItemInput onAddCustomItem={addCustomItem} />
               </div>
 
               <div className="lg:col-span-1">
