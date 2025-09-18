@@ -5045,11 +5045,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables" ou "Assises", afficher leurs sous-catégories
-    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises') && !selectedABCDSubSubSubcategory) {
+    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables", "Assises" ou "Tous les rangements", afficher leurs sous-catégories
+    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises' || selectedABCDSubSubcategory === 'Tous les rangements') && !selectedABCDSubSubSubcategory) {
       const isLiterie = selectedABCDSubSubcategory === 'Literie';
       const isTables = selectedABCDSubSubcategory === 'Tables';
       const isAssises = selectedABCDSubSubcategory === 'Assises';
+      const isRangements = selectedABCDSubSubcategory === 'Tous les rangements';
       
       let subcategories = [];
       if (isLiterie) {
@@ -5071,6 +5072,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           { key: 'chaises', name: 'CHAISES', icon: '🪑', count: 6 },
           { key: 'fauteuils', name: 'FAUTEUILS', icon: '💺', count: 4 },
           { key: 'autres_assises', name: 'AUTRES (BANC/BANQUETTE/POUF/TABOURET/REPOSE PIED/TRANSAT)', icon: '🛋️', count: 9 }
+        ];
+      } else if (isRangements) {
+        subcategories = [
+          { key: 'rangements_divers', name: 'Rangements divers', icon: '🗄️', count: 11 },
+          { key: 'rangements_cuisine', name: 'Rangements CUISINE', icon: '🍳', count: 7 },
+          { key: 'rangements_salle_bain', name: 'Rangements SALLE DE BAIN', icon: '🚿', count: 4 }
         ];
       }
 
@@ -5094,17 +5101,17 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
 
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : isTables ? '🪑' : '💺'}</div>
+                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : isTables ? '🪑' : isAssises ? '💺' : '🗄️'}</div>
                     <div>
-                      <div className="font-bold">{selectedABCDSubSubcategory.toUpperCase()}</div>
-                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}</div>
+                      <div className="font-bold">{(isRangements ? 'RANGEMENTS' : selectedABCDSubSubcategory).toUpperCase()}</div>
+                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : isAssises ? 'd\'assise' : 'de rangement'}</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                    Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}
+                    Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : isAssises ? 'd\'assise' : 'de rangement'}
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
