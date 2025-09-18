@@ -5569,6 +5569,20 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-3">
+                {/* Bouton retour manquant - AJOUTÉ */}
+                <div className="flex items-center justify-between mb-8">
+                  <Button
+                    onClick={() => {
+                      setSelectedABCDSubSubcategory(null);
+                    }}
+                    variant="outline"
+                    className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Retour aux types d'objets
+                  </Button>
+                </div>
+
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
                     <div className="text-2xl mr-3">{isLiterie ? '🛏️' : isTables ? '🪑' : '💺'}</div>
