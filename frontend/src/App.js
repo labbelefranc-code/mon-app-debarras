@@ -5297,7 +5297,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                 className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
                                 onClick={() => {
                                   setSelectedABCDSubcategory(subcategoryName);
-                                  // Pas de navigation spéciale - laisser le flux normal gérer les articles
+                                  // Pour "Bricolage / matériaux / énergie", aller directement aux articles
+                                  if (subcategoryName === 'Bricolage / matériaux / énergie') {
+                                    setSelectedABCDSubSubcategory('Tout bricolage & matériaux');
+                                  }
                                 }}>
                             <CardContent className={`p-6 bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
                               <div className="flex items-center">
