@@ -5742,15 +5742,21 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       → {selectedABCDSubcategory} → {selectedABCDSubSubcategory}
                       {selectedABCDSubSubSubcategory && (
                         ` → ${
-                          selectedABCDSubSubcategory === 'Literie' 
-                            ? MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories[selectedABCDSubSubSubcategory]?.name
-                            : selectedABCDSubSubcategory === 'Tables'
-                            ? MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories[selectedABCDSubSubSubcategory]?.name
-                            : selectedABCDSubSubcategory === 'Assises'
-                            ? MOBILIER_ADMIN_STRUCTURE.categories.assises.subcategories[selectedABCDSubSubSubcategory]?.name
-                            : selectedABCDSubSubcategory === 'Tous les rangements'
-                            ? MOBILIER_ADMIN_STRUCTURE.categories.meubles_rangement.subcategories[selectedABCDSubSubSubcategory]?.name
-                            : selectedABCDSubSubSubcategory
+                          selectedABCDCategory.id === 'A' ? ( // MOBILIER
+                            selectedABCDSubSubcategory === 'Literie' 
+                              ? MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories[selectedABCDSubSubSubcategory]?.name
+                              : selectedABCDSubSubcategory === 'Tables'
+                              ? MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories[selectedABCDSubSubSubcategory]?.name
+                              : selectedABCDSubSubcategory === 'Assises'
+                              ? MOBILIER_ADMIN_STRUCTURE.categories.assises.subcategories[selectedABCDSubSubSubcategory]?.name
+                              : selectedABCDSubSubcategory === 'Tous les rangements'
+                              ? MOBILIER_ADMIN_STRUCTURE.categories.meubles_rangement.subcategories[selectedABCDSubSubSubcategory]?.name
+                              : selectedABCDSubSubSubcategory
+                          ) : selectedABCDCategory.id === 'B' ? ( // JARDIN
+                            selectedABCDSubSubcategory === 'Tables'
+                              ? JARDIN_ADMIN_STRUCTURE.categories.mobilier_jardin_contenants.subcategories.tables.subcategories[selectedABCDSubSubSubcategory.toLowerCase().replace(/[^a-z0-9]/g, '_')]?.name || selectedABCDSubSubSubcategory
+                              : selectedABCDSubSubSubcategory
+                          ) : selectedABCDSubSubSubcategory
                         }`
                       )}
                     </div>
