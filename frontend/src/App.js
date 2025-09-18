@@ -5203,9 +5203,16 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         getTablesArticles(selectedABCDSubSubSubcategory) :
         selectedABCDSubSubcategory === 'Assises' ?
         getAssisesArticles(selectedABCDSubSubSubcategory) :
-        selectedABCDSubSubcategory === 'Tous les rangements' ?
-        getRangementsArticles(selectedABCDSubSubSubcategory) :
         []
+      ) :
+      // Pour les rangements, on utilise maintenant directement le selectedABCDSubSubcategory
+      (selectedABCDSubSubcategory === 'Rangements divers' ||
+       selectedABCDSubSubcategory === 'Rangements CUISINE' ||
+       selectedABCDSubSubcategory === 'Rangements SALLE DE BAIN') ?
+      getRangementsArticles(
+        selectedABCDSubSubcategory === 'Rangements divers' ? 'rangements_divers' :
+        selectedABCDSubSubcategory === 'Rangements CUISINE' ? 'rangements_cuisine' :
+        'rangements_salle_bain'
       ) :
       getABCDCategoryArticles(
         selectedABCDCategory?.id, 
