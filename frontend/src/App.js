@@ -880,6 +880,28 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
+// Fonction spéciale pour récupérer les articles d'assises avec les nouvelles options
+const getAssisesArticles = (subcategory) => {
+  const assisesStructure = MOBILIER_ADMIN_STRUCTURE.categories.assises.subcategories;
+  const subcategoryData = assisesStructure[subcategory];
+  
+  if (!subcategoryData || !subcategoryData.items) return [];
+  
+  return subcategoryData.items.map((item, index) => ({
+    id: `assises_${subcategory}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+    name: item.name,
+    base_name: item.name,
+    category_id: 'assises',
+    category_name: 'ASSISES',
+    subcategory_name: subcategoryData.name,
+    base_price: 25,
+    materials: item.materials || [],
+    options: item.options || [],
+    note: item.note || '',
+    requires_dismantling: false
+  }));
+};
+
 // Fonction spéciale pour récupérer les articles de tables avec les nouvelles options
 const getTablesArticles = (subcategory) => {
   const tablesStructure = MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories;
