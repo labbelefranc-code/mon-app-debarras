@@ -805,6 +805,28 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
+// Fonction spéciale pour récupérer les articles de tables avec les nouvelles options
+const getTablesArticles = (subcategory) => {
+  const tablesStructure = MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories;
+  const subcategoryData = tablesStructure[subcategory];
+  
+  if (!subcategoryData || !subcategoryData.items) return [];
+  
+  return subcategoryData.items.map((item, index) => ({
+    id: `tables_${subcategory}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+    name: item.name,
+    base_name: item.name,
+    category_id: 'tables',
+    category_name: 'TABLES',
+    subcategory_name: subcategoryData.name,
+    base_price: 25,
+    materials: item.materials || [],
+    options: item.options || [],
+    note: item.note || '',
+    requires_dismantling: false
+  }));
+};
+
 // Fonction spéciale pour récupérer les articles de literie avec les nouvelles options
 const getLiterieArticles = (subcategory) => {
   const literieStructure = MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories;
