@@ -4634,7 +4634,15 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
               className="cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 hover:border-orange-300"
               onClick={() => {
                 setSelectedABCDCategory(category);
-                if (category.subcategories.length > 0) {
+                // Réinitialiser tous les sous-niveaux
+                setSelectedABCDSubcategory(null);
+                setSelectedABCDSubSubcategory(null);
+                setSelectedABCDSubSubSubcategory(null);
+                
+                // Pour MOBILIER, aller directement à abcd-objects pour afficher les grandes cartes
+                if (category.id === 'A') {
+                  setCurrentStep('abcd-objects');
+                } else if (category.subcategories.length > 0) {
                   setCurrentStep('abcd-subcategories');
                 } else {
                   // Si pas de sous-catégories, aller directement à la sélection d'objets
