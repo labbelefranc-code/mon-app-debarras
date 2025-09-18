@@ -5111,7 +5111,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                         const subcategoryIcons = {
                           'Literie / Canapés / Fauteuils': '🛏️',
                           'Tables et assises': '🪑', 
-                          'Rangements': '🗄️'
+                          'Rangements': '🗄️',
+                          'Mobilier de jardin et contenants': '🪑',
+                          'Jardin et extérieur': '🌱',
+                          'Bricolage / matériaux / énergie': '🔧'
                         };
                         
                         return (
