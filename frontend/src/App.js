@@ -1456,6 +1456,68 @@ const getRangementsArticles = (subcategory) => {
   }));
 };
 
+// Fonction spéciale pour récupérer les articles de tables de JARDIN (niveau 4)
+const getJardinTablesArticles = (subSubSubcategory) => {
+  const tablesStructure = JARDIN_ADMIN_STRUCTURE.categories.mobilier_jardin_contenants.subcategories.tables.subcategories;
+  
+  let articles = [];
+  
+  if (subSubSubcategory === 'TABLE BASSE/PETITE TABLE') {
+    const subcategory = tablesStructure.table_basse_petite;
+    if (subcategory && subcategory.items) {
+      articles = subcategory.items.map((item, index) => ({
+        id: `jardin_table_basse_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `jardin_table_basse_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'JARDIN',
+        subcategory: 'Mobilier de jardin et contenants',
+        subcategory_name: 'Tables',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  } else if (subSubSubcategory === 'TABLE STANDARD ET GRANDE TABLE') {
+    const subcategory = tablesStructure.table_standard_grande;
+    if (subcategory && subcategory.items) {
+      articles = subcategory.items.map((item, index) => ({
+        id: `jardin_table_standard_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `jardin_table_standard_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'JARDIN',
+        subcategory: 'Mobilier de jardin et contenants',
+        subcategory_name: 'Tables',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  } else if (subSubSubcategory === 'TABLES DIVERS') {
+    const subcategory = tablesStructure.tables_divers;
+    if (subcategory && subcategory.items) {
+      articles = subcategory.items.map((item, index) => ({
+        id: `jardin_table_divers_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `jardin_table_divers_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'JARDIN',
+        subcategory: 'Mobilier de jardin et contenants',
+        subcategory_name: 'Tables',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  }
+  
+  return articles;
+};
+
 // Fonction spéciale pour récupérer les articles d'assises avec les nouvelles options
 const getAssisesArticles = (subcategory) => {
   const assisesStructure = MOBILIER_ADMIN_STRUCTURE.categories.assises.subcategories;
