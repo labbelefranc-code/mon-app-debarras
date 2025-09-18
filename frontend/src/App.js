@@ -943,11 +943,387 @@ const JARDIN_ADMIN_STRUCTURE = {
       id: 'mobilier_jardin_contenants',
       name: 'MOBILIER DE JARDIN & CONTENANTS',
       icon: '🪑',
+      subcategories: {
+        'tables': {
+          name: 'TABLES',
+          subcategories: {
+            'table_basse_petite': {
+              name: 'TABLE BASSE/PETITE TABLE',
+              items: [
+                { 
+                  name: 'Table basse', 
+                  options: [
+                    { type: 'weight', label: 'Poids', choices: ['lourde', 'légère'] },
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+                  ]
+                },
+                { 
+                  name: 'Petite table', 
+                  options: [
+                    { type: 'weight', label: 'Poids', choices: ['lourde', 'légère'] },
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+                  ]
+                },
+                { name: 'Desserte à roulette' },
+                { 
+                  name: 'Établi', 
+                  options: [
+                    { type: 'option', label: 'Option', choices: ['pliant', 'standard'] }
+                  ]
+                }
+              ]
+            },
+            'table_standard_grande': {
+              name: 'TABLE STANDARD ET GRANDE TABLE',
+              items: [
+                { 
+                  name: 'Table rectangulaire', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+                  ]
+                },
+                { 
+                  name: 'Table carrée', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+                  ]
+                },
+                { 
+                  name: 'Table ronde/ovale', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+                  ]
+                },
+                { 
+                  name: 'Longue table +/-2M / table de ferme / Pétrin', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'bois massif', 'verre', 'pierre', 'fonte', 'plastique'] }
+                  ]
+                }
+              ]
+            },
+            'tables_divers': {
+              name: 'TABLES DIVERS',
+              items: [
+                { 
+                  name: 'Table de pique-nique extérieure', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte'] }
+                  ]
+                },
+                { 
+                  name: 'Table de pique-nique pliante', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique'] }
+                  ]
+                },
+                { 
+                  name: 'Table pliante', 
+                  options: [
+                    { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'osier'] }
+                  ]
+                },
+                { name: 'Établi' },
+                { 
+                  name: 'Comptoir/Bar', 
+                  options: [
+                    { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        'assises': {
+          name: 'ASSISES',
+          items: [
+            { 
+              name: 'Fauteuils', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
+                { type: 'option', label: 'Option', choices: ['empilable si plusieurs', 'pliant', 'standard'] }
+              ]
+            },
+            { 
+              name: 'Chaises', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] }
+              ]
+            },
+            { 
+              name: 'Banc', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
+                { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+              ]
+            },
+            { 
+              name: 'Banc coffre', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] }
+              ]
+            },
+            { name: 'Pouf/petit tabouret' },
+            { name: 'Tabouret de bar' },
+            { 
+              name: 'Transat', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier'] },
+                { type: 'option', label: 'Option', choices: ['empilable si plusieurs', 'pliable', 'standard'] }
+              ]
+            },
+            { name: 'Balancelle' },
+            { 
+              name: 'Salon de jardin', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte', 'pierre'] }
+              ]
+            }
+          ]
+        },
+        'rangement_contenants': {
+          name: 'RANGEMENT ET CONTENANTS',
+          items: [
+            { 
+              name: 'Meuble d\'appoint', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte', 'pierre'] }
+              ]
+            },
+            { name: 'Vestiaire métallique' },
+            { 
+              name: 'Armoire de jardin', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['basse', 'haute'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte', 'pierre'] }
+              ]
+            },
+            { 
+              name: 'Malle', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier'] }
+              ]
+            },
+            { 
+              name: 'Coffre de jardin', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier'] }
+              ]
+            },
+            { name: 'Valise' },
+            { name: 'Caisse bouteilles x6' },
+            { 
+              name: 'Casier bouteille métallique', 
+              options: [
+                { type: 'type', label: 'Type', choices: ['simple', 'double'] }
+              ]
+            },
+            { 
+              name: 'Poubelle', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['petite', 'grande'] }
+              ]
+            },
+            { 
+              name: 'Container', 
+              options: [
+                { type: 'type', label: 'Type', choices: ['simple', 'double'] }
+              ]
+            },
+            { 
+              name: 'Sceau', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+              ]
+            },
+            { name: 'Caddie' },
+            { name: 'Cuve fioul' }
+          ]
+        }
+      }
+    },
+    'jardin_exterieur': {
+      id: 'jardin_exterieur',
+      name: 'JARDIN & EXTÉRIEUR',
+      icon: '🌱',
       items: [
-        { name: 'Table, table pliante, table de jardin, etabli, desserte, bar', variants: ['table simple', 'table pliante', 'table de jardin', 'etabli', 'desserte', 'bar'], materials: ['bois', 'métal', 'plastique', 'résine'] },
-        { name: 'Rangement', variants: ['meuble d\'appoint', 'armoire', 'casier'], materials: ['bois', 'métal', 'plastique', 'résine'] },
-        { name: 'Fauteuils, chaises, bancs, balancelle', variants: ['fauteuil', 'chaise', 'banc', 'balancelle'], materials: ['bois', 'métal', 'plastique', 'résine', 'tissu'] },
-        { name: 'Salon de jardin', variants: ['2 places', '4 places', '6 places', '8 places'], materials: ['résine', 'bois', 'métal'] },
+        { name: 'Parasol' },
+        { name: 'Pied de parasol' },
+        { 
+          name: 'Composteur', 
+          options: [
+            { type: 'state', label: 'État', choices: ['vide', 'plein'] }
+          ]
+        },
+        { name: 'Cuve eau de pluie' },
+        { 
+          name: 'Bidon plastique', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+          ]
+        },
+        { name: 'Fût métallique' },
+        { name: 'Tuyau d\'arrosage' },
+        { name: 'Arrosoir' },
+        { 
+          name: 'Jardinières', 
+          options: [
+            { type: 'weight', label: 'Poids', choices: ['léger', 'lourd'] },
+            { type: 'plant', label: 'Avec plante', choices: ['oui', 'non'] }
+          ]
+        },
+        { 
+          name: 'Pots de fleurs', 
+          options: [
+            { type: 'weight', label: 'Poids', choices: ['léger', 'lourd'] },
+            { type: 'plant', label: 'Avec plante', choices: ['oui', 'non'] }
+          ]
+        },
+        { name: 'Séchoir/étendoir' },
+        { 
+          name: 'Portillon', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Pergola', 
+          options: [
+            { type: 'dismantling', label: 'Démontage', choices: ['avec démontage', 'sans démontage'] }
+          ]
+        },
+        { 
+          name: 'Store/volets', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Abri de jardin', 
+          options: [
+            { type: 'dismantling', label: 'Démontage', choices: ['avec démontage', 'sans démontage'] }
+          ]
+        },
+        { 
+          name: 'Appareils thermiques et électriques', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Motoculteur', 'Tondeuse à gazon', 'débroussailleuse', 'taille haie'] }
+          ]
+        },
+        { name: 'Outils divers (pelle, râteau, pioche)' },
+        { 
+          name: 'Barbecue', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petit', 'gros style weber'] }
+          ]
+        },
+        { 
+          name: 'Matériaux de construction', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Carrelage', 'tuiles', 'pierre', 'parpaing', 'dalles'] }
+          ]
+        },
+        { name: 'Brouette' },
+        { name: 'Rouleau gazon' },
+        { 
+          name: 'Véhicules légers', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Vélo', 'solex', 'mobylette', 'scooter', 'pocket bike'] }
+          ]
+        }
+      ]
+    },
+    'bricolage_materiaux_energie': {
+      id: 'bricolage_materiaux_energie',
+      name: 'BRICOLAGE, MATÉRIAUX & ÉNERGIE',
+      icon: '🔧',
+      items: [
+        { 
+          name: 'Équipement de hauteur', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Escabeau', 'échelle', 'marchepied'] }
+          ]
+        },
+        { 
+          name: 'Palettes', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petite', 'moyenne', 'euro', 'grande', 'chevalet'] }
+          ]
+        },
+        { 
+          name: 'Barres de fer', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petite (- de 1m)', 'moyenne (moins de 2m)', 'grande (plus de 2M)'] }
+          ]
+        },
+        { name: 'Étai' },
+        { 
+          name: 'Ciment/sacs de ciment', 
+          options: [
+            { type: 'weight', label: 'Poids', choices: ['5kg', '10kg', '15kg', '20kg'] }
+          ]
+        },
+        { 
+          name: 'Sacs à gravats', 
+          options: [
+            { type: 'weight', label: 'Poids', choices: ['5kg', '10kg', '15kg', '20kg'] }
+          ]
+        },
+        { 
+          name: 'Produits', 
+          options: [
+            { type: 'container', label: 'Contenant', choices: ['bouteille', 'pot', 'bidon'] },
+            { type: 'size', label: 'Taille', choices: ['petit', 'gros'] }
+          ]
+        },
+        { 
+          name: 'Moteur', 
+          options: [
+            { type: 'weight', label: 'Poids', choices: ['moins de 10kg', 'moins de 20KG', 'moins de 40kg', 'moins de 60kg'] }
+          ]
+        },
+        { 
+          name: 'Portes/fenêtres', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Portes', 'fenêtres', 'porte-fenêtre'] },
+            { type: 'material', label: 'Matériau', choices: ['bois', 'bois massif', 'fer', 'pvc'] }
+          ]
+        },
+        { name: 'Touret' },
+        { 
+          name: 'Remorque', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petite', 'grande'] }
+          ]
+        },
+        { 
+          name: 'Pneus/roues', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['standard', 'gros'] }
+          ]
+        },
+        { name: 'Vélo' },
+        { name: 'Solex/mobylette' },
+        { 
+          name: 'Bouteille de gaz', 
+          options: [
+            { type: 'size', label: 'Taille', choices: ['petite (quelques kilos)', 'moyenne (6/8kg)', 'grande 10/12kg'] }
+          ]
+        },
+        { name: 'Panneau solaire' },
+        { name: 'Batterie' },
+        { name: 'Cumulus (déjà démonté)' },
+        { 
+          name: 'Grosses machines', 
+          options: [
+            { type: 'type', label: 'Type', choices: ['Bétonnière', 'compresseur', 'raboteuse', 'groupe électrogène'] }
+          ]
+        },
+        { name: 'Panneau OSB' },
+        { name: 'Plaque Ba 13 (placo)' }
+      ]
+    }
+  }
         { name: 'Transat pliant', variants: ['simple', 'double'] },
         { name: 'Banc coffre', variants: ['petit', 'moyen', 'grand'] },
         { name: 'Malle / coffre de jardin / valise', variants: ['malle', 'coffre de jardin', 'valise'] },
