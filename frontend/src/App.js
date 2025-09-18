@@ -5257,6 +5257,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                             ? MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories[selectedABCDSubSubSubcategory]?.name
                             : selectedABCDSubSubcategory === 'Assises'
                             ? MOBILIER_ADMIN_STRUCTURE.categories.assises.subcategories[selectedABCDSubSubSubcategory]?.name
+                            : selectedABCDSubSubcategory === 'Tous les rangements'
+                            ? MOBILIER_ADMIN_STRUCTURE.categories.meubles_rangement.subcategories[selectedABCDSubSubSubcategory]?.name
                             : selectedABCDSubSubSubcategory
                         }`
                       )}
