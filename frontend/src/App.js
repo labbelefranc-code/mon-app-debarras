@@ -5030,12 +5030,14 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 4 : Afficher les articles finaux (modifié pour Literie et Tables)
+    // Niveau 4 : Afficher les articles finaux (modifié pour Literie, Tables et Assises)
     const availableArticles = selectedABCDSubSubSubcategory ? 
       (selectedABCDSubSubcategory === 'Literie' ? 
         getLiterieArticles(selectedABCDSubSubSubcategory) :
         selectedABCDSubSubcategory === 'Tables' ?
         getTablesArticles(selectedABCDSubSubSubcategory) :
+        selectedABCDSubSubcategory === 'Assises' ?
+        getAssisesArticles(selectedABCDSubSubSubcategory) :
         []
       ) :
       getABCDCategoryArticles(
