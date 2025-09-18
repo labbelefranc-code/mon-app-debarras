@@ -4871,7 +4871,47 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                             {article.name}
                           </h4>
                           
-                          {/* Materials - Now as selectable buttons */}
+                          {/* Options avec boutons sélectionnables */}
+                          {article.options && article.options.length > 0 && (
+                            <div className="mb-3">
+                              {article.options.map((optionGroup, groupIdx) => (
+                                <div key={groupIdx} className="mb-2">
+                                  <span className="text-sm font-medium text-gray-600 mb-2 block">{optionGroup.label} :</span>
+                                  <div className="flex flex-wrap gap-2">
+                                    {optionGroup.choices.map((choice, choiceIdx) => (
+                                      <button
+                                        key={choiceIdx}
+                                        className="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 text-sm rounded-full border border-green-300 hover:border-green-400 transition-colors"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          // Toggle selection of choice
+                                          const button = e.target;
+                                          if (button.classList.contains('bg-green-500')) {
+                                            button.classList.remove('bg-green-500', 'text-white');
+                                            button.classList.add('bg-green-100', 'text-green-800');
+                                          } else {
+                                            // Deselect other choices in this group first (radio behavior)
+                                            const siblings = button.parentElement.querySelectorAll('button');
+                                            siblings.forEach(sibling => {
+                                              sibling.classList.remove('bg-green-500', 'text-white');
+                                              sibling.classList.add('bg-green-100', 'text-green-800');
+                                            });
+                                            // Select this choice
+                                            button.classList.remove('bg-green-100', 'text-green-800');
+                                            button.classList.add('bg-green-500', 'text-white');
+                                          }
+                                        }}
+                                      >
+                                        {choice}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {/* Matériaux - Now as selectable buttons */}
                           {article.materials && article.materials.length > 0 && (
                             <div className="mb-3">
                               <span className="text-sm font-medium text-gray-600 mb-2 block">Matériaux :</span>
@@ -4894,35 +4934,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                     }}
                                   >
                                     {material}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Options */}
-                          {article.options && article.options.length > 0 && (
-                            <div className="mb-3">
-                              <span className="text-sm font-medium text-gray-600 mb-2 block">Options :</span>
-                              <div className="flex flex-wrap gap-2">
-                                {article.options.map((option, idx) => (
-                                  <button
-                                    key={idx}
-                                    className="px-3 py-1 bg-orange-100 hover:bg-orange-200 text-orange-800 text-sm rounded-full border border-orange-300 hover:border-orange-400 transition-colors"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      // Toggle selection of option
-                                      const button = e.target;
-                                      if (button.classList.contains('bg-orange-500')) {
-                                        button.classList.remove('bg-orange-500', 'text-white');
-                                        button.classList.add('bg-orange-100', 'text-orange-800');
-                                      } else {
-                                        button.classList.remove('bg-orange-100', 'text-orange-800');
-                                        button.classList.add('bg-orange-500', 'text-white');
-                                      }
-                                    }}
-                                  >
-                                    {option}
                                   </button>
                                 ))}
                               </div>
