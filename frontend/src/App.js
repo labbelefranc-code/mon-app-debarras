@@ -5695,8 +5695,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
        selectedABCDSubSubcategory === 'Rangements CUISINE' ||
        selectedABCDSubSubcategory === 'Rangements SALLE DE BAIN') ?
       getRangementsArticles(
-       selectedABCDSubSubcategory === 'Rangements SALLE DE BAIN') ?
-      getRangementsArticles(
         selectedABCDSubSubcategory === 'Rangements divers' ? 'rangements_divers' :
         selectedABCDSubSubcategory === 'Rangements CUISINE' ? 'rangements_cuisine' :
         'rangements_salle_bain'
