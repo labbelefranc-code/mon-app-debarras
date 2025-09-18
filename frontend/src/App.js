@@ -32,48 +32,105 @@ const MOBILIER_ADMIN_STRUCTURE = {
         'sommier': {
           name: 'SOMMIER',
           items: [
-            { name: 'Sommier simple', materials: ['en ferraille', 'en bois'] },
-            { name: 'Sommier double', materials: ['en ferraille', 'en bois'] },
-            { name: 'Sommier king size', materials: ['en ferraille', 'en bois'] }
+            { 
+              name: 'Sommier simple', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['en ferraille', 'en bois'] }
+              ]
+            },
+            { 
+              name: 'Sommier double', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['en ferraille', 'en bois'] }
+              ]
+            },
+            { 
+              name: 'Sommier king size', 
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['en ferraille', 'en bois'] }
+              ]
+            }
           ]
         },
         'matelas': {
           name: 'MATELAS',
           items: [
-            { name: 'Matelas simple', variants: [] },
-            { name: 'Matelas double', variants: ['140', '160'] },
-            { name: 'Matelas king size', variants: [] }
+            { name: 'Matelas simple' },
+            { 
+              name: 'Matelas double', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['140', '160'] }
+              ]
+            },
+            { name: 'Matelas king size' }
           ]
         },
         'lit_complet': {
           name: 'LIT COMPLET',
           items: [
-            { name: 'Lit simple', variants: [] },
-            { name: 'Lit double', variants: ['140', '160'] },
-            { name: 'Lit king size', variants: [] }
+            { name: 'Lit simple' },
+            { 
+              name: 'Lit double', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['140', '160'] }
+              ]
+            },
+            { name: 'Lit king size' }
           ]
         },
         'autres_lits': {
           name: 'AUTRES LITS',
           items: [
-            { name: 'Lit électrique', variants: ['simple', 'double'] },
-            { name: 'Lit médicalisé', variants: ['simple', 'double'] },
-            { name: 'Lit bébé', variants: [] },
-            { name: 'Lits superposés', variants: [] },
-            { name: 'Lit escamotable', variants: ['1 place', '2 places'] },
-            { name: 'Lit pliant', variants: ['1 place', '2 places'] },
-            { name: 'Lit bureau enfant', variants: [] },
-            { name: 'Mezzanine', variants: ['lit 1 place', 'lit 2 places'], options: ['+ bureau'] },
-            { name: 'Lit gigogne', variants: ['simple', 'double'] }
+            { 
+              name: 'Lit électrique', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['simple', 'double'] }
+              ]
+            },
+            { 
+              name: 'Lit médicalisé', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['simple', 'double'] }
+              ]
+            },
+            { name: 'Lit bébé' },
+            { name: 'Lits superposés' },
+            { 
+              name: 'Lit escamotable', 
+              options: [
+                { type: 'places', label: 'Nombre de places', choices: ['1 place', '2 places'] }
+              ]
+            },
+            { 
+              name: 'Lit pliant', 
+              options: [
+                { type: 'places', label: 'Nombre de places', choices: ['1 place', '2 places'] }
+              ]
+            },
+            { name: 'Lit bureau enfant' },
+            { 
+              name: 'Mezzanine', 
+              options: [
+                { type: 'places', label: 'Lit', choices: ['lit 1 place', 'lit 2 places'] },
+                { type: 'addon', label: 'Option', choices: ['+ bureau'] }
+              ]
+            },
+            { 
+              name: 'Lit gigogne', 
+              options: [
+                { type: 'size', label: 'Taille', choices: ['simple', 'double'] }
+              ]
+            }
           ]
         },
         'divers': {
           name: 'DIVERS',
           items: [
-            { name: 'Tête de lit', variants: [] },
-            { name: 'Meuble contour de lit (pont de lit)', variants: [] },
-            { name: 'Table de nuit', variants: [] },
-            { name: 'Couette/couverture/oreiller/traversin', variants: [] }
+            { name: 'Tête de lit' },
+            { name: 'Pied de lit' },
+            { name: 'Pont de lit' },
+            { name: 'Table de nuit' },
+            { name: 'Couette/couverture/oreiller/traversin' }
           ]
         }
       }
