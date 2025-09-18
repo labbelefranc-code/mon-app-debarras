@@ -5258,6 +5258,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           'Tables': '🍽️',
                           'Assises': '🪑',
                           'Tous les rangements': '🗄️',
+                          'Rangement et contenants': '🗄️',
                           'Tous les accessoires': '🎨',
                           'Tous les électroménagers': '⚡',
                           'Tout le mobilier jardin': '🪴',
