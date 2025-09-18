@@ -5196,7 +5196,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 4 : Afficher les articles finaux (modifié pour Literie, Tables et Assises)
+    // Niveau 4 : Afficher les articles finaux (modifié pour Literie, Tables, Assises et Rangements)
     const availableArticles = selectedABCDSubSubSubcategory ? 
       (selectedABCDSubSubcategory === 'Literie' ? 
         getLiterieArticles(selectedABCDSubSubSubcategory) :
@@ -5204,6 +5204,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         getTablesArticles(selectedABCDSubSubSubcategory) :
         selectedABCDSubSubcategory === 'Assises' ?
         getAssisesArticles(selectedABCDSubSubSubcategory) :
+        selectedABCDSubSubcategory === 'Tous les rangements' ?
+        getRangementsArticles(selectedABCDSubSubSubcategory) :
         []
       ) :
       getABCDCategoryArticles(
