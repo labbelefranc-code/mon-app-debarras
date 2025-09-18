@@ -714,6 +714,28 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
+// Fonction spéciale pour récupérer les articles de literie avec les nouvelles options
+const getLiterieArticles = (subcategory) => {
+  const literieStructure = MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories;
+  const subcategoryData = literieStructure[subcategory];
+  
+  if (!subcategoryData || !subcategoryData.items) return [];
+  
+  return subcategoryData.items.map((item, index) => ({
+    id: `literie_${subcategory}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+    name: item.name,
+    base_name: item.name,
+    category_id: 'literie',
+    category_name: 'LITERIE',
+    subcategory_name: subcategoryData.name,
+    base_price: 25,
+    materials: item.materials || [],
+    options: item.options || [],
+    note: item.note || '',
+    requires_dismantling: false
+  }));
+};
+
 // Fonction pour mapper les catégories ABCD aux structures admin réelles avec 3 niveaux
 const getABCDCategoryMapping = (abcdCategoryId) => {
   const mappings = {
