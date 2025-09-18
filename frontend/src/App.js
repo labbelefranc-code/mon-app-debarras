@@ -1642,7 +1642,9 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
           ]
         },
         'Bricolage / matériaux / énergie': {
-          // Pas d'étape intermédiaire, aller directement aux articles
+          'Tout bricolage & matériaux': [
+            { categoryKey: 'bricolage_materiaux_energie', subcategoryKey: null }
+          ]
         }
       }
     },
