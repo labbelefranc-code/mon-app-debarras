@@ -4639,15 +4639,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 setSelectedABCDSubSubcategory(null);
                 setSelectedABCDSubSubSubcategory(null);
                 
-                // Pour MOBILIER, aller directement à abcd-objects pour afficher les grandes cartes
-                if (category.id === 'A') {
-                  setCurrentStep('abcd-objects');
-                } else if (category.subcategories.length > 0) {
-                  setCurrentStep('abcd-subcategories');
-                } else {
-                  // Si pas de sous-catégories, aller directement à la sélection d'objets
-                  setCurrentStep('abcd-objects');
-                }
+                // Toutes les catégories vont vers abcd-objects pour un affichage harmonieux avec les grandes cartes
+                setCurrentStep('abcd-objects');
               }}
             >
               <CardContent className={`p-4 text-center bg-gradient-to-r ${category.color} text-white h-60 flex flex-col`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
