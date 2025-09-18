@@ -5649,7 +5649,107 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     
     // Niveau 3 spécial pour JARDIN Tables : afficher leurs sous-sous-catégories
     if (selectedABCDCategory && selectedABCDSubcategory && selectedABCDCategory.id === 'B' && selectedABCDSubSubcategory === 'Tables' && !selectedABCDSubSubSubcategory) {
-      return <div>JARDIN Tables</div>;
+      const jardinTablesStructure = JARDIN_ADMIN_STRUCTURE.categories.mobilier_jardin_contenants.subcategories.tables.subcategories;
+      const subcategories = [
+        { key: 'TABLE BASSE/PETITE TABLE', name: 'TABLE BASSE/PETITE TABLE', icon: '☕', count: jardinTablesStructure.table_basse_petite?.items?.length || 0 },
+        { key: 'TABLE STANDARD ET GRANDE TABLE', name: 'TABLE STANDARD ET GRANDE TABLE', icon: '🍽️', count: jardinTablesStructure.table_standard_grande?.items?.length || 0 },
+        { key: 'TABLES DIVERS', name: 'TABLES DIVERS', icon: '💼', count: jardinTablesStructure.tables_divers?.items?.length || 0 }
+      ];
+      
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              <div className="lg:col-span-3">
+                <div className="flex items-center justify-between mb-8">
+                  <Button
+                    onClick={() => {
+                      setSelectedABCDSubSubcategory(null);
+                    }}
+                    variant="outline"
+                    className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Retour aux types d'objets
+                  </Button>
+                </div>
+
+                <div className="mb-8">
+                  <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                    <div className="text-2xl mr-3">🪑</div>
+                    <div>
+                      <div className="font-bold">TABLES</div>
+                      <div className="text-sm opacity-90">Choisissez le type de table</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                    Choisissez le type de table
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {subcategories.map((subcat) => (
+                      <Card key={subcat.key} 
+                            className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
+                            onClick={() => {
+                              setSelectedABCDSubSubSubcategory(subcat.key);
+                            }}>
+                        <CardContent className="p-6 text-center">
+                          <div className="text-4xl mb-3">{subcat.icon}</div>
+                          <h4 className="font-semibold text-gray-800 mb-2 text-sm">{subcat.name}</h4>
+                          <p className="text-sm text-gray-600">{subcat.count} articles</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                <CustomItemInput onAddCustomItem={addCustomItem} />
+              </div>
+
+              <div className="lg:col-span-1">
+                <Card className="sticky top-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      Ma liste ({selectedItems.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {selectedItems.length === 0 ? (
+                      <p className="text-gray-500 text-sm">Aucun article sélectionné</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {selectedItems.map((item, index) => (
+                          <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">{item.name}</div>
+                              <div className="text-xs text-gray-500">
+                                Quantité: {item.quantity}
+                              </div>
+                            </div>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => {
+                                setSelectedItems(selectedItems.filter((_, i) => i !== index));
+                              }}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
     
     // Niveau 4 : Afficher les articles finaux (modifié pour gérer MOBILIER et JARDIN séparément)
