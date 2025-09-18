@@ -946,7 +946,7 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
             { categoryKey: 'tables', subcategoryKey: null, hasSubSubcategories: true } // Indique qu'il y a encore des sous-catégories
           ],
           'Assises': [
-            { categoryKey: 'assises', subcategoryKey: null }
+            { categoryKey: 'assises', subcategoryKey: null, hasSubSubcategories: true } // Indique qu'il y a encore des sous-catégories
           ]
         },
         'Rangements': {
