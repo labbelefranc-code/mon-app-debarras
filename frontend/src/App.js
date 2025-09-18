@@ -722,7 +722,7 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       subcategoryMapping: {
         'Literie / Canapés / Fauteuils': {
           'Literie': [
-            { categoryKey: 'literie', subcategoryKey: null }
+            { categoryKey: 'literie', subcategoryKey: null, hasSubSubcategories: true } // Indique qu'il y a encore des sous-catégories
           ],
           'Canapés': [
             { categoryKey: 'canape_fauteuils', subcategoryKey: 'canapes' }
