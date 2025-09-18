@@ -1636,6 +1636,11 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
   const mapping = getABCDCategoryMapping(abcdCategoryId);
   if (!mapping) return [];
 
+  // Cas spécial pour JARDIN
+  if (abcdCategoryId === 'B' && subcategoryName) {
+    return getJardinArticles(subcategoryName, subSubcategoryName);
+  }
+
   const { structure, subcategoryMapping } = mapping;
   let allArticles = [];
 
