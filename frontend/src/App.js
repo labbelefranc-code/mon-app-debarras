@@ -676,16 +676,12 @@ const ABCD_CATEGORIES = {
     items: [
       'Literie / Canapés / Fauteuils',
       'Tables et assises',
-      'Rangements',
-      'Salle de bain / Cuisine',
-      'Meubles divers'
+      'Rangements'
     ],
     subcategories: [
       'Literie / Canapés / Fauteuils',
       'Tables et assises',
-      'Rangements',
-      'Salle de bain / Cuisine',
-      'Meubles divers'
+      'Rangements'
     ]
   },
   'B': {
