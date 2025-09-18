@@ -5538,7 +5538,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       const isAssises = selectedABCDSubSubcategory === 'Assises';
       
       let subcategories = [];
-      if (isLiterie) {
+      if (isLiterie && selectedABCDCategory.id === 'A') { // MOBILIER Literie
         subcategories = [
           { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
           { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
@@ -5546,13 +5546,20 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
           { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
         ];
-      } else if (isTables) {
+      } else if (isTables && selectedABCDCategory.id === 'A') { // MOBILIER Tables
         subcategories = [
           { key: 'table_basse_petite', name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT', icon: '☕', count: 5 },
           { key: 'cuisine_salle_manger', name: 'De cuisine/Salle à manger', icon: '🍽️', count: 4 },
           { key: 'bureaux_divers', name: 'Bureaux et tables divers', icon: '💼', count: 6 }
         ];
-      } else if (isAssises) {
+      } else if (isTables && selectedABCDCategory.id === 'B') { // JARDIN Tables
+        const jardinTablesStructure = JARDIN_ADMIN_STRUCTURE.categories.mobilier_jardin_contenants.subcategories.tables.subcategories;
+        subcategories = [
+          { key: 'TABLE BASSE/PETITE TABLE', name: 'TABLE BASSE/PETITE TABLE', icon: '☕', count: jardinTablesStructure.table_basse_petite?.items?.length || 0 },
+          { key: 'TABLE STANDARD ET GRANDE TABLE', name: 'TABLE STANDARD ET GRANDE TABLE', icon: '🍽️', count: jardinTablesStructure.table_standard_grande?.items?.length || 0 },
+          { key: 'TABLES DIVERS', name: 'TABLES DIVERS', icon: '💼', count: jardinTablesStructure.tables_divers?.items?.length || 0 }
+        ];
+      } else if (isAssises && selectedABCDCategory.id === 'A') { // MOBILIER Assises
         subcategories = [
           { key: 'chaises', name: 'CHAISES', icon: '🪑', count: 6 },
           { key: 'fauteuils', name: 'FAUTEUILS', icon: '💺', count: 4 },
