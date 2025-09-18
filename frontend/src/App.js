@@ -4784,7 +4784,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     Choisissez une sous-catégorie
                   </h3>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <div className="space-y-4">
                     {(() => {
                       const mapping = getABCDCategoryMapping(selectedABCDCategory.id);
                       if (!mapping) return null;
@@ -4795,16 +4795,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                         const subcategoryIcons = {
                           'Literie / Canapés / Fauteuils': '🛏️',
                           'Tables et assises': '🪑', 
-                          'Rangements': '🗄️',
-                          'Décorations & accessoires': '🎨',
-                          'Électroménager': '⚡',
-                          'Mobilier de jardin et contenants': '🪴',
-                          'Jardin & extérieur': '🌿',
-                          'Bricolage, matériaux & énergie': '🔧',
-                          'Multimédia & électronique': '📺',
-                          'Décoration': '🖼️',
-                          'Sport & loisirs': '⚽',
-                          'Autres objets': '📦'
+                          'Rangements': '🗄️'
                         };
                         
                         return (
@@ -4813,10 +4804,14 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                 onClick={() => {
                                   setSelectedABCDSubcategory(subcategoryName);
                                 }}>
-                            <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
-                              <div className="text-3xl mb-3">{subcategoryIcons[subcategoryName] || '📦'}</div>
-                              <h4 className="font-bold text-lg mb-2">{subcategoryName}</h4>
-                              <div className="text-sm opacity-90">Voir les options →</div>
+                            <CardContent className={`p-6 bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
+                              <div className="flex items-center">
+                                <div className="text-3xl mr-4">{subcategoryIcons[subcategoryName] || '📦'}</div>
+                                <div className="flex-1">
+                                  <h4 className="font-bold text-xl mb-1">{subcategoryName}</h4>
+                                  <div className="text-sm opacity-90">Voir les options →</div>
+                                </div>
+                              </div>
                             </CardContent>
                           </Card>
                         );
