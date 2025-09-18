@@ -392,24 +392,161 @@ const MOBILIER_ADMIN_STRUCTURE = {
     },
     'meubles_rangement': {
       id: 'meubles_rangement',
-      name: 'MEUBLES DE RANGEMENTS',
+      name: 'MEUBLES DE RANGEMENT',
       icon: '🗄️',
-      items: [
-        { name: 'COMMODE BASSE/BUFFET', variants: ['petit', 'grand', 'XL', 'HAUTE(semainier) +2M'], options: ['+ dessus marbre'] },
-        { name: 'BLOC CASIER OU COMMODE MODULABLE', variants: [] },
-        { name: 'SECRÉTAIRE', variants: [] },
-        { name: 'MEUBLE À CHAUSSURES', variants: [] },
-        { name: 'ELEMENTS DE CUISINE', variants: ['placards', 'îlot de cuisine'], options: ['à démonter', 'plaques de cuisson', 'évier', 'plan de travail', 'hotte', 'démontage pour chacun', 'carton de vaisselle'] },
-        { name: 'ARMOIRE', variants: [] },
-        { name: 'RANGEMENTS XXL', note: 'Jusqu\'au plafond ou presque' },
-        { name: 'VAISSELIER', variants: ['PARTIE HAUTE', 'basse', 'entier'] },
-        { name: 'Enfilade', variants: [] },
-        { name: 'VITRINE', variants: [] },
-        { name: 'Meuble de couloir', variants: [] },
-        { name: 'ETAGERE', options: ['taille', 'matière'] },
-        { name: 'BIBLIOTHEQUE', options: ['taille', 'matière'] },
-        { name: 'MEUBLE TV', variants: ['petit', 'moyen', 'grand'], options: ['+TV (Petite, moyenne, grande ou cathodique)'] }
-      ]
+      subcategories: {
+        'rangements_divers': {
+          name: 'Rangements divers',
+          items: [
+            { 
+              name: 'Semainier/petites commodes',
+              options: [
+                { type: 'quantity', label: 'Nombre de tiroirs', choices: ['1', '2', '3', '4', '5', '6+'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Commode basse large',
+              options: [
+                { type: 'quantity', label: 'Nombre de tiroirs', choices: ['1', '2', '3', '4', '5', '6+'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Buffet/enfilade/meuble de couloir',
+              options: [
+                { type: 'size', label: 'Longueur', choices: ['<150cm de long', '<200cm de long', '>200cm de long'] },
+                { type: 'option', label: 'Options', choices: ['plateau en marbre'] }
+              ]
+            },
+            { 
+              name: 'Vaisselier',
+              options: [
+                { type: 'parts', label: 'Parties (choix multiple)', choices: ['partie basse', 'partie haute', 'haut et bas'] },
+                { type: 'size', label: 'Longueur', choices: ['<150cm de long', '<200cm de long', '>200cm de long'] }
+              ]
+            },
+            { 
+              name: 'Bloc casier ou commode modulable',
+              options: [
+                { type: 'quantity', label: 'Nombre de cases', choices: ['2', '4', '6', '8', '9', '12+'] }
+              ]
+            },
+            { name: 'Secrétaire' },
+            { name: 'Meuble à chaussures' },
+            { 
+              name: 'Armoire/grand rangement',
+              options: [
+                { type: 'height', label: 'Hauteur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'doors', label: 'Nombre de portes', choices: ['1', '2', '3', '4+'] },
+                { type: 'door_type', label: 'Type de portes', choices: ['portes miroir', 'portes vitrées'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] }
+              ]
+            },
+            { 
+              name: 'Vitrine',
+              options: [
+                { type: 'height', label: 'Hauteur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'doors', label: 'Nombre de portes', choices: ['1', '2', '3', '4+'] }
+              ]
+            },
+            { 
+              name: 'Étagère',
+              options: [
+                { type: 'height', label: 'Hauteur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'width', label: 'Largeur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Bibliothèque',
+              options: [
+                { type: 'height', label: 'Hauteur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'width', label: 'Largeur', choices: ['<150cm', '<200cm', '>200cm'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Meuble TV',
+              options: [
+                { type: 'size', label: 'Longueur', choices: ['<150cm de long', '<200cm de long', '>200cm de long'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'osier', 'marbre'] }
+              ]
+            }
+          ]
+        },
+        'rangements_cuisine': {
+          name: 'Rangements CUISINE',
+          items: [
+            { 
+              name: 'Placards suspendus',
+              options: [
+                { type: 'quantity', label: 'Nombre de blocs', choices: ['1', '2', '3', '4', '5+'] }
+              ]
+            },
+            { 
+              name: 'Placards sous plan de travail',
+              options: [
+                { type: 'quantity', label: 'Nombre de blocs', choices: ['1', '2', '3', '4', '5+'] }
+              ]
+            },
+            { 
+              name: 'Îlot de cuisine',
+              options: [
+                { type: 'diameter', label: 'Diamètre', choices: ['<100cm', '<150cm', '>150cm'] }
+              ]
+            },
+            { 
+              name: 'Plaques de cuisson',
+              options: [
+                { type: 'service', label: 'Services', choices: ['démontage'] }
+              ]
+            },
+            { 
+              name: 'Évier',
+              options: [
+                { type: 'service', label: 'Services', choices: ['démontage'] }
+              ]
+            },
+            { 
+              name: 'Plan de travail',
+              options: [
+                { type: 'service', label: 'Services', choices: ['démontage'] }
+              ]
+            },
+            { 
+              name: 'Hotte',
+              options: [
+                { type: 'service', label: 'Services', choices: ['démontage'] }
+              ]
+            }
+          ]
+        },
+        'rangements_salle_bain': {
+          name: 'Rangements SALLE DE BAIN',
+          items: [
+            { 
+              name: 'Colonne rangement salle de bain',
+              options: [
+                { type: 'doors', label: 'Nombre de portes', choices: ['1 porte', '2 portes'] }
+              ]
+            },
+            { name: 'Miroir rangement salle de bain mural' },
+            { 
+              name: 'Meuble sous vasque',
+              options: [
+                { type: 'option', label: 'Options', choices: ['lavabo déjà démonté'] }
+              ]
+            },
+            { 
+              name: 'Baignoire déjà démontée',
+              options: [
+                { type: 'weight', label: 'Poids', choices: ['<50kg', '<100kg', '>100kg'] }
+              ]
+            }
+          ]
+        }
+      }
     },
     'salle_de_bain': {
       id: 'salle_de_bain',
