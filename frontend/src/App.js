@@ -4886,20 +4886,34 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 3 spécial : Si nous sommes dans "Literie" ou "Tables", afficher leurs sous-catégories
-    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables') && !selectedABCDSubSubSubcategory) {
+    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables" ou "Assises", afficher leurs sous-catégories
+    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises') && !selectedABCDSubSubSubcategory) {
       const isLiterie = selectedABCDSubSubcategory === 'Literie';
-      const subcategories = isLiterie ? [
-        { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
-        { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
-        { key: 'lit_complet', name: 'LIT COMPLET', icon: '🏠', count: 3 },
-        { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
-        { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
-      ] : [
-        { key: 'table_basse_petite', name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT', icon: '☕', count: 5 },
-        { key: 'cuisine_salle_manger', name: 'De cuisine/Salle à manger', icon: '🍽️', count: 4 },
-        { key: 'bureaux_divers', name: 'Bureaux et tables divers', icon: '💼', count: 6 }
-      ];
+      const isTables = selectedABCDSubSubcategory === 'Tables';
+      const isAssises = selectedABCDSubSubcategory === 'Assises';
+      
+      let subcategories = [];
+      if (isLiterie) {
+        subcategories = [
+          { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
+          { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
+          { key: 'lit_complet', name: 'LIT COMPLET', icon: '🏠', count: 3 },
+          { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
+          { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
+        ];
+      } else if (isTables) {
+        subcategories = [
+          { key: 'table_basse_petite', name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT', icon: '☕', count: 5 },
+          { key: 'cuisine_salle_manger', name: 'De cuisine/Salle à manger', icon: '🍽️', count: 4 },
+          { key: 'bureaux_divers', name: 'Bureaux et tables divers', icon: '💼', count: 6 }
+        ];
+      } else if (isAssises) {
+        subcategories = [
+          { key: 'chaises', name: 'CHAISES', icon: '🪑', count: 6 },
+          { key: 'fauteuils', name: 'FAUTEUILS', icon: '💺', count: 4 },
+          { key: 'autres_assises', name: 'AUTRES (BANC/BANQUETTE/POUF/TABOURET/REPOSE PIED/TRANSAT)', icon: '🛋️', count: 9 }
+        ];
+      }
 
       return (
         <div className="min-h-screen bg-gray-50">
@@ -4921,17 +4935,17 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
 
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : '🪑'}</div>
+                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : isTables ? '🪑' : '💺'}</div>
                     <div>
                       <div className="font-bold">{selectedABCDSubSubcategory.toUpperCase()}</div>
-                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : 'de table'}</div>
+                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                    Choisissez le type {isLiterie ? 'de literie' : 'de table'}
+                    Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
