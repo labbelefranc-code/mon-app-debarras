@@ -3361,7 +3361,8 @@ function App() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [selectedABCDCategory, setSelectedABCDCategory] = useState(null);
   const [selectedABCDSubcategory, setSelectedABCDSubcategory] = useState(null);
-  const [selectedABCDSubSubcategory, setSelectedABCDSubSubcategory] = useState(null); // Nouveau niveau
+  const [selectedABCDSubSubcategory, setSelectedABCDSubSubcategory] = useState(null);
+  const [selectedABCDSubSubSubcategory, setSelectedABCDSubSubSubcategory] = useState(null); // Niveau 4 pour Literie
   const [selectedElectroType, setSelectedElectroType] = useState(null); // froid, cuisine, salle_de_bain
   const [selectedElectroItem, setSelectedElectroItem] = useState(null); // frigo, congelateur, etc.
   const [categories, setCategories] = useState([]);
