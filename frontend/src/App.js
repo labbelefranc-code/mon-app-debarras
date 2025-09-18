@@ -1456,16 +1456,22 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       structure: JARDIN_ADMIN_STRUCTURE,
       subcategoryMapping: {
         'Mobilier de jardin et contenants': {
-          'Tout le mobilier jardin': [
-            { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: null }
+          'Tables': [
+            { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: 'tables', hasSubSubcategories: true }
+          ],
+          'Assises': [
+            { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: 'assises' }
+          ],
+          'Rangement et contenants': [
+            { categoryKey: 'mobilier_jardin_contenants', subcategoryKey: 'rangement_contenants' }
           ]
         },
-        'Jardin & extérieur': {
+        'Jardin et extérieur': {
           'Tout jardin & extérieur': [
             { categoryKey: 'jardin_exterieur', subcategoryKey: null }
           ]
         },
-        'Bricolage, matériaux & énergie': {
+        'Bricolage / matériaux / énergie': {
           'Tout bricolage & matériaux': [
             { categoryKey: 'bricolage_materiaux_energie', subcategoryKey: null }
           ]
