@@ -139,18 +139,109 @@ const MOBILIER_ADMIN_STRUCTURE = {
       id: 'tables',
       name: 'TABLES',
       icon: '🪑',
-      items: [
-        { name: 'Basse', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
-        { name: 'Pour manger', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
-        { name: 'De pique-nique', variants: ['grand format', 'petit format'], materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte'] },
-        { name: 'Longue table +/-2M style pétrin/table de ferme', materials: ['Bois', 'bois massif', 'verre', 'pierre', 'fonte', 'plastique'] },
-        { name: 'Pliante', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'osier'] },
-        { name: 'Ronde/ovale', variants: ['bistrot', 'de salle à manger', 'avec rallonge'], materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
-        { name: 'Carrée', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] },
-        { name: 'À repasser', materials: [] },
-        { name: 'Bureau', variants: ['petit', 'moyen', 'grand'], materials: ['Bois', 'Bois massif', 'fer', 'verre', 'marbre'] },
-        { name: 'Comptoir/Bar', materials: [] }
-      ]
+      subcategories: {
+        'table_basse_petite': {
+          name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT',
+          items: [
+            { 
+              name: 'Table basse légère',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Table basse lourde',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Petite table légère',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Petite table lourde',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Table de nuit',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            }
+          ]
+        },
+        'cuisine_salle_manger': {
+          name: 'De cuisine/Salle à manger',
+          items: [
+            { 
+              name: 'Rectangulaire',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Carrée',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Ronde/ovale',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'fonte', 'osier', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Longue table +/-2M / table de ferme / Pétrin',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'bois massif', 'verre', 'pierre', 'fonte', 'plastique'] }
+              ]
+            }
+          ]
+        },
+        'bureaux_divers': {
+          name: 'Bureaux et tables divers',
+          items: [
+            { 
+              name: 'Table de pique-nique extérieure',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte'] }
+              ]
+            },
+            { 
+              name: 'Table de pique-nique pliante',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique'] }
+              ]
+            },
+            { 
+              name: 'Table pliante',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'verre', 'plastique', 'osier'] }
+              ]
+            },
+            { name: 'Table à repasser' },
+            { 
+              name: 'Bureau',
+              options: [
+                { type: 'size', label: 'Taille', choices: ['petit (style écolier)', 'moyen (avec tiroirs et/ou retour)', 'grand (avec tiroirs et/ou étagères)'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'marbre'] }
+              ]
+            },
+            { 
+              name: 'Comptoir/Bar',
+              options: [
+                { type: 'size', label: 'Taille', choices: ['petit', 'grand'] }
+              ]
+            }
+          ]
+        }
+      }
     },
     'canape_fauteuils': {
       id: 'canape_fauteuils',
