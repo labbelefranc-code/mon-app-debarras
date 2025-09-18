@@ -5675,7 +5675,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-3">
                 <div className="mb-8">
-                  <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                  <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white mb-4">
                     <div className="text-2xl mr-3">🪑</div>
                     <div>
                       <div className="font-bold">TABLES</div>
@@ -5693,9 +5693,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     {subcategories.map((subcat) => (
                       <Card key={subcat.key} 
                             className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
-                            onClick={() => {
-                              setSelectedABCDSubSubSubcategory(subcat.key);
-                            }}>
+                            onClick={() => setSelectedABCDSubSubSubcategory(subcat.key)}>
                         <CardContent className="p-6 text-center">
                           <div className="text-4xl mb-3">{subcat.icon}</div>
                           <h4 className="font-semibold text-gray-800 mb-2 text-sm">{subcat.name}</h4>
@@ -5705,8 +5703,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     ))}
                   </div>
                 </div>
-
-                <CustomItemInput onAddCustomItem={addCustomItem} />
               </div>
 
               <div className="lg:col-span-1">
@@ -5733,9 +5729,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                             <Button 
                               size="sm" 
                               variant="outline"
-                              onClick={() => {
-                                setSelectedItems(selectedItems.filter((_, i) => i !== index));
-                              }}
+                              onClick={() => setSelectedItems(selectedItems.filter((_, i) => i !== index))}
                             >
                               <X className="h-3 w-3" />
                             </Button>
