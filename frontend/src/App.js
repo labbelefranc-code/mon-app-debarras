@@ -5548,21 +5548,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
           { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
         ];
-    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables" ou "Assises" DE MOBILIER, afficher leurs sous-catégories
-    if (selectedABCDCategory && selectedABCDSubcategory && selectedABCDCategory.id === 'A' && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises') && !selectedABCDSubSubSubcategory) {
-      const isLiterie = selectedABCDSubSubcategory === 'Literie';
-      const isTables = selectedABCDSubSubcategory === 'Tables';
-      const isAssises = selectedABCDSubSubcategory === 'Assises';
-      
-      let subcategories = [];
-      if (isLiterie) { // MOBILIER Literie
-        subcategories = [
-          { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
-          { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
-          { key: 'lit_complet', name: 'LIT COMPLET', icon: '🏠', count: 3 },
-          { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
-          { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
-        ];
       } else if (isTables) { // MOBILIER Tables
         subcategories = [
           { key: 'table_basse_petite', name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT', icon: '☕', count: 5 },
