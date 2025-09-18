@@ -4789,8 +4789,21 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 3 spécial : Si nous sommes dans "Literie", afficher les sous-catégories de literie
-    if (selectedABCDCategory && selectedABCDSubcategory && selectedABCDSubSubcategory === 'Literie' && !selectedABCDSubSubSubcategory) {
+    // Niveau 3 spécial : Si nous sommes dans "Literie" ou "Tables", afficher leurs sous-catégories
+    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables') && !selectedABCDSubSubSubcategory) {
+      const isLiterie = selectedABCDSubSubcategory === 'Literie';
+      const subcategories = isLiterie ? [
+        { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
+        { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
+        { key: 'lit_complet', name: 'LIT COMPLET', icon: '🏠', count: 3 },
+        { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
+        { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
+      ] : [
+        { key: 'table_basse_petite', name: 'TABLE BASSE/PETITE TABLE/TABLE DE NUIT', icon: '☕', count: 5 },
+        { key: 'cuisine_salle_manger', name: 'De cuisine/Salle à manger', icon: '🍽️', count: 4 },
+        { key: 'bureaux_divers', name: 'Bureaux et tables divers', icon: '💼', count: 6 }
+      ];
+
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
@@ -4811,43 +4824,33 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
 
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                    <div className="text-2xl mr-3">🛏️</div>
+                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : '🪑'}</div>
                     <div>
-                      <div className="font-bold">LITERIE</div>
-                      <div className="text-sm opacity-90">Choisissez le type de literie</div>
+                      <div className="font-bold">{selectedABCDSubSubcategory.toUpperCase()}</div>
+                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : 'de table'}</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                    Choisissez le type de literie
+                    Choisissez le type {isLiterie ? 'de literie' : 'de table'}
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {(() => {
-                      const literieSubcategories = [
-                        { key: 'sommier', name: 'SOMMIER', icon: '🛏️', count: 3 },
-                        { key: 'matelas', name: 'MATELAS', icon: '🛌', count: 3 },
-                        { key: 'lit_complet', name: 'LIT COMPLET', icon: '🏠', count: 3 },
-                        { key: 'autres_lits', name: 'AUTRES LITS', icon: '🚼', count: 9 },
-                        { key: 'divers', name: 'DIVERS', icon: '🔧', count: 5 }
-                      ];
-                      
-                      return literieSubcategories.map((subcat) => (
-                        <Card key={subcat.key} 
-                              className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
-                              onClick={() => {
-                                setSelectedABCDSubSubSubcategory(subcat.key);
-                              }}>
-                          <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
-                            <div className="text-3xl mb-3">{subcat.icon}</div>
-                            <h4 className="font-bold text-lg mb-2">{subcat.name}</h4>
-                            <div className="text-sm opacity-90">{subcat.count} articles</div>
-                          </CardContent>
-                        </Card>
-                      ));
-                    })()}
+                    {subcategories.map((subcat) => (
+                      <Card key={subcat.key} 
+                            className="hover:shadow-lg transition-all duration-200 cursor-pointer" 
+                            onClick={() => {
+                              setSelectedABCDSubSubSubcategory(subcat.key);
+                            }}>
+                        <CardContent className={`p-6 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
+                          <div className="text-3xl mb-3">{subcat.icon}</div>
+                          <h4 className="font-bold text-lg mb-2">{subcat.name}</h4>
+                          <div className="text-sm opacity-90">{subcat.count} articles</div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
                 </div>
 
