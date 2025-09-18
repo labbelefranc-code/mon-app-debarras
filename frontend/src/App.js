@@ -3,7 +3,7 @@ import "./App.css";
 import axios from "axios";
 import { 
   Truck, Phone, Calendar, MapPin, List, ArrowLeft, Check, Upload, 
-  Plus, Minus, X, Home, Clock, User, Settings, AlertTriangle, ShoppingCart
+  Plus, Minus, X, Home, Clock, User, Settings, AlertTriangle
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
