@@ -1131,8 +1131,14 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
           ]
         },
         'Rangements': {
-          'Tous les rangements': [
-            { categoryKey: 'meubles_rangement', subcategoryKey: null, hasSubSubcategories: true } // Indique qu'il y a encore des sous-catégories
+          'Rangements divers': [
+            { categoryKey: 'meubles_rangement', subcategoryKey: 'rangements_divers' }
+          ],
+          'Rangements CUISINE': [
+            { categoryKey: 'meubles_rangement', subcategoryKey: 'rangements_cuisine' }
+          ],
+          'Rangements SALLE DE BAIN': [
+            { categoryKey: 'meubles_rangement', subcategoryKey: 'rangements_salle_bain' }
           ]
         },
         'Décorations & accessoires': {
