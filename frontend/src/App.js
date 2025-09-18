@@ -5662,8 +5662,13 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     
     // Niveau 3 spécial pour JARDIN Tables : afficher leurs sous-sous-catégories
     if (selectedABCDCategory && selectedABCDSubcategory && selectedABCDCategory.id === 'B' && selectedABCDSubSubcategory === 'Tables' && !selectedABCDSubSubSubcategory) {
-      }
-
+      const jardinTablesStructure = JARDIN_ADMIN_STRUCTURE.categories.mobilier_jardin_contenants.subcategories.tables.subcategories;
+      const subcategories = [
+        { key: 'TABLE BASSE/PETITE TABLE', name: 'TABLE BASSE/PETITE TABLE', icon: '☕', count: jardinTablesStructure.table_basse_petite?.items?.length || 0 },
+        { key: 'TABLE STANDARD ET GRANDE TABLE', name: 'TABLE STANDARD ET GRANDE TABLE', icon: '🍽️', count: jardinTablesStructure.table_standard_grande?.items?.length || 0 },
+        { key: 'TABLES DIVERS', name: 'TABLES DIVERS', icon: '💼', count: jardinTablesStructure.tables_divers?.items?.length || 0 }
+      ];
+      
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
@@ -5684,17 +5689,17 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
 
                 <div className="mb-8">
                   <div className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${selectedABCDCategory.color} text-white mb-4`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                    <div className="text-2xl mr-3">{isLiterie ? '🛏️' : isTables ? '🪑' : '💺'}</div>
+                    <div className="text-2xl mr-3">🪑</div>
                     <div>
-                      <div className="font-bold">{selectedABCDSubSubcategory.toUpperCase()}</div>
-                      <div className="text-sm opacity-90">Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}</div>
+                      <div className="font-bold">TABLES</div>
+                      <div className="text-sm opacity-90">Choisissez le type de table</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                    Choisissez le type {isLiterie ? 'de literie' : isTables ? 'de table' : 'd\'assise'}
+                    Choisissez le type de table
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
