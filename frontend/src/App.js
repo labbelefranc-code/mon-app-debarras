@@ -1110,7 +1110,7 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
         },
         'Rangements': {
           'Tous les rangements': [
-            { categoryKey: 'meubles_rangement', subcategoryKey: null }
+            { categoryKey: 'meubles_rangement', subcategoryKey: null, hasSubSubcategories: true } // Indique qu'il y a encore des sous-catégories
           ]
         },
         'Décorations & accessoires': {
