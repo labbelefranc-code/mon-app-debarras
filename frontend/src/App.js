@@ -5533,8 +5533,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables" ou "Assises", afficher leurs sous-catégories
-    if (selectedABCDCategory && selectedABCDSubcategory && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises') && !selectedABCDSubSubSubcategory) {
+    // Niveau 3 spécial : Si nous sommes dans "Literie", "Tables" ou "Assises" DE MOBILIER, afficher leurs sous-catégories
+    if (selectedABCDCategory && selectedABCDSubcategory && selectedABCDCategory.id === 'A' && (selectedABCDSubSubcategory === 'Literie' || selectedABCDSubSubcategory === 'Tables' || selectedABCDSubSubcategory === 'Assises') && !selectedABCDSubSubSubcategory) {
       const isLiterie = selectedABCDSubSubcategory === 'Literie';
       const isTables = selectedABCDSubSubcategory === 'Tables';
       const isAssises = selectedABCDSubSubcategory === 'Assises';
