@@ -285,32 +285,107 @@ const MOBILIER_ADMIN_STRUCTURE = {
         'chaises': {
           name: 'CHAISES',
           items: [
-            { name: 'chaises pliantes', materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
-            { name: 'chaises empilables de jardin', materials: ['plastique', 'plastique lourd'] },
-            { name: 'chaises', materials: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] },
-            { name: 'Chaise de bureau /reunion', variants: [] },
-            { name: 'Rocking-chair', variants: [] },
-            { name: 'Chaises par style', variants: ['style louis XVI', 'bistrot', 'scandinave'] }
+            { 
+              name: 'Chaises pliantes',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'plastique lourd', 'osier', 'fonte'] }
+              ]
+            },
+            { 
+              name: 'Chaises de jardin classique en plastique',
+              options: [
+                { type: 'option', label: 'Option', choices: ['empilable si plusieurs'] }
+              ]
+            },
+            { 
+              name: 'Chaises',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'verre', 'plastique', 'plastique lourd', 'osier', 'fonte'] }
+              ]
+            },
+            { 
+              name: 'Chaise de bureau/réunion',
+              options: [
+                { type: 'option', label: 'Option', choices: ['empilables si plusieurs'] }
+              ]
+            },
+            { name: 'Rocking-chair' },
+            { 
+              name: 'Chaises de style',
+              options: [
+                { type: 'style', label: 'Style', choices: ['louis XVI', 'bistrot', 'scandinave'] }
+              ]
+            }
           ]
         },
-        'fauteuils_assises': {
+        'fauteuils': {
           name: 'FAUTEUILS',
           items: [
-            { name: 'fauteuils salle à manger en bois', materials: ['Bois', 'bois massif'] },
-            { name: 'fauteuils de jardin/transat', variants: ['empilable', 'pliant'], materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] },
-            { name: 'fauteuils de bureau', variants: ['petit', 'gamer'] },
-            { name: 'Fauteuils de salon par style', variants: ['club', 'bridge', 'crapaud', 'bergère', 'cabriolet', 'gros fauteuil'] }
+            { 
+              name: 'Fauteuils salle à manger en bois',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'bois massif'] }
+              ]
+            },
+            { 
+              name: 'Fauteuils de jardin/transat',
+              options: [
+                { type: 'option', label: 'Options', choices: ['empilable si plusieurs', 'pliant'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] }
+              ]
+            },
+            { 
+              name: 'Fauteuils de bureau',
+              options: [
+                { type: 'size', label: 'Type', choices: ['petit', 'gamer'] }
+              ]
+            },
+            { 
+              name: 'Fauteuils de salon de style',
+              options: [
+                { type: 'style', label: 'Style', choices: ['club', 'bridge', 'crapaud', 'bergère', 'cabriolet', 'gros fauteuil'] }
+              ]
+            }
           ]
         },
-        'banc_divers': {
-          name: 'BANC/BANQUETTE/POUF/TABOURET/REPOSE PIED/TRANSAT',
+        'autres_assises': {
+          name: 'AUTRES (BANC/BANQUETTE/POUF/TABOURET/REPOSE PIED/TRANSAT)',
           items: [
-            { name: 'banc', materials: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte', 'osier'] },
-            { name: 'Banc coffre', variants: [] },
-            { name: 'pouf', variants: ['cubique', 'cylindrique', 'gros pouf', 'chauffeuse'] },
-            { name: 'tabourets', variants: ['bar', 'pliant', 'petit tabouret'] },
-            { name: 'Banquette', variants: ['angle cuisine', 'méridien', 'confident'] },
-            { name: 'Transat', variants: ['empilable', 'pliable'], materials: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] }
+            { 
+              name: 'Petit banc',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte', 'osier'] }
+              ]
+            },
+            { 
+              name: 'Grand banc',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte', 'osier'] }
+              ]
+            },
+            { 
+              name: 'Banc coffre',
+              options: [
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'pierre', 'plastique', 'fonte', 'osier'] }
+              ]
+            },
+            { name: 'Chauffeuse' },
+            { name: 'Pouf/petit tabouret' },
+            { name: 'Tabouret de bar' },
+            { 
+              name: 'Banquette',
+              options: [
+                { type: 'style', label: 'Type', choices: ['méridien', 'confident'] }
+              ]
+            },
+            { name: 'Banquette d\'angle cuisine' },
+            { 
+              name: 'Transat',
+              options: [
+                { type: 'option', label: 'Options', choices: ['empilable si plusieurs', 'pliable'] },
+                { type: 'material', label: 'Matériau', choices: ['Bois', 'Bois massif', 'fer', 'plastique', 'osier'] }
+              ]
+            }
           ]
         }
       }
