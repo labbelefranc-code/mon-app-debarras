@@ -696,7 +696,7 @@ const ABCD_CATEGORIES = {
     ],
     subcategories: [
       'Mobilier de jardin et contenants',
-      'Jardin et extérieur',
+      'Jardin et extérieur', 
       'Bricolage / matériaux / énergie'
     ]
   },
