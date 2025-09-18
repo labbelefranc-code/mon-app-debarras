@@ -5613,19 +5613,26 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 4 : Afficher les articles finaux (modifié pour Literie, Tables, Assises et Rangements)
+    // Niveau 4 : Afficher les articles finaux (modifié pour gérer MOBILIER et JARDIN séparément)
     const availableArticles = selectedABCDSubSubSubcategory ? 
-      (selectedABCDSubSubcategory === 'Literie' ? 
-        getLiterieArticles(selectedABCDSubSubSubcategory) :
-        selectedABCDSubSubcategory === 'Tables' ?
-        getTablesArticles(selectedABCDSubSubSubcategory) :
-        selectedABCDSubSubcategory === 'Assises' ?
-        getAssisesArticles(selectedABCDSubSubSubcategory) :
-        []
+      (selectedABCDCategory.id === 'A' ? // MOBILIER
+        (selectedABCDSubSubcategory === 'Literie' ? 
+          getLiterieArticles(selectedABCDSubSubSubcategory) :
+          selectedABCDSubSubcategory === 'Tables' ?
+          getTablesArticles(selectedABCDSubSubSubcategory) :
+          selectedABCDSubSubcategory === 'Assises' ?
+          getAssisesArticles(selectedABCDSubSubSubcategory) :
+          []
+        ) :
+        selectedABCDCategory.id === 'B' ? // JARDIN
+          getJardinTablesArticles(selectedABCDSubSubSubcategory) : // Nouvelle fonction pour les tables de jardin
+          []
       ) :
       // Pour les rangements, on utilise maintenant directement le selectedABCDSubSubcategory
       (selectedABCDSubSubcategory === 'Rangements divers' ||
        selectedABCDSubSubcategory === 'Rangements CUISINE' ||
+       selectedABCDSubSubcategory === 'Rangements SALLE DE BAIN') ?
+      getRangementsArticles(
        selectedABCDSubSubcategory === 'Rangements SALLE DE BAIN') ?
       getRangementsArticles(
         selectedABCDSubSubcategory === 'Rangements divers' ? 'rangements_divers' :
