@@ -4968,7 +4968,15 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     <div className="font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>{selectedABCDCategory.name}</div>
                     <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
                       → {selectedABCDSubcategory} → {selectedABCDSubSubcategory}
-                      {selectedABCDSubSubSubcategory && ` → ${MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories[selectedABCDSubSubSubcategory]?.name}`}
+                      {selectedABCDSubSubSubcategory && (
+                        ` → ${
+                          selectedABCDSubSubcategory === 'Literie' 
+                            ? MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories[selectedABCDSubSubSubcategory]?.name
+                            : selectedABCDSubSubcategory === 'Tables'
+                            ? MOBILIER_ADMIN_STRUCTURE.categories.tables.subcategories[selectedABCDSubSubSubcategory]?.name
+                            : selectedABCDSubSubSubcategory
+                        }`
+                      )}
                     </div>
                   </div>
                 </div>
