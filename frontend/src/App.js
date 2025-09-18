@@ -4822,13 +4822,19 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  setSelectedABCDSubSubcategory(null);
+                  if (selectedABCDSubSubSubcategory) {
+                    // Si on est dans les articles de literie, retourner aux types de literie
+                    setSelectedABCDSubSubSubcategory(null);
+                  } else {
+                    // Sinon retourner aux types d'objets
+                    setSelectedABCDSubSubcategory(null);
+                  }
                 }}
                 variant="outline"
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Retour aux types d'objets
+                {selectedABCDSubSubSubcategory ? 'Retour aux types de literie' : 'Retour aux types d\'objets'}
               </Button>
             </div>
 
@@ -4839,7 +4845,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   <div className="text-2xl mr-3" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>{selectedABCDCategory.icon}</div>
                   <div>
                     <div className="font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>{selectedABCDCategory.name}</div>
-                    <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>→ {selectedABCDSubcategory} → {selectedABCDSubSubcategory}</div>
+                    <div className="text-sm opacity-90" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                      → {selectedABCDSubcategory} → {selectedABCDSubSubcategory}
+                      {selectedABCDSubSubSubcategory && ` → ${MOBILIER_ADMIN_STRUCTURE.categories.literie.subcategories[selectedABCDSubSubSubcategory]?.name}`}
+                    </div>
                   </div>
                 </div>
               </div>
