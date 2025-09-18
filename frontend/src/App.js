@@ -1140,16 +1140,6 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
           'Rangements SALLE DE BAIN': [
             { categoryKey: 'meubles_rangement', subcategoryKey: 'rangements_salle_bain' }
           ]
-        },
-        'Décorations & accessoires': {
-          'Tous les accessoires': [
-            { categoryKey: 'decorations_accessoires', subcategoryKey: null }
-          ]
-        },
-        'Électroménager': {
-          'Tous les électroménagers': [
-            { categoryKey: 'electromenager', subcategoryKey: null }
-          ]
         }
       }
     },
