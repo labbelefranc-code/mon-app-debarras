@@ -1326,7 +1326,115 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
-// Fonction spéciale pour récupérer les articles de rangements avec les nouvelles options
+// Fonction spéciale pour récupérer les articles de JARDIN avec gestion des sous-sous-catégories
+const getJardinArticles = (subcategory, subSubcategory = null) => {
+  const jardinStructure = JARDIN_ADMIN_STRUCTURE.categories;
+  
+  if (subcategory === 'Mobilier de jardin et contenants') {
+    const mobilierCategory = jardinStructure.mobilier_jardin_contenants;
+    
+    if (subSubcategory === 'Tables') {
+      // Pour les tables, récupérer tous les articles de toutes les sous-sous-catégories
+      const tablesSubcategory = mobilierCategory.subcategories.tables;
+      if (!tablesSubcategory || !tablesSubcategory.subcategories) return [];
+      
+      let allTablesArticles = [];
+      Object.values(tablesSubcategory.subcategories).forEach(tableSubSubcat => {
+        if (tableSubSubcat.items) {
+          tableSubSubcat.items.forEach((item, index) => {
+            allTablesArticles.push({
+              id: `jardin_tables_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+              article_id: `jardin_tables_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+              name: item.name,
+              category: 'JARDIN',
+              subcategory: 'Mobilier de jardin et contenants',
+              subcategory_name: 'Tables',
+              base_price: 25,
+              materials: item.materials || [],
+              options: item.options || [],
+              note: item.note || '',
+              requires_dismantling: false
+            });
+          });
+        }
+      });
+      return allTablesArticles;
+    } else if (subSubcategory === 'Assises') {
+      // Pour les assises, récupérer directement les articles
+      const assisesSubcategory = mobilierCategory.subcategories.assises;
+      if (!assisesSubcategory || !assisesSubcategory.items) return [];
+      
+      return assisesSubcategory.items.map((item, index) => ({
+        id: `jardin_assises_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `jardin_assises_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'JARDIN',
+        subcategory: 'Mobilier de jardin et contenants',
+        subcategory_name: 'Assises',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    } else if (subSubcategory === 'Rangement et contenants') {
+      // Pour les rangements, récupérer directement les articles
+      const rangementsSubcategory = mobilierCategory.subcategories.rangement_contenants;
+      if (!rangementsSubcategory || !rangementsSubcategory.items) return [];
+      
+      return rangementsSubcategory.items.map((item, index) => ({
+        id: `jardin_rangements_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `jardin_rangements_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'JARDIN',
+        subcategory: 'Mobilier de jardin et contenants',
+        subcategory_name: 'Rangement et contenants',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  } else if (subcategory === 'Jardin et extérieur') {
+    const jardinExtCategory = jardinStructure.jardin_exterieur;
+    if (!jardinExtCategory || !jardinExtCategory.items) return [];
+    
+    return jardinExtCategory.items.map((item, index) => ({
+      id: `jardin_ext_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `jardin_ext_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'JARDIN',
+      subcategory: 'Jardin et extérieur',
+      subcategory_name: 'Jardin et extérieur',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (subcategory === 'Bricolage / matériaux / énergie') {
+    const bricolageCategory = jardinStructure.bricolage_materiaux_energie;
+    if (!bricolageCategory || !bricolageCategory.items) return [];
+    
+    return bricolageCategory.items.map((item, index) => ({
+      id: `jardin_bricolage_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `jardin_bricolage_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'JARDIN',
+      subcategory: 'Bricolage / matériaux / énergie',
+      subcategory_name: 'Bricolage / matériaux / énergie',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  }
+  
+  return [];
+};
+
 const getRangementsArticles = (subcategory) => {
   const rangementsStructure = MOBILIER_ADMIN_STRUCTURE.categories.meubles_rangement.subcategories;
   const subcategoryData = rangementsStructure[subcategory];
