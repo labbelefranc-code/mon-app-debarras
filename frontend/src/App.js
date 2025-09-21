@@ -6416,6 +6416,15 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                         (selectedABCDSubcategory === 'Électronique/multimédia' || selectedABCDSubcategory === 'Électrique')) {
                       setSelectedABCDSubcategory(null);
                       setSelectedABCDSubSubcategory(null);
+                    } 
+                    // Pour les catégories AUTRES à accès direct, retourner directement aux sous-catégories principales
+                    else if (selectedABCDCategory?.id === 'D' && 
+                            (selectedABCDSubcategory === 'Décoration' || 
+                             selectedABCDSubcategory === 'Accessoires' || 
+                             selectedABCDSubcategory === 'Instruments de musique' || 
+                             selectedABCDSubcategory === 'Vaisselle, vêtements et objets divers')) {
+                      setSelectedABCDSubcategory(null);
+                      setSelectedABCDSubSubcategory(null);
                     } else {
                       // Sinon retourner aux types d'objets
                       setSelectedABCDSubSubcategory(null);
