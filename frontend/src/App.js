@@ -1779,7 +1779,7 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       }
     },
     'C': { // ELEC
-      structure: MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE,
+      structure: ELEC_ADMIN_STRUCTURE,
       subcategoryMapping: {
         'Électroménager': {
           'Électroménager froid': [
