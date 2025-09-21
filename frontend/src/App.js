@@ -5769,7 +5769,20 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                   if (subcategoryName === 'Électrique') {
                                     setSelectedABCDSubSubcategory('Articles électrique');
                                   }
-                                }}>
+                                  // Pour les catégories AUTRES à accès direct, aller directement aux articles
+                                  if (subcategoryName === 'Décoration') {
+                                    setSelectedABCDSubSubcategory('Articles décoration');
+                                  }
+                                  if (subcategoryName === 'Accessoires') {
+                                    setSelectedABCDSubSubcategory('Articles accessoires');
+                                  }
+                                  if (subcategoryName === 'Instruments de musique') {
+                                    setSelectedABCDSubSubcategory('Articles instruments de musique');
+                                  }
+                                  if (subcategoryName === 'Vaisselle, vêtements et objets divers') {
+                                    setSelectedABCDSubSubcategory('Articles vaisselle, vêtements et objets divers');
+                                  }
+                                }}}>
                             <CardContent className={`p-6 bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
                               <div className="flex items-center">
                                 <div className="text-3xl mr-4">{subcategoryIcons[subcategoryName] || '📦'}</div>
