@@ -3216,7 +3216,7 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
       );
     }
 
-    const category = MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE.categories[selectedMainCategory];
+    const category = ELEC_ADMIN_STRUCTURE.categories[selectedMainCategory];
     
     if (category.subcategories && !selectedSubCategory) {
       // Show subcategories
