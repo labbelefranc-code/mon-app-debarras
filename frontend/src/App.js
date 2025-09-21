@@ -2265,6 +2265,16 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     if (subSubcategoryName === 'Articles vaisselle, vêtements et objets divers') {
       return getDiversArticles('vaisselle_vetements_objets', null);
     }
+    // Sous-sous-catégories de Sports et loisirs
+    if (subSubcategoryName === 'Machines de sport et accessoires') {
+      return getDiversArticles('sports_loisirs', 'machines_sport');
+    }
+    if (subSubcategoryName === 'Sports nautiques') {
+      return getDiversArticles('sports_loisirs', 'sports_nautiques');
+    }
+    if (subSubcategoryName === 'Jeux et loisirs') {
+      return getDiversArticles('sports_loisirs', 'jeux_loisirs');
+    }
   }
 
   const { structure, subcategoryMapping } = mapping;
