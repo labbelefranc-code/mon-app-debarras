@@ -6383,7 +6383,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
       );
     }
     
-    // Niveau 4 : Afficher les articles finaux (modifié pour gérer MOBILIER et JARDIN séparément)
+    // Niveau 4 : Afficher les articles finaux (modifié pour gérer MOBILIER, JARDIN et AUTRES séparément)
     const availableArticles = selectedABCDSubSubSubcategory ? 
       (selectedABCDCategory.id === 'A' ? // MOBILIER
         (selectedABCDSubSubcategory === 'Literie' ? 
@@ -6395,7 +6395,9 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           []
         ) :
         selectedABCDCategory.id === 'B' ? // JARDIN
-          getJardinTablesArticles(selectedABCDSubSubSubcategory) : // Nouvelle fonction pour les tables de jardin
+          getJardinTablesArticles(selectedABCDSubSubSubcategory) :
+          selectedABCDCategory.id === 'D' ? // AUTRES
+            getABCDCategoryArticles(selectedABCDCategory?.id, selectedABCDSubcategory, selectedABCDSubSubcategory) :
           []
       ) :
       // Pour les rangements, on utilise maintenant directement le selectedABCDSubSubcategory
