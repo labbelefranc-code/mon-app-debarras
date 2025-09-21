@@ -5830,8 +5830,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </div>
                 </div>
               )}
-              {/* Debug temporaire */}
-              {console.log('DEBUG subcategory:', subcategory)}
             </div>
           ))}
         </div>
