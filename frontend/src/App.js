@@ -5591,7 +5591,11 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           'Rangements': '🗄️',
                           'Mobilier de jardin et contenants': '🪑',
                           'Jardin et extérieur': '🌱',
-                          'Bricolage / matériaux / énergie': '🔧'
+                          'Bricolage / matériaux / énergie': '🔧',
+                          'Électroménager': '🏠',
+                          'Électronique/multimédia': '📺',
+                          'Électrique': '💡',
+                          'Chauffage/climatisation/ventilation': '🌡️'
                         };
                         
                         return (
