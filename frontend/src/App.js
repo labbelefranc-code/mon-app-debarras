@@ -5847,6 +5847,13 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </div>
                 </div>
               )}
+              {/* Test : Note pour tous les boutons pour débogage */}
+              <div className="mt-4 p-4 bg-red-50 border-2 border-red-400 rounded-lg shadow-md">
+                <p className="text-sm text-red-800">
+                  TEST DEBUG: Bouton = {subcategory}
+                </p>
+              </div>
+              
               {/* Note spéciale pour Vaisselle, vêtements et objets divers */}
               {subcategory.includes('Vaisselle') && (
                 <div className="mt-4 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg shadow-md">
