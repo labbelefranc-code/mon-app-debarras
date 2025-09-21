@@ -1524,6 +1524,7 @@ const getElecArticles = (subcategory, subSubcategory = null) => {
       }));
     }
   } else if (subcategory === 'Électronique/multimédia') {
+    // Retourner directement les articles sans étape intermédiaire
     const multimediaCategory = elecStructure.multimedia_electronique;
     if (!multimediaCategory || !multimediaCategory.items) return [];
     
@@ -1541,6 +1542,7 @@ const getElecArticles = (subcategory, subSubcategory = null) => {
       requires_dismantling: false
     }));
   } else if (subcategory === 'Électrique') {
+    // Retourner directement les articles sans étape intermédiaire
     const electriqueCategory = elecStructure.electrique;
     if (!electriqueCategory || !electriqueCategory.items) return [];
     
