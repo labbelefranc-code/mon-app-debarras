@@ -2053,7 +2053,7 @@ const getDiversArticles = (categoryKey, subcategoryKey = null) => {
       base_price: 25,
       materials: item.materials || [],
       options: item.options || [],
-      note: item.note || vaisselleCategory.note || '',
+      note: (item.note || vaisselleCategory.note || ''),
       requires_dismantling: false
     }));
   } else if (categoryKey === 'sports_loisirs' && subcategoryKey) {
