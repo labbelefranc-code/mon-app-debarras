@@ -6149,7 +6149,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                {selectedABCDSubSubSubcategory ? 'Retour aux types de literie' : 'Retour aux types d\'objets'}
+                {selectedABCDSubSubSubcategory ? 'Retour aux types de literie' : 
+                 (selectedABCDCategory?.id === 'C' && 
+                  (selectedABCDSubcategory === 'Électronique/multimédia' || selectedABCDSubcategory === 'Électrique')) ? 
+                  'Retour aux sous-catégories' : 'Retour aux types d\'objets'}
               </Button>
             </div>
 
