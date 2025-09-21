@@ -1927,18 +1927,31 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       subcategoryMapping: {
         'Électroménager': {
           'Électroménager froid': [
-            { categoryKey: 'electromenager_froid', subcategoryKey: null }
+            { categoryKey: 'electromenager', subcategoryKey: 'electromenager_froid', hasSubSubcategories: true }
           ],
-          'Électroménager cuisson': [
-            { categoryKey: 'electromenager_cuisson', subcategoryKey: null }
+          'Électroménager cuisine': [
+            { categoryKey: 'electromenager', subcategoryKey: 'electromenager_cuisine' }
           ],
-          'Électroménager lavage': [
-            { categoryKey: 'electromenager_lavage', subcategoryKey: null }
+          'Électroménager salle de bain': [
+            { categoryKey: 'electromenager', subcategoryKey: 'electromenager_salle_de_bain' }
           ]
         },
-        'Multimédia & électronique': {
-          'Tout multimédia': [
+        'Électronique/multimédia': {
+          'Tout électronique/multimédia': [
             { categoryKey: 'multimedia_electronique', subcategoryKey: null }
+          ]
+        },
+        'Électrique': {
+          'Tout électrique': [
+            { categoryKey: 'electrique', subcategoryKey: null }
+          ]
+        },
+        'Chauffage/climatisation/ventilation': {
+          'Chaud': [
+            { categoryKey: 'chauffage_climatisation_ventilation', subcategoryKey: 'chaud' }
+          ],
+          'Froid': [
+            { categoryKey: 'chauffage_climatisation_ventilation', subcategoryKey: 'froid' }
           ]
         }
       }
