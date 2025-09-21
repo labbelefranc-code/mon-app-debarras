@@ -102,147 +102,82 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Delete all photos and articles from the database and clean up the admin interface. TASK COMPLETED: Successfully deleted all 34 articles and unassigned all 336 photos. Database is now completely clean and ready for fresh start."
+user_problem_statement: "Implémenter la section ELEC (jaune) avec la structure hiérarchique fournie par l'utilisateur : ELECTROMENAGER (3 sous-sections), MULTIMEDIA/ELECTRONIQUE (articles directs avec options), ELECTRIQUE (articles avec options), et Chauffage/Climatisation/Ventilation (2 sous-sections CHAUD/FROID)."
 
 backend:
-  - task: "Create admin photo management endpoints"
-    implemented: true
+  - task: "Backend API support for ELEC category"
+    implemented: true  
     working: true
     file: "server.py"
     stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Starting implementation of admin endpoints for photo management - list all photos, associate photos to articles"
-      - working: "NA"
-        agent: "main"
-        comment: "Implementation completed. Added endpoints: GET /admin/photos, POST /admin/photos/assign, DELETE /admin/photos/{filename}/assignment, GET /admin/articles-for-photos, GET /photos/{filename}. Ready for testing."
-      - working: true
-        agent: "testing"
-        comment: "COMPREHENSIVE TESTING COMPLETED - All admin photo management endpoints working correctly. ✅ Admin authentication with Basic Auth (labbelefranc@gmail.com/admin06) working. ✅ GET /admin/photos returns 336 photos from 4 directories with assignment status. ✅ GET /admin/articles-for-photos returns 16 articles for assignment. ✅ POST /admin/photos/assign successfully assigns photos to articles and updates article.image_url. ✅ DELETE /admin/photos/{filename}/assignment successfully unassigns photos. ✅ Photo assignment/unassignment workflow verified with database updates. ✅ Error handling works for non-existent articles (404). ✅ MongoDB photo_assignments collection created and managed correctly. Minor: Static photo serving returns HTML instead of image file (likely frontend routing issue, not critical for backend functionality). All 23/23 backend tests passed."
-  - task: "Complete database cleanup - delete all photos and articles"
-    implemented: true
-    working: true
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: true
-        agent: "testing"
-        comment: "DATABASE CLEANUP OPERATION COMPLETED SUCCESSFULLY - User requested complete database cleanup to remove all photos and articles for a fresh start. ✅ Admin authentication with labbelefranc@gmail.com/admin06 working correctly. ✅ Successfully processed 336 photos - all were already unassigned (no photo assignments to remove). ✅ Successfully deleted all 34 articles from database using DELETE /api/admin/articles/{id} endpoints. ✅ Verification confirmed: 0 articles remaining, 0 assigned photos remaining, 336 photos still available but unassigned. ✅ Categories preserved as expected (36 categories remain for future use). ✅ Database is now completely clean and ready for fresh start without any existing data. All cleanup operations completed without errors. The system is ready for new content to be added."
+        agent: "main"
+        comment: "Backend already supports generic article structure, no changes needed for ELEC implementation"
 
 frontend:
-  - task: "Create admin interface with drag & drop for photo association"
+  - task: "Implementation of ELEC_ADMIN_STRUCTURE"
     implemented: true
-    working: true
+    working: "NA"
+    file: "App.js" 
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created ELEC_ADMIN_STRUCTURE to replace MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE with detailed hierarchy matching user requirements: ELECTROMENAGER (froid, cuisine, salle de bain), MULTIMEDIA/ELECTRONIQUE (direct articles with options), ELECTRIQUE (aspirateur, éclairage, chauffe-eau), CHAUFFAGE/CLIMATISATION/VENTILATION (chaud/froid subcategories)"
+  - task: "Implementation of getElecArticles function"
+    implemented: true
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0  
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created getElecArticles function to handle ELEC category article retrieval with support for subcategories and options. Handles all 4 main ELEC categories with proper nesting."
+  - task: "Update category mapping for ELEC"
+    implemented: true
+    working: "NA"
+    file: "App.js"
+    stuck_count: 0
+    priority: "high" 
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated getABCDCategoryMapping and getABCDCategoryArticles to include ELEC (category C) with proper subcategory mapping and article retrieval logic"
+  - task: "Update all MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE references"
+    implemented: true
+    working: "NA"
     file: "App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Will create admin interface after backend endpoints are ready and tested"
-      - working: "NA"
-        agent: "main"
-        comment: "Implementation completed. Added AdminLoginPage, AdminPhotosPage with drag & drop functionality. Admin login accessible via footer link. Ready for testing after backend validation."
-      - working: true
-        agent: "testing"
-        comment: "Backend photo management system tested successfully - 23/23 tests passed, 336 photos detected, authentication working"
-  - task: "Fix admin article management interface - modify and add article functionality"
-    implemented: true
-    working: true
-    file: "App.js"
-    stuck_count: 2
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "user"
-        comment: "User reported: 'je ne peux pas modifier les articles dans la partie admin, ni ajouter un nouvel article'. Admin interface shows categories but no functional buttons for editing or adding articles."
-      - working: "NA"
-        agent: "main"
-        comment: "Identified the issue: ModernAdminCategoriesPage had placeholder modal for editing articles. The 'Modifier' button opened a basic modal with just Cancel/Save buttons and no actual form fields. The 'Ajouter un nouvel article' button had no functionality."
-      - working: true
-        agent: "main"
-        comment: "FIXED - Implemented complete article management functionality: ✅ 'Modifier' button now opens full form with fields for name, materials, variants, options, and notes. ✅ 'Ajouter un nouvel article' button creates new article with same comprehensive form. ✅ 'Supprimer' button now has confirmation dialog. ✅ All forms are fully functional with proper data binding and validation. ✅ Tested successfully - user can now modify existing articles and create new ones in the MOBILIER category management interface."
-      - working: true
-        agent: "testing"
-        comment: "COMPREHENSIVE TESTING COMPLETED - All admin article management functionality working perfectly. ✅ Admin login successful with labbelefranc@gmail.com/admin06. ✅ Categories tab accessible and shows ADMINISTRATION MOBILIER interface. ✅ TABLES category displays 10 articles with proper structure. ✅ 'Modifier' buttons (10 found) open functional edit modals with name, materials, variants, options, and notes fields - all fillable and working. ✅ 'Ajouter un nouvel article' button (1 found) opens comprehensive add modal with all required form fields. ✅ 'Supprimer' buttons (10 found) trigger confirmation dialogs as expected. ✅ Save/Cancel buttons present and functional in all modals. ✅ Form validation and data binding working correctly. ✅ Modal open/close functionality working smoothly. All user-reported issues resolved - admin can now successfully modify existing articles and add new articles in the TABLES category."
-      - working: true
-        agent: "testing"
-        comment: "BACKEND ARTICLE CREATION TESTING COMPLETED - Comprehensive testing of admin article creation functionality confirms all backend APIs are working perfectly. ✅ Admin authentication with Basic Auth (labbelefranc@gmail.com/admin06) working correctly. ✅ POST /api/admin/articles endpoint successfully creates new articles with proper data structure (name, category_id, base_price, materials, description, requires_dismantling). ✅ Article data properly saved to MongoDB database and retrievable via GET endpoints. ✅ PUT /api/admin/articles/{id} endpoint successfully updates existing articles. ✅ DELETE /api/admin/articles/{id} endpoint successfully removes articles. ✅ Error handling works correctly for invalid category_id (returns 404). ✅ All CRUD operations verified with database persistence. ✅ Tested with review request scenario: 'Tonnelle de jardin' article creation successful. ✅ 47/47 comprehensive backend tests passed (100% success rate). The 'Sauvegarder' functionality is working correctly at the backend level - any issues must be in frontend implementation or frontend-backend communication."
-      - working: false
-        agent: "testing"
-        comment: "CRITICAL ISSUE CONFIRMED - User's report about 'Sauvegarder' button not working is ACCURATE. ❌ MAJOR PROBLEM: Modern admin interface with 'Ajouter un nouvel article' functionality is NOT ACCESSIBLE through normal navigation. ❌ Admin login successful but only shows basic Photos interface with no Categories tab or modern admin features. ❌ Current admin interface only has 'Photos' and 'Déconnexion' buttons - no access to JARDIN, MOBILIER, MULTIMEDIA, or DIVERS categories. ❌ The modern admin components (ModernAdminCategoriesPage, ModernAdminJardinPage, etc.) exist in code but are not reachable through the UI. ❌ No 'Ajouter un nouvel article' button found anywhere in the accessible interface. ❌ Navigation to modern admin categories is completely broken. This explains why users cannot modify or add articles - the interface to do so is not accessible. Backend APIs work perfectly (47/47 tests passed) but frontend navigation to modern admin interface is broken. URGENT FIX NEEDED: Implement proper navigation from basic admin interface to modern admin categories interface."
-      - working: true
-        agent: "testing"
-        comment: "CRITICAL ISSUE RESOLVED - BACKEND ARTICLE CREATION IS WORKING PERFECTLY! ✅ COMPREHENSIVE TESTING COMPLETED: Admin authentication working (labbelefranc@gmail.com/admin06). ✅ POST /api/admin/articles endpoint successfully creates articles with exact frontend data structure (name: 'Test Article Frontend', category_id: 'exterieur_jardin', base_price: 0, materials: ['test', 'material'], description: 'Test de sauvegarde frontend', requires_dismantling: false). ✅ Articles are properly saved to MongoDB database and immediately retrievable. ✅ GET /api/articles returns newly created articles correctly. ✅ GET /api/categories/exterieur_jardin/articles shows articles in correct category. ✅ Database verification shows 7 total articles with 5 in exterieur_jardin category. ✅ Backend logs confirm successful POST requests with 200 OK responses. ✅ CORS headers properly configured. ✅ All CRUD operations working flawlessly. CONCLUSION: Backend article creation is 100% functional. If users report articles not appearing, the issue is in frontend interface refresh/display logic, NOT in backend saving functionality. Articles ARE being saved successfully to the database."
-      - working: false
-        agent: "testing"
-        comment: "CRITICAL FRONTEND DISPLAY ISSUE CONFIRMED - ROOT CAUSE IDENTIFIED! ❌ EXACT PROBLEM: Jardin admin interface displays hardcoded data from JARDIN_ADMIN_STRUCTURE instead of loading actual articles from database. ✅ COMPREHENSIVE TESTING COMPLETED: Admin login successful (labbelefranc@gmail.com/admin06). ✅ Navigation to Jardin → MOBILIER DE JARDIN & CONTENANTS working. ✅ 'Ajouter un nouvel article' button opens form modal correctly. ✅ Form can be filled and 'Sauvegarder' button works. ✅ BACKEND VERIFICATION: Article 'Test Frontend Display' successfully saved to database and retrievable via /api/articles and /api/categories/exterieur_jardin/articles. ❌ CRITICAL ISSUE: Article does NOT appear in admin interface list, even after page refresh. ❌ ROOT CAUSE: ModernAdminJardinPage uses hardcoded 'category.items' from JARDIN_ADMIN_STRUCTURE instead of loading actual articles from database like other admin sections do. ❌ FRONTEND BUG: Line 2690 in App.js shows 'const items = category.items;' which loads static data instead of dynamic database articles. SOLUTION NEEDED: Update Jardin admin interface to load and display actual articles from allArticles state like Photos admin section does."
-      - working: true
-        agent: "testing"
-        comment: "URGENT ISSUE RESOLUTION - BACKEND ARTICLE CREATION IS 100% FUNCTIONAL! 🚨 USER CRITICAL ISSUE: 'toujours pas !!!!!!!! rien n'a changé depuis une demi heure' - admin article creation broken for 30 minutes. ✅ DEFINITIVE TESTING COMPLETED: 1) Admin authentication WORKING (labbelefranc@gmail.com/admin06). 2) Database contains 17 articles currently. 3) POST /api/admin/articles WORKING PERFECTLY - successfully created 'Tonnelle de jardin' with aluminium/toile polyester materials. 4) Articles ARE PERSISTING in database - verified immediate retrieval after creation. 5) GET /api/articles WORKING - returns all 18 articles including newly created ones. 6) Category-specific endpoint WORKING - articles accessible via /api/categories/exterieur_jardin/articles. 7) Frontend createArticle endpoint WORKING - tested exact frontend data structure successfully. ✅ BACKEND LOGS CONFIRM: All API calls returning 200 OK responses, no errors detected. ✅ CONCLUSION: Backend article creation is 100% functional. Issue is in frontend interface not refreshing/displaying saved articles or using hardcoded data instead of database. BACKEND IS READY - ISSUE IS FRONTEND IMPLEMENTATION."
-      - working: true
-        agent: "testing"
-        comment: "COMPREHENSIVE JARDIN ADMIN INTERFACE TESTING COMPLETED - ALL BACKEND FUNCTIONALITY WORKING PERFECTLY! ✅ JARDIN ADMIN INTERFACE REQUIREMENTS TESTED: 1) Admin authentication successful (labbelefranc@gmail.com/admin06). 2) Hierarchical category structure working - found 6 root categories with 'Extérieur / Jardin / Garage / Cave' containing 8 subcategories. 3) Article creation with correct category_id working - successfully created 3 test articles (Salon de jardin, Tonnelle, Barbecue) all assigned to 'exterieur_jardin'. 4) Data consistency verified - all created articles have correct category_id. 5) Category-specific retrieval working - articles accessible via /api/categories/exterieur_jardin/articles. 6) Admin categories tree endpoint working - returns proper hierarchical structure. ✅ DATA CORRUPTION ANALYSIS COMPLETED: Found 17 articles with 94.1% (16/17) incorrectly assigned to 'exterieur_jardin' category, confirming user reports. ✅ ROOT CAUSE IDENTIFIED: Backend respects category_id parameter correctly (tested all categories: mobilier, assises, tables, lits_couchage, electromenager_gros, exterieur_jardin). Frontend admin interface is hardcoded to send 'exterieur_jardin' category_id regardless of admin section. ✅ BACKEND IS 100% FUNCTIONAL - Issue is frontend implementation sending wrong category_id parameter. All backend APIs supporting Jardin admin interface are ready for production use."
-  - task: "Restore Jardin hierarchical admin interface structure"
-    implemented: true
-    working: true
-    file: "App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "user"
-        comment: "User requested: 'ok j'aimerais que ce soit comme avant' - restore original hierarchical structure for Jardin category similar to Multimedia/Électrique and Divers"
-      - working: true
-        agent: "main"
-        comment: "JARDIN HIERARCHICAL STRUCTURE SUCCESSFULLY RESTORED! ✅ Implemented complete hierarchical navigation similar to Multimedia/Électrique and Divers pages. ✅ Added selectedSubCategory state management for proper navigation between main categories and subcategories. ✅ Restored 3-level navigation: Main categories → Individual categories → Items list. ✅ Applied green color theme (from-green-400 to-green-500) consistently. ✅ Updated navigation breadcrumbs and back buttons. ✅ Fixed modal edit functionality to handle both categoryKey and subCategoryKey. ✅ Maintained proper article creation with correct category_id mapping."
-      - working: true
-        agent: "testing"
-        comment: "JARDIN ADMIN INTERFACE RESTORATION CONFIRMED SUCCESSFUL! ✅ Admin authentication working (labbelefranc@gmail.com/admin06). ✅ Hierarchical structure verified: 6 root categories with 'Extérieur / Jardin / Garage / Cave' containing 8 subcategories as expected. ✅ Navigation working: Successfully navigated to Jardin section showing 3 main categories (MOBILIER DE JARDIN & CONTENANTS: 11 articles, JARDIN & EXTÉRIEUR: 17 articles, BRICOLAGE MATÉRIAUX & ÉNERGIE: 22 articles). ✅ Article creation tested: Successfully created Salon de jardin, Tonnelle, Barbecue with correct 'exterieur_jardin' category_id. ✅ Data consistency verified: All articles saved with correct category_id and retrievable via both GET /api/articles and category-specific endpoints. ✅ Green theme applied correctly. The hierarchical structure has been fully restored to match the original design like before the simplification."
+        comment: "Replaced all references to MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE with ELEC_ADMIN_STRUCTURE in category mapping, UI rendering, and admin interface functions"
 
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Fix admin article management interface - modify and add article functionality"
+    - "Test ELEC category navigation and article display"
+    - "Verify all 4 ELEC subcategories work correctly"
+    - "Test option handling for ELEC articles"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Starting development of admin photo management system. Will implement backend endpoints first, test them, then create frontend interface."
-  - agent: "main"
-    message: "Completed implementation of admin photo management system. Backend has new endpoints for listing photos, assigning/unassigning photos to articles, and serving static photo files. Frontend has drag & drop admin interface accessible via footer link. Ready for backend testing first, then frontend testing with user permission."
-  - agent: "main"
-    message: "Extended admin system with complete category and article management. Added CRUD endpoints for categories/articles, hierarchical category tree view, forms for creation/editing, and comprehensive admin interface with tabs for Photos and Categories. Ready to test both photo and category management systems."
-  - agent: "testing"
-    message: "BACKEND TESTING COMPLETED SUCCESSFULLY - All admin photo management endpoints are working perfectly. Tested authentication, photo listing (336 photos from 4 directories), article listing (16 articles), photo assignment/unassignment workflow, database updates, and error handling. All core functionality verified. Ready for frontend testing with user permission."
-  - agent: "main"
-    message: "ISSUE RESOLVED - Fixed admin article management interface. User reported being unable to modify or add articles in admin panel. Problem was in ModernAdminCategoriesPage component where 'Modifier' and 'Ajouter un nouvel article' buttons were non-functional placeholders. Implemented complete article management forms with all necessary fields (name, materials, variants, options, notes). All functionality now working correctly - user can navigate to TABLES category and successfully modify existing articles or create new ones."
-  - agent: "testing"
-    message: "ADMIN ARTICLE MANAGEMENT TESTING COMPLETED SUCCESSFULLY - All functionality working perfectly as requested. ✅ Admin login flow working with correct credentials. ✅ Categories tab navigation successful to ADMINISTRATION MOBILIER interface. ✅ TABLES category shows 10 articles with complete management interface. ✅ All 'Modifier' buttons open functional edit forms with name, materials, variants, options, and notes fields. ✅ 'Ajouter un nouvel article' button opens comprehensive add form with all required fields. ✅ All 'Supprimer' buttons show confirmation dialogs. ✅ Form validation, data binding, and modal functionality working correctly. User can now successfully modify existing articles and add new articles as requested. Issue fully resolved."
-  - agent: "testing"
-    message: "BACKEND ARTICLE CREATION COMPREHENSIVE TESTING COMPLETED - All backend APIs for admin article management are working perfectly. ✅ Tested specific review request scenario: creating 'Tonnelle de jardin' article with materials ['aluminium', 'toile polyester']. ✅ Admin authentication (labbelefranc@gmail.com/admin06) working correctly. ✅ POST /api/admin/articles successfully creates articles with proper data structure. ✅ Articles properly saved to MongoDB and retrievable via GET endpoints. ✅ PUT /api/admin/articles/{id} successfully updates articles. ✅ DELETE /api/admin/articles/{id} successfully removes articles. ✅ Error handling for invalid category_id working (returns 404). ✅ All CRUD operations verified with database persistence. ✅ 47/47 comprehensive backend tests passed (100% success rate). The backend 'Sauvegarder' functionality is working correctly - any remaining issues must be in frontend implementation or frontend-backend communication. Backend is ready for production use."
-  - agent: "testing"
-    message: "CRITICAL ISSUE DISCOVERED - User's report about 'Sauvegarder' button not working is CONFIRMED. ❌ MAJOR NAVIGATION PROBLEM: The modern admin interface with article management functionality is NOT ACCESSIBLE through the current admin interface. ❌ Admin login works but only shows basic Photos interface - no Categories tab or modern admin features visible. ❌ Modern admin components (ModernAdminCategoriesPage, ModernAdminJardinPage, etc.) exist in code but cannot be reached through UI navigation. ❌ Users cannot access JARDIN, MOBILIER, MULTIMEDIA, or DIVERS categories because navigation is broken. ❌ No 'Ajouter un nouvel article' button accessible anywhere in the current interface. This explains the user's issue completely - the interface to modify/add articles exists but is unreachable. Backend APIs work perfectly (47/47 tests passed) but frontend navigation to modern admin interface is completely broken. URGENT: Fix navigation from basic admin interface to modern admin categories interface."
-  - agent: "testing"
-    message: "CRITICAL ISSUE RESOLVED - BACKEND ARTICLE CREATION IS WORKING PERFECTLY! ✅ COMPREHENSIVE TESTING COMPLETED: Admin authentication working (labbelefranc@gmail.com/admin06). ✅ POST /api/admin/articles endpoint successfully creates articles with exact frontend data structure. ✅ Articles are properly saved to MongoDB database and immediately retrievable via GET /api/articles and category-specific endpoints. ✅ Database verification shows 7 total articles with 5 in exterieur_jardin category - articles ARE being saved successfully. ✅ Backend logs confirm successful POST requests with 200 OK responses. ✅ CORS headers properly configured. ✅ All CRUD operations working flawlessly. CONCLUSION: Backend article creation is 100% functional. If users report articles not appearing after clicking 'Sauvegarder', the issue is in frontend interface refresh/display logic or navigation, NOT in backend saving functionality. The backend is saving articles correctly to the database."
-  - agent: "testing"
-    message: "CRITICAL FRONTEND DISPLAY ISSUE IDENTIFIED - EXACT ROOT CAUSE FOUND! ❌ CONFIRMED ISSUE: Users don't see newly created articles because Jardin admin interface displays hardcoded data instead of database articles. ✅ COMPREHENSIVE TESTING: Admin login successful, navigation to Jardin → MOBILIER DE JARDIN & CONTENANTS working, 'Ajouter un nouvel article' form functional, 'Sauvegarder' button works and saves to database. ✅ BACKEND VERIFICATION: Article 'Test Frontend Display' successfully saved and retrievable via /api/articles and /api/categories/exterieur_jardin/articles. ❌ FRONTEND BUG: ModernAdminJardinPage uses hardcoded 'category.items' from JARDIN_ADMIN_STRUCTURE (line 2690) instead of loading actual database articles like other admin sections. ❌ RESULT: Articles save successfully but never appear in interface, even after refresh. SOLUTION: Update Jardin admin interface to load and display actual articles from allArticles state like Photos admin section does. This is a frontend display bug, not a backend issue."
-  - agent: "testing"
-    message: "🚨 DATA CORRUPTION ANALYSIS COMPLETED - ROOT CAUSE IDENTIFIED! ✅ COMPREHENSIVE DATABASE ANALYSIS: Found 17 articles in database with 94.1% (16/17) incorrectly assigned to 'exterieur_jardin' category. ✅ USER REPORT CONFIRMED: Articles like 'jghug', 'hguyfuyf' (mentioned by user) and 'sommier triple' (bedroom furniture) are indeed in 'exterieur_jardin' instead of appropriate categories. ✅ BACKEND TESTING PROVES: Backend article creation API works perfectly - tested all categories (mobilier, assises, tables, lits_couchage, electromenager_gros, exterieur_jardin) and each article was correctly assigned to intended category. ✅ FRONTEND SIMULATION CONFIRMS: When proper category_id is sent, backend assigns correctly (tested MOBILIER LITERIE→lits_couchage, JARDIN→exterieur_jardin, MOBILIER SALON→assises). 🚨 ROOT CAUSE IDENTIFIED: Frontend admin interface is hardcoded to send 'exterieur_jardin' category_id regardless of which admin section user is in. Backend is working correctly but frontend sends wrong category_id parameter. ✅ SOLUTION NEEDED: Fix frontend admin interface to send correct category_id based on current admin section (MOBILIER→mobilier/lits_couchage, JARDIN→exterieur_jardin, etc.). Backend requires no changes - issue is 100% frontend implementation."
-  - agent: "main"
-    message: "JARDIN HIERARCHICAL STRUCTURE RESTORATION COMPLETED SUCCESSFULLY! ✅ User requested restoration of original hierarchical structure for Jardin category ('ok j'aimerais que ce soit comme avant'). ✅ Implemented complete 3-level navigation: Main categories → Individual categories → Items list. ✅ Added proper selectedSubCategory state management for navigation between levels. ✅ Applied consistent green color theme (from-green-400 to-green-500) throughout interface. ✅ Updated navigation breadcrumbs, back buttons, and modal functionality. ✅ Maintained correct article creation with proper category_id mapping. ✅ Backend testing confirms all functionality working: authentication, hierarchical structure (6 root categories with 8 subcategories), article creation (Salon de jardin, Tonnelle, Barbecue), and data consistency. The Jardin admin interface now matches the original hierarchical design similar to Multimedia/Électrique and Divers pages."
+    message: "Implemented complete ELEC structure according to user specifications. Created new ELEC_ADMIN_STRUCTURE with 4 main categories: ELECTROMENAGER (with 3 subcategories including FRIGO/CONGELATEUR sub-sub-categories), MULTIMEDIA/ELECTRONIQUE (direct articles with various options), ELECTRIQUE (aspirateur, éclairage with sub-articles, chauffe-eau with pre-checked options), and CHAUFFAGE/CLIMATISATION/VENTILATION (CHAUD/FROID subcategories). All functions updated and structure integrated into existing ABCD system. Ready for testing to verify functionality."
