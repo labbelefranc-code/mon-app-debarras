@@ -728,14 +728,14 @@ const ABCD_CATEGORIES = {
       'Accessoires',
       'Sports et loisirs',
       'Instruments de musique',
-      'Vaisselle, vêtements et objets divers'
+      'Vaisselle, vêtements et objets divers (⚠️ 12kg max par carton/sac)'
     ],
     subcategories: [
       'Décoration',
       'Accessoires',
       'Sports et loisirs',
       'Instruments de musique',
-      'Vaisselle, vêtements et objets divers'
+      'Vaisselle, vêtements et objets divers (⚠️ 12kg max par carton/sac)'
     ]
   }
 };
