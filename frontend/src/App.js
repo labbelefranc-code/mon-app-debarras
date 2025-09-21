@@ -2106,27 +2106,12 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
             { categoryKey: 'sports_loisirs', subcategoryKey: 'jeux_loisirs' }
           ]
         },
-        'Instruments': {
+        'Instruments de musique': {
           'Tous les instruments de musique': [
             { categoryKey: 'instruments_musique', subcategoryKey: null }
           ]
         },
-        'Vaisselle': {
-          'Vaisselle, vêtements et objets divers': [
-            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
-          ]
-        },
-        'Objets divers': {
-          'Vaisselle, vêtements et objets divers': [
-            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
-          ]
-        },
-        'Encombrants': {
-          'Vaisselle, vêtements et objets divers': [
-            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
-          ]
-        },
-        'Cartons et sacs': {
+        'Vaisselle, vêtements et objets divers': {
           'Vaisselle, vêtements et objets divers': [
             { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
