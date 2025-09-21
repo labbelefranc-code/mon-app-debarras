@@ -2183,12 +2183,12 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
       structure: DIVERS_ADMIN_STRUCTURE,
       subcategoryMapping: {
         'Décoration': {
-          'Toute la décoration': [
+          'Articles décoration': [
             { categoryKey: 'decoration', subcategoryKey: null }
           ]
         },
         'Accessoires': {
-          'Tous les accessoires': [
+          'Articles accessoires': [
             { categoryKey: 'accessoires', subcategoryKey: null }
           ]
         },
@@ -2204,12 +2204,12 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
           ]
         },
         'Instruments de musique': {
-          'Tous les instruments de musique': [
+          'Articles instruments de musique': [
             { categoryKey: 'instruments_musique', subcategoryKey: null }
           ]
         },
         'Vaisselle, vêtements et objets divers': {
-          'Vaisselle, vêtements et objets divers': [
+          'Articles vaisselle, vêtements et objets divers': [
             { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
         }
