@@ -5816,10 +5816,18 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
               
               {/* Note spéciale pour Vaisselle, vêtements et objets divers */}
               {subcategory === 'Vaisselle, vêtements et objets divers' && (
-                <div className="mt-2 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-r-lg">
-                  <p className="text-xs text-yellow-800 font-medium">
-                    ⚠️ <strong>Note importante :</strong> Pour utiliser cette catégorie dans votre devis instantané, il conviendra de préparer les cartons/sacs avant notre passage et s'assurer qu'ils ne dépassent pas 12kg max chacun. Sinon, nous pouvons le faire mais il faudra faire votre demande de devis via des photos et non en instantané.
-                  </p>
+                <div className="mt-3 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg shadow-md">
+                  <div className="flex items-start space-x-2">
+                    <div className="text-yellow-600 text-lg font-bold">⚠️</div>
+                    <div>
+                      <p className="text-sm text-yellow-800 font-semibold mb-1">
+                        Note importante :
+                      </p>
+                      <p className="text-xs text-yellow-700 leading-relaxed">
+                        Pour utiliser cette catégorie dans votre devis instantané, il conviendra de préparer les cartons/sacs avant notre passage et s'assurer qu'ils ne dépassent pas 12kg max chacun. Sinon, nous pouvons le faire mais il faudra faire votre demande de devis via des photos et non en instantané.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
