@@ -5929,9 +5929,11 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           'Tout multimédia': '📺',
                           'Toute la décoration': '🖼️',
                           'Tous les accessoires': '🎒',
+                          'Machines de sport et accessoires': '🏋️',
+                          'Sports nautiques': '🏄',
+                          'Jeux et loisirs': '🎮',
                           'Tous les instruments de musique': '🎵',
-                          'Vaisselle et objets divers': '📋',
-                          'Objets divers encombrants': '📦',
+                          'Vaisselle, vêtements et objets divers': '📋',
                           'Tout sport & loisirs': '⚽',
                           'Tous les autres objets': '📦'
                         };
