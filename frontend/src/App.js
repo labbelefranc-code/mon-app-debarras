@@ -744,79 +744,13 @@ const ABCD_CATEGORIES = {
   }
 };
 
-// Structure hiérarchique complète pour MULTIMEDIA/ELECTRONIQUE/ELECTRIQUE (Admin)
-const MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE = {
-  id: 'multimedia_electrique',
-  name: 'MULTIMEDIA / ELECTRONIQUE / ELECTRIQUE',
+// Structure hiérarchique complète pour ELEC (Admin)
+const ELEC_ADMIN_STRUCTURE = {
+  id: 'elec',
+  name: 'ELEC',
   icon: '⚡',
   color: 'from-yellow-400 to-yellow-500',
   categories: {
-    'multimedia_electronique': {
-      id: 'multimedia_electronique',
-      name: 'MULTIMEDIA / ELECTRONIQUE',
-      icon: '📺',
-      items: [
-        { name: 'Télévision/Ecran', variants: ['petit', 'moyen', 'grand', 'écran plat', 'tube cathodique'] },
-        { name: 'Hifi/Lecteur', variants: ['ampli', 'lecteur cd', 'lecteur cassette', 'lecteur vinyles', 'box'] },
-        { name: 'Console de jeux vidéo', variants: ['PlayStation', 'Xbox', 'Nintendo', 'retro'] },
-        { name: 'Enceintes', variants: ['Bluetooth', 'Hi-Fi', 'home cinéma', 'portables'] },
-        { name: 'Ordinateur', variants: ['portable', 'PC fixe', 'tout-en-un', 'serveur'] },
-        { name: 'Imprimante / scanner', variants: ['jet d\'encre', 'laser', 'multifonction', 'scanner seul'] }
-      ]
-    },
-    'electrique': {
-      id: 'electrique',
-      name: 'ELECTRIQUE',
-      icon: '💡',
-      subcategories: {
-        'aspirateur': {
-          name: 'ASPIRATEUR',
-          items: [
-            { name: 'Aspirateur traineau', variants: ['avec sac', 'sans sac'] },
-            { name: 'Aspirateur balai', variants: ['filaire', 'sans fil'] },
-            { name: 'Aspirateur robot', variants: [] },
-            { name: 'Aspirateur eau et poussière', variants: [] }
-          ]
-        },
-        'eclairage': {
-          name: 'ÉCLAIRAGE',
-          items: [
-            { name: 'Lampe', variants: ['de table', 'de chevet', 'de bureau'] },
-            { name: 'Lampadaire', variants: ['sur pied', 'halogène', 'LED'] },
-            { name: 'Luminaire', variants: ['plafonnier', 'suspension', 'applique'] }
-          ]
-        },
-        'chauffe_eau': {
-          name: 'CHAUFFE-EAU / CUMULUS',
-          items: [
-            { name: 'Chauffe-eau électrique', variants: ['50L', '100L', '150L', '200L', '300L'] },
-            { name: 'Cumulus', variants: ['petit', 'moyen', 'grand'] }
-          ]
-        },
-        'chauffage_climatisation': {
-          name: 'CHAUFFAGE/CLIMATISATION/VENTILATION',
-          subcategories: {
-            'chaud': {
-              name: 'CHAUD',
-              items: [
-                { name: 'Convecteur', variants: ['mobile', 'fixe'] },
-                { name: 'Chauffage bain d\'huile', variants: [] },
-                { name: 'Chauffage d\'appoint', variants: ['électrique', 'gaz'] },
-                { name: 'Poêle à pétrole', variants: [] },
-                { name: 'Poêle à bois', variants: ['à bûches', 'à granulés'] }
-              ]
-            },
-            'froid': {
-              name: 'FROID',
-              items: [
-                { name: 'Climatisation', variants: ['mobile', 'murale', 'partie extérieure'] },
-                { name: 'Ventilateur', variants: ['sur pied', 'de table', 'au plafond'] }
-              ]
-            }
-          }
-        }
-      }
-    },
     'electromenager': {
       id: 'electromenager',
       name: 'ÉLECTROMÉNAGER',
@@ -824,27 +758,223 @@ const MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE = {
       subcategories: {
         'electromenager_froid': {
           name: 'ÉLECTROMÉNAGER FROID',
-          items: [
-            { name: 'FRIGO', variants: ['top', '1 porte', 'grand'] },
-            { name: 'CONGELATEUR', variants: ['mini', 'coffre simple', 'double coffre', 'vertical', 'armoire professionnelle simple', 'armoire professionnelle double'] },
-            { name: 'FRIGO CONGELATEUR', variants: ['combiné standard', 'combiné grand', 'américain', 'armoire frigorifique simple', 'armoire frigorifique double'] }
-          ]
+          subcategories: {
+            'frigo': {
+              name: 'FRIGO',
+              items: [
+                { 
+                  name: 'frigo top',
+                  options: []
+                },
+                { 
+                  name: 'frigo 1 porte',
+                  options: []
+                },
+                { 
+                  name: 'grand frigo',
+                  options: []
+                }
+              ]
+            },
+            'congelateur': {
+              name: 'CONGELATEUR',
+              items: [
+                { name: 'mini', options: [] },
+                { name: 'coffre simple', options: [] },
+                { name: 'double coffre', options: [] },
+                { name: 'vertical', options: [] },
+                { name: 'armoire professionnelle simple', options: [] },
+                { name: 'armoire professionnelle double', options: [] }
+              ]
+            },
+            'frigo_combine': {
+              name: 'FRIGO COMBINÉ',
+              items: [
+                { name: 'combiné standard', options: [] },
+                { name: 'combiné grand', options: [] },
+                { name: 'frigo américain', options: [] },
+                { name: 'armoire frigorifique simple', options: [] },
+                { name: 'armoire frigorifique double', options: [] }
+              ]
+            }
+          }
         },
         'electromenager_cuisine': {
           name: 'ÉLECTROMÉNAGER CUISINE',
           items: [
-            { name: 'GAZINIERE', variants: ['4 feux', '5 feux', '6 feux', 'piano de cuisson'] },
-            { name: 'LAVE VAISSELLE', variants: ['compact', 'standard', 'grand format'] },
-            { name: 'FOUR', variants: ['encastré', 'four taille micro-ondes', 'mini four'] },
-            { name: 'MICRO-ONDES', variants: ['léger', 'lourd'] },
-            { name: 'PETIT ÉLECTROMÉNAGER', variants: ['plaques de cuisson', 'camping gaz', 'robot', 'centrale vapeur', 'cafetière', 'mixeur'] }
+            { name: 'GAZINIERE', options: [] },
+            { name: 'LAVE VAISSELLE', options: [] },
+            { 
+              name: 'FOUR', 
+              options: [
+                { type: 'choice', label: 'Au choix', choices: ['encastré', 'four taille micro-ondes', 'mini four'] }
+              ]
+            },
+            { 
+              name: 'MICROONDES', 
+              options: [
+                { type: 'choice', label: 'Au choix', choices: ['léger', 'lourd'] }
+              ]
+            },
+            { 
+              name: 'PETIT ÉLECTROMÉNAGER', 
+              options: [
+                { type: 'choice', label: 'Au choix entre', choices: ['plaques de cuisson', 'camping gaz', 'robot', 'centrale vapeur', 'cafetière', 'mixeur'] }
+              ]
+            }
           ]
         },
         'electromenager_salle_de_bain': {
           name: 'ÉLECTROMÉNAGER SALLE DE BAIN',
           items: [
-            { name: 'LAVE LINGE', variants: ['hublot', 'couvercle'] },
-            { name: 'SECHE LINGE', variants: ['évacuation', 'condensation', 'pompe à chaleur'] }
+            { 
+              name: 'LAVE LINGE', 
+              options: [
+                { type: 'choice', label: 'Au choix', choices: ['hublot', 'couvercle'] }
+              ]
+            },
+            { name: 'SECHE LINGE', options: [] }
+          ]
+        }
+      }
+    },
+    'multimedia_electronique': {
+      id: 'multimedia_electronique',
+      name: 'MULTIMEDIA / ELECTRONIQUE',
+      icon: '📺',
+      items: [
+        { 
+          name: 'Télévision/Ecran',
+          subcategories: {
+            'ecran_plat': {
+              name: 'Ecran plat',
+              items: [
+                { 
+                  name: 'petit',
+                  options: []
+                },
+                { 
+                  name: 'moyen',
+                  options: []
+                },
+                { 
+                  name: 'grand',
+                  options: []
+                }
+              ]
+            },
+            'tv_cathodique': {
+              name: 'TV cathodique',
+              items: [
+                { name: 'TV cathodique', options: [] }
+              ]
+            }
+          }
+        },
+        { 
+          name: 'Hifi/Lecteur', 
+          options: [
+            { type: 'number', label: "nombre d'appareils", choices: ['1', '2', '3', '4', '5', '6+'] },
+            { type: 'choice', label: 'exemple', choices: ['ampli', 'lecteur cd', 'lecteur cassette', 'lecteur vinyles', 'box'] }
+          ]
+        },
+        { name: 'Console de jeux vidéo', options: [] },
+        { 
+          name: 'Enceintes', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petite', 'caisson (nombre)', 'home cinema'] }
+          ]
+        },
+        { 
+          name: 'Ordinateur', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['PC portable', 'PC fixe'] }
+          ]
+        },
+        { 
+          name: 'Imprimante / scanner', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['taille standard', 'grand', 'XXL'] }
+          ]
+        }
+      ]
+    },
+    'electrique': {
+      id: 'electrique',
+      name: 'ÉLECTRIQUE',
+      icon: '💡',
+      items: [
+        { 
+          name: 'Aspirateur', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['filaire', 'non filaire'] }
+          ]
+        },
+        {
+          name: 'Éclairage',
+          subcategories: {
+            'lampe': {
+              name: 'lampe',
+              items: [{ name: 'lampe', options: [] }]
+            },
+            'lampadaire': {
+              name: 'lampadaire',
+              items: [{ name: 'lampadaire', options: [] }]
+            },
+            'luminaire': {
+              name: 'luminaire',
+              items: [{ name: 'luminaire', options: [] }]
+            },
+            'lustre': {
+              name: 'lustre',
+              items: [
+                { 
+                  name: 'lustre', 
+                  options: [
+                    { type: 'checkbox', label: 'option', choices: ['à démonter'], defaultChecked: false }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        { 
+          name: 'Chauffe-eau / cumulus', 
+          options: [
+            { type: 'checkbox', label: 'déjà démonté', choices: ['déjà démonté'], defaultChecked: true, disabled: true }
+          ]
+        }
+      ]
+    },
+    'chauffage_climatisation_ventilation': {
+      id: 'chauffage_climatisation_ventilation',
+      name: 'Chauffage/Climatisation/Ventilation',
+      icon: '🌡️',
+      subcategories: {
+        'chaud': {
+          name: 'CHAUD',
+          items: [
+            { name: 'Convecteur', options: [] },
+            { name: 'Chauffage bain d\'huile', options: [] },
+            { name: 'Chauffage d\'appoint', options: [] },
+            { name: 'Poêle a pétrole', options: [] },
+            { name: 'Poêle a bois', options: [] }
+          ]
+        },
+        'froid': {
+          name: 'FROID',
+          items: [
+            { name: 'Clim mobile', options: [] },
+            { name: 'clim murale', options: [] },
+            { 
+              name: 'partie exterieure clim', 
+              options: [
+                { type: 'choice', label: 'Au choix', choices: ['gros', 'très gros'] }
+              ]
+            },
+            { name: 'Ventilateur sur pied', options: [] },
+            { name: 'ventilateur de table', options: [] },
+            { name: 'ventilateur au plafond', options: [] }
           ]
         }
       }
