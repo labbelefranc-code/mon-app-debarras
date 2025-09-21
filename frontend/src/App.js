@@ -6511,7 +6511,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 Sélectionnez vos objets
               </h3>
               
-              {availableArticles.length > 0 ? (
+              {(availableArticles && Array.isArray(availableArticles) && availableArticles.length > 0) ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {availableArticles.map((article) => (
                     <Card key={article.id} className="hover:shadow-lg transition-all duration-200">
