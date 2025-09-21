@@ -2099,29 +2099,40 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
             { categoryKey: 'accessoires', subcategoryKey: null }
           ]
         },
+        'Sports et loisirs': {
+          'Machines de sport et accessoires': [
+            { categoryKey: 'sports_loisirs', subcategoryKey: 'machines_sport' }
+          ],
+          'Sports nautiques': [
+            { categoryKey: 'sports_loisirs', subcategoryKey: 'sports_nautiques' }
+          ],
+          'Jeux et loisirs': [
+            { categoryKey: 'sports_loisirs', subcategoryKey: 'jeux_loisirs' }
+          ]
+        },
         'Instruments': {
           'Tous les instruments de musique': [
             { categoryKey: 'instruments_musique', subcategoryKey: null }
           ]
         },
         'Vaisselle': {
-          'Vaisselle et objets divers': [
-            { categoryKey: 'vaisselle_objets_divers', subcategoryKey: null }
+          'Vaisselle, vêtements et objets divers': [
+            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
         },
         'Objets divers': {
-          'Objets divers encombrants': [
-            { categoryKey: 'objets_divers_encombrants', subcategoryKey: null }
+          'Vaisselle, vêtements et objets divers': [
+            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
         },
         'Encombrants': {
-          'Objets divers encombrants': [
-            { categoryKey: 'objets_divers_encombrants', subcategoryKey: null }
+          'Vaisselle, vêtements et objets divers': [
+            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
         },
         'Cartons et sacs': {
-          'Vaisselle et objets divers': [
-            { categoryKey: 'vaisselle_objets_divers', subcategoryKey: null }
+          'Vaisselle, vêtements et objets divers': [
+            { categoryKey: 'vaisselle_vetements_objets', subcategoryKey: null }
           ]
         }
       }
