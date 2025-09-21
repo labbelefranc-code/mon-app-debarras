@@ -2181,6 +2181,103 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     return [];
   }
 
+// Fonction spéciale pour récupérer les articles de DIVERS/AUTRES avec gestion des catégories spécifiques
+const getDiversArticles = (categoryKey, subcategoryKey = null) => {
+  const diversStructure = DIVERS_ADMIN_STRUCTURE.categories;
+  
+  if (categoryKey === 'decoration') {
+    const decorationCategory = diversStructure.decoration;
+    if (!decorationCategory || !decorationCategory.items) return [];
+    
+    return decorationCategory.items.map((item, index) => ({
+      id: `divers_decoration_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `divers_decoration_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'AUTRES',
+      subcategory: 'Décoration',
+      subcategory_name: 'Décoration',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (categoryKey === 'accessoires') {
+    const accessoiresCategory = diversStructure.accessoires;
+    if (!accessoiresCategory || !accessoiresCategory.items) return [];
+    
+    return accessoiresCategory.items.map((item, index) => ({
+      id: `divers_accessoires_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `divers_accessoires_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'AUTRES',
+      subcategory: 'Accessoires',
+      subcategory_name: 'Accessoires',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (categoryKey === 'instruments_musique') {
+    const instrumentsCategory = diversStructure.instruments_musique;
+    if (!instrumentsCategory || !instrumentsCategory.items) return [];
+    
+    return instrumentsCategory.items.map((item, index) => ({
+      id: `divers_instruments_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `divers_instruments_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'AUTRES',
+      subcategory: 'Instruments de musique',
+      subcategory_name: 'Instruments de musique',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (categoryKey === 'vaisselle_vetements_objets') {
+    const vaisselleCategory = diversStructure.vaisselle_vetements_objets;
+    if (!vaisselleCategory || !vaisselleCategory.items) return [];
+    
+    return vaisselleCategory.items.map((item, index) => ({
+      id: `divers_vaisselle_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `divers_vaisselle_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'AUTRES',
+      subcategory: 'Vaisselle, vêtements et objets divers',
+      subcategory_name: 'Vaisselle, vêtements et objets divers',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || vaisselleCategory.note || '',
+      requires_dismantling: false
+    }));
+  } else if (categoryKey === 'sports_loisirs' && subcategoryKey) {
+    const sportsCategory = diversStructure.sports_loisirs;
+    if (!sportsCategory || !sportsCategory.subcategories) return [];
+    
+    const subcategory = sportsCategory.subcategories[subcategoryKey];
+    if (!subcategory || !subcategory.items) return [];
+    
+    return subcategory.items.map((item, index) => ({
+      id: `divers_sports_${subcategoryKey}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `divers_sports_${subcategoryKey}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'AUTRES',
+      subcategory: 'Sports et loisirs',
+      subcategory_name: subcategory.name,
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  }
+  
+  return [];
+};
+
   // Récupérer les articles pour la sous-sous-catégorie spécifiée
   const subcategoryData = subcategoryMapping[subcategoryName];
   if (!subcategoryData) return [];
