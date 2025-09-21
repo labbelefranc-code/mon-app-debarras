@@ -5737,28 +5737,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       
                       const subSubcategories = Object.keys(mapping.subcategoryMapping[selectedABCDSubcategory] || {});
                       
-                      // Cas spécial pour les catégories ELEC à accès direct
-                      if (selectedABCDCategory.id === 'C' && 
-                          (selectedABCDSubcategory === 'Électronique/multimédia' || selectedABCDSubcategory === 'Électrique') &&
-                          subSubcategories.length === 0) {
-                        // Afficher directement les articles au lieu des sous-sous-catégories
-                        const articles = getABCDCategoryArticles(selectedABCDCategory.id, selectedABCDSubcategory, null);
-                        
-                        return (
-                          <div className="col-span-full">
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                              {articles.map((article, index) => (
-                                <ArticleCard
-                                  key={`${article.article_id}-${index}`}
-                                  article={article}
-                                  onSelect={addToSelection}
-                                  selectedItems={selectedItems}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      }
                       
                       return subSubcategories.map((subSubcategoryName) => {
                         // Calculer le nombre d'articles pour chaque sous-sous-catégorie
