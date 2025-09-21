@@ -3200,7 +3200,7 @@ const ModernAdminMultimediaElectriqueePage = ({ onGoBack, createArticle, updateA
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
               onClick={() => setSelectedMainCategory(key)}
             >
-              <CardContent className={`p-6 text-center bg-gradient-to-r ${MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE.color} text-white`}>
+              <CardContent className={`p-6 text-center bg-gradient-to-r ${ELEC_ADMIN_STRUCTURE.color} text-white`}>
                 <div className="text-4xl mb-3">{category.icon}</div>
                 <h3 className="text-lg font-bold mb-2">{category.name}</h3>
                 <div className="text-sm opacity-90">
