@@ -844,32 +844,11 @@ const ELEC_ADMIN_STRUCTURE = {
       icon: '📺',
       items: [
         { 
-          name: 'Télévision/Ecran',
-          subcategories: {
-            'ecran_plat': {
-              name: 'Ecran plat',
-              items: [
-                { 
-                  name: 'petit',
-                  options: []
-                },
-                { 
-                  name: 'moyen',
-                  options: []
-                },
-                { 
-                  name: 'grand',
-                  options: []
-                }
-              ]
-            },
-            'tv_cathodique': {
-              name: 'TV cathodique',
-              items: [
-                { name: 'TV cathodique', options: [] }
-              ]
-            }
-          }
+          name: 'Télévision/Écran', 
+          options: [
+            { type: 'choice', label: 'Taille', choices: ['petit', 'moyen', 'grand'] },
+            { type: 'choice', label: 'Type', choices: ['écran plat', 'TV cathodique'] }
+          ]
         },
         { 
           name: 'Hifi/Lecteur', 
