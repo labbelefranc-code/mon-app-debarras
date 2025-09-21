@@ -5791,28 +5791,38 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         {/* Subcategories Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
           {selectedABCDCategory?.subcategories.map((subcategory, index) => (
-            <Card
-              key={index}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2"
-              onClick={() => {
-                setSelectedABCDSubcategory(subcategory);
-                // Special case for Électroménager
-                if (subcategory === 'Électroménager') {
-                  setCurrentStep('electromenager-types');
-                } else {
-                  setCurrentStep('abcd-objects');
-                }
-              }}
-            >
-              <CardContent className={`p-4 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white h-32 flex flex-col justify-center`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                <h3 className="text-sm font-bold mb-2 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
-                  {subcategory}
-                </h3>
-                <div className="text-xs opacity-90 font-medium" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
-                  Voir les objets →
+            <div key={index} className="relative">
+              <Card
+                className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2"
+                onClick={() => {
+                  setSelectedABCDSubcategory(subcategory);
+                  // Special case for Électroménager
+                  if (subcategory === 'Électroménager') {
+                    setCurrentStep('electromenager-types');
+                  } else {
+                    setCurrentStep('abcd-objects');
+                  }
+                }}
+              >
+                <CardContent className={`p-4 text-center bg-gradient-to-r ${selectedABCDCategory.color} text-white h-32 flex flex-col justify-center`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+                  <h3 className="text-sm font-bold mb-2 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.7)'}}>
+                    {subcategory}
+                  </h3>
+                  <div className="text-xs opacity-90 font-medium" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+                    Voir les objets →
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Note spéciale pour Vaisselle, vêtements et objets divers */}
+              {subcategory === 'Vaisselle, vêtements et objets divers' && (
+                <div className="mt-2 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-r-lg">
+                  <p className="text-xs text-yellow-800 font-medium">
+                    ⚠️ <strong>Note importante :</strong> Pour utiliser cette catégorie dans votre devis instantané, il conviendra de préparer les cartons/sacs avant notre passage et s'assurer qu'ils ne dépassent pas 12kg max chacun. Sinon, nous pouvons le faire mais il faudra faire votre demande de devis via des photos et non en instantané.
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </div>
           ))}
         </div>
 
