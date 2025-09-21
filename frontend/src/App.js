@@ -6529,7 +6529,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                 <div key={groupIdx} className="mb-2">
                                   <span className="text-sm font-medium text-gray-600 mb-2 block">{optionGroup.label} :</span>
                                   <div className="flex flex-wrap gap-2">
-                                    {optionGroup.choices.map((choice, choiceIdx) => (
+                                    {(optionGroup.choices && Array.isArray(optionGroup.choices)) ? optionGroup.choices.map((choice, choiceIdx) => (
                                       <button
                                         key={choiceIdx}
                                         className="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 text-sm rounded-full border border-green-300 hover:border-green-400 transition-colors"
