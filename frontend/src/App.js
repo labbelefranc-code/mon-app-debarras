@@ -1937,7 +1937,7 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
         }
       }
     },
-    'D': { // DIVERS
+    'D': { // DIVERS/AUTRES
       structure: DIVERS_ADMIN_STRUCTURE,
       subcategoryMapping: {
         'Décoration': {
@@ -1945,14 +1945,34 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
             { categoryKey: 'decoration', subcategoryKey: null }
           ]
         },
-        'Sport & loisirs': {
-          'Tout sport & loisirs': [
-            { categoryKey: 'sport_loisirs', subcategoryKey: null }
+        'Accessoires': {
+          'Tous les accessoires': [
+            { categoryKey: 'accessoires', subcategoryKey: null }
           ]
         },
-        'Autres objets': {
-          'Tous les autres objets': [
-            { categoryKey: 'autres_objets', subcategoryKey: null }
+        'Instruments': {
+          'Tous les instruments de musique': [
+            { categoryKey: 'instruments_musique', subcategoryKey: null }
+          ]
+        },
+        'Vaisselle': {
+          'Vaisselle et objets divers': [
+            { categoryKey: 'vaisselle_objets_divers', subcategoryKey: null }
+          ]
+        },
+        'Objets divers': {
+          'Objets divers encombrants': [
+            { categoryKey: 'objets_divers_encombrants', subcategoryKey: null }
+          ]
+        },
+        'Encombrants': {
+          'Objets divers encombrants': [
+            { categoryKey: 'objets_divers_encombrants', subcategoryKey: null }
+          ]
+        },
+        'Cartons et sacs': {
+          'Vaisselle et objets divers': [
+            { categoryKey: 'vaisselle_objets_divers', subcategoryKey: null }
           ]
         }
       }
