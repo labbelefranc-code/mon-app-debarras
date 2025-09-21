@@ -5782,6 +5782,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           'Électroménager lavage': '🌊',
                           'Tout multimédia': '📺',
                           'Toute la décoration': '🖼️',
+                          'Tous les accessoires': '🎒',
+                          'Tous les instruments de musique': '🎵',
+                          'Vaisselle et objets divers': '📋',
+                          'Objets divers encombrants': '📦',
                           'Tout sport & loisirs': '⚽',
                           'Tous les autres objets': '📦'
                         };
