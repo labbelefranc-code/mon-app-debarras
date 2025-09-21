@@ -151,17 +151,17 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Updated getABCDCategoryMapping and getABCDCategoryArticles to include ELEC (category C) with proper subcategory mapping and article retrieval logic"
-  - task: "Update all MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE references"
+  - task: "Fix ELEC navigation for direct access categories"
     implemented: true
-    working: "NA"
+    working: true
     file: "App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
+      - working: true
         agent: "main"
-        comment: "Replaced all references to MULTIMEDIA_ELECTRIQUE_ADMIN_STRUCTURE with ELEC_ADMIN_STRUCTURE in category mapping, UI rendering, and admin interface functions"
+        comment: "RÉSOLU : Navigation ELEC corrigée avec succès. Les catégories 'Électronique/multimédia' et 'Électrique' affichent maintenant leurs articles directement après une page intermédiaire. Les articles individuels s'affichent correctement avec leurs options : Télévision/Écran (taille, type), Hifi/Lecteur (nombre, exemples), Console de jeux vidéo, Enceintes (taille), Ordinateur (type), Imprimante/scanner (taille), Aspirateur (filaire/non filaire), Éclairage, Chauffe-eau/cumulus (avec 'déjà démonté' pré-coché)."
 
 metadata:
   created_by: "main_agent"
