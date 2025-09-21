@@ -2278,8 +2278,7 @@ const getDiversArticles = (categoryKey, subcategoryKey = null) => {
   return [];
 };
 
-// Fonction spéciale pour récupérer les articles de JARDIN avec gestion des sous-sous-catégories
-  const subcategoryData = subcategoryMapping[subcategoryName];
+  // Récupérer les articles pour la sous-sous-catégorie spécifiée
   if (!subcategoryData) return [];
 
   const relevantMappings = subcategoryData[subSubcategoryName] || [];
