@@ -1456,6 +1456,150 @@ const JARDIN_ADMIN_STRUCTURE = {
   }
 };
 
+// Fonction spéciale pour récupérer les articles d'ELEC avec gestion des sous-catégories
+const getElecArticles = (subcategory, subSubcategory = null) => {
+  const elecStructure = ELEC_ADMIN_STRUCTURE.categories;
+  
+  if (subcategory === 'Électroménager') {
+    const electromenagerCategory = elecStructure.electromenager;
+    
+    if (subSubcategory === 'Électroménager froid') {
+      const froidSubcategory = electromenagerCategory.subcategories.electromenager_froid;
+      if (!froidSubcategory || !froidSubcategory.subcategories) return [];
+      
+      let allFroidArticles = [];
+      Object.values(froidSubcategory.subcategories).forEach(froidSubSubcat => {
+        if (froidSubSubcat.items) {
+          froidSubSubcat.items.forEach((item, index) => {
+            allFroidArticles.push({
+              id: `elec_froid_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+              article_id: `elec_froid_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+              name: item.name,
+              category: 'ELEC',
+              subcategory: 'Électroménager',
+              subcategory_name: 'Électroménager froid',
+              base_price: 30,
+              materials: item.materials || [],
+              options: item.options || [],
+              note: item.note || '',
+              requires_dismantling: false
+            });
+          });
+        }
+      });
+      return allFroidArticles;
+    } else if (subSubcategory === 'Électroménager cuisine') {
+      const cuisineSubcategory = electromenagerCategory.subcategories.electromenager_cuisine;
+      if (!cuisineSubcategory || !cuisineSubcategory.items) return [];
+      
+      return cuisineSubcategory.items.map((item, index) => ({
+        id: `elec_cuisine_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `elec_cuisine_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'ELEC',
+        subcategory: 'Électroménager',
+        subcategory_name: 'Électroménager cuisine',
+        base_price: 30,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    } else if (subSubcategory === 'Électroménager salle de bain') {
+      const salleDeeBainSubcategory = electromenagerCategory.subcategories.electromenager_salle_de_bain;
+      if (!salleDeeBainSubcategory || !salleDeeBainSubcategory.items) return [];
+      
+      return salleDeeBainSubcategory.items.map((item, index) => ({
+        id: `elec_sdb_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `elec_sdb_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'ELEC',
+        subcategory: 'Électroménager',
+        subcategory_name: 'Électroménager salle de bain',
+        base_price: 30,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  } else if (subcategory === 'Électronique/multimédia') {
+    const multimediaCategory = elecStructure.multimedia_electronique;
+    if (!multimediaCategory || !multimediaCategory.items) return [];
+    
+    return multimediaCategory.items.map((item, index) => ({
+      id: `elec_multimedia_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `elec_multimedia_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'ELEC',
+      subcategory: 'Électronique/multimédia',
+      subcategory_name: 'Électronique/multimédia',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (subcategory === 'Électrique') {
+    const electriqueCategory = elecStructure.electrique;
+    if (!electriqueCategory || !electriqueCategory.items) return [];
+    
+    return electriqueCategory.items.map((item, index) => ({
+      id: `elec_electrique_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      article_id: `elec_electrique_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+      name: item.name,
+      category: 'ELEC',
+      subcategory: 'Électrique',
+      subcategory_name: 'Électrique',
+      base_price: 25,
+      materials: item.materials || [],
+      options: item.options || [],
+      note: item.note || '',
+      requires_dismantling: false
+    }));
+  } else if (subcategory === 'Chauffage/climatisation/ventilation') {
+    const chauffageCategory = elecStructure.chauffage_climatisation_ventilation;
+    
+    if (subSubcategory === 'Chaud') {
+      const chaudSubcategory = chauffageCategory.subcategories.chaud; 
+      if (!chaudSubcategory || !chaudSubcategory.items) return [];
+      
+      return chaudSubcategory.items.map((item, index) => ({
+        id: `elec_chaud_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `elec_chaud_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'ELEC',
+        subcategory: 'Chauffage/climatisation/ventilation',
+        subcategory_name: 'Chaud',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    } else if (subSubcategory === 'Froid') {
+      const froidSubcategory = chauffageCategory.subcategories.froid;
+      if (!froidSubcategory || !froidSubcategory.items) return [];
+      
+      return froidSubcategory.items.map((item, index) => ({
+        id: `elec_froid_clim_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        article_id: `elec_froid_clim_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
+        name: item.name,
+        category: 'ELEC',
+        subcategory: 'Chauffage/climatisation/ventilation',
+        subcategory_name: 'Froid',
+        base_price: 25,
+        materials: item.materials || [],
+        options: item.options || [],
+        note: item.note || '',
+        requires_dismantling: false
+      }));
+    }
+  }
+  
+  return [];
+};
+
 // Fonction spéciale pour récupérer les articles de JARDIN avec gestion des sous-sous-catégories
 const getJardinArticles = (subcategory, subSubcategory = null) => {
   const jardinStructure = JARDIN_ADMIN_STRUCTURE.categories;
