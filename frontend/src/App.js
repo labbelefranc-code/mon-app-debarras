@@ -973,17 +973,68 @@ const DIVERS_ADMIN_STRUCTURE = {
       name: 'DÉCORATION',
       icon: '🖼️',
       items: [
-        { name: 'Miroir', variants: ['petit', 'moyen', 'grand', 'sur pied'] },
-        { name: 'Horloge comtoise', variants: [] },
-        { name: 'Lampadaire/ luminaire / lustre', variants: ['lampadaire', 'luminaire', 'lustre', 'applique'] },
-        { name: 'Plante en pot', variants: ['petit pot', 'moyen pot', 'grand pot', 'jardinière'] },
-        { name: 'Tableau/cadre', variants: ['petit', 'moyen', 'grand', 'encadré', 'toile'] },
-        { name: 'Vase / Jarre', variants: ['petit', 'moyen', 'grand'] },
-        { name: 'Paravent', variants: ['2 panneaux', '3 panneaux', '4 panneaux'] },
-        { name: 'Tapis', variants: ['petit', 'moyen', 'grand', 'tapis de couloir'] },
-        { name: 'Porte manteau /portant', variants: ['sur pied', 'mural', 'portant à vêtements'] },
-        { name: 'Rideaux', variants: ['voilages', 'occultants', 'stores'] },
-        { name: 'Statue/sculpture', variants: ['petite', 'moyenne', 'grande'] }
+        { 
+          name: 'Miroir', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['moyen', 'grand'] }
+          ]
+        },
+        { name: 'Horloge comtoise', options: [] },
+        { 
+          name: 'Lampadaire/ luminaire / lustre', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['lampadaire', 'luminaire', 'lustre'] }
+          ]
+        },
+        { 
+          name: 'Plante en pot', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petite', 'grande'] },
+            { type: 'checkbox', label: 'Option', choices: ['piquant'], defaultChecked: false }
+          ]
+        },
+        { 
+          name: 'Tableau/cadre', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petit', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Vase / Jarre', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petit', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Paravent', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['léger', 'lourd'] }
+          ]
+        },
+        { 
+          name: 'Tapis', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petit', 'moyen', 'grand(2m)'] }
+          ]
+        },
+        { 
+          name: 'Porte manteau /portant / chevalet', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['porte manteau', 'portant', 'chevalet'] }
+          ]
+        },
+        { 
+          name: 'Rideaux', 
+          options: [
+            { type: 'checkbox', label: 'Option', choices: ['à décrocher'], defaultChecked: false }
+          ]
+        },
+        { 
+          name: 'Statue/sculpture', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['léger', 'lourd'] }
+          ]
+        }
       ]
     },
     'accessoires': {
@@ -991,51 +1042,149 @@ const DIVERS_ADMIN_STRUCTURE = {
       name: 'ACCESSOIRES',
       icon: '🎒',
       items: [
-        { name: 'Porte-manteaux', variants: ['sur pied', 'mural'] },
-        { name: 'Valises / malles', variants: ['petite valise', 'grande valise', 'malle', 'set de valises'] },
-        { name: 'Coffre', variants: ['petit', 'moyen', 'grand'] },
-        { name: 'Glacière', variants: ['portable', 'électrique'] },
-        { name: 'Bébé', variants: ['poussette', 'siège auto', 'lit bébé portable', 'chaise haute'] },
-        { name: 'Machines diverses', variants: ['à coudre', 'à écrire', 'à café professionnelle'] },
-        { name: 'Machines de sport et accessoires', variants: ['tapis de course', 'banc', 'vélo elliptique', 'rameur', 'grosses machines', 'tatami', 'poids et haltères'] }
+        { 
+          name: 'Porte-manteaux', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petit', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Valises ou malles', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['valises', 'malles'] },
+            { type: 'choice', label: 'Si malles, matériau', choices: ['plastique', 'bois', 'fer'], dependsOn: 'malles' }
+          ]
+        },
+        { 
+          name: 'Coffre', 
+          options: [
+            { type: 'choice', label: 'Matériau', choices: ['plastique', 'bois', 'fer'] },
+            { type: 'choice', label: 'Taille', choices: ['petit', 'moyen', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Glacière', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petite', 'grande'] }
+          ]
+        },
+        { 
+          name: 'Bébé', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['poussette', 'siège auto'] }
+          ]
+        },
+        { 
+          name: 'Machines', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['à coudre', 'à écrire'] }
+          ]
+        }
       ]
     },
-    'objets_divers_encombrants': {
-      id: 'objets_divers_encombrants',
-      name: 'OBJETS DIVERS ENCOMBRANTS',
-      icon: '📦',
-      items: [
-        { name: 'Coffres-forts', variants: ['petit', 'moyen', 'grand'] },
-        { name: 'Pianos', variants: ['droit', 'à queue'] },
-        { name: 'Instruments de musique volumineux', variants: ['batterie', 'guitare avec ampli', 'contrebasse', 'harpe'] },
-        { name: 'Aquariums', variants: ['petit', 'moyen', 'grand', 'avec meuble'] },
-        { name: 'Cages pour animaux', variants: ['petite', 'moyenne', 'grande', 'volière'] },
-        { name: 'Objets de sport', variants: ['tapis de course', 'vélo d\'appartement', 'rameur', 'banc de musculation'] },
-        { name: 'Jeux de loisirs volumineux', variants: ['baby-foot', 'table de ping-pong', 'billard', 'air hockey'] }
-      ]
+    'sports_loisirs': {
+      id: 'sports_loisirs',
+      name: 'SPORTS ET LOISIRS',
+      icon: '⚽',
+      subcategories: {
+        'machines_sport': {
+          name: 'MACHINES DE SPORT ET ACCESSOIRES',
+          items: [
+            { name: 'Tapis de course', options: [] },
+            { name: 'Banc', options: [] },
+            { name: 'Vélo elliptique', options: [] },
+            { name: 'Vélo d\'appartement', options: [] },
+            { name: 'Rameur', options: [] },
+            { name: 'Grosses machines de sport', options: [] },
+            { name: 'Tatami', options: [] },
+            { 
+              name: 'Poids et haltères', 
+              options: [
+                { type: 'text', label: 'Nombre de kilos', placeholder: 'Indiquer le poids total...' }
+              ]
+            }
+          ]
+        },
+        'sports_nautiques': {
+          name: 'SPORTS NAUTIQUES',
+          items: [
+            { name: 'Paddle', options: [] },
+            { name: 'Canoe / Kayak', options: [] },
+            { 
+              name: 'Planche à voile', 
+              options: [
+                { type: 'checkbox', label: 'Option', choices: ['avec voile'], defaultChecked: false }
+              ]
+            }
+          ]
+        },
+        'jeux_loisirs': {
+          name: 'JEUX ET LOISIRS',
+          items: [
+            { name: 'Table de ping pong', options: [] },
+            { name: 'Billard', options: [] },
+            { name: 'Baby foot', options: [] }
+          ]
+        }
+      }
     },
     'instruments_musique': {
       id: 'instruments_musique',
       name: 'INSTRUMENTS DE MUSIQUE',
       icon: '🎵',
       items: [
-        { name: 'Guitare/violon/harpe', variants: ['guitare acoustique', 'guitare électrique', 'violon', 'harpe'] },
-        { name: 'Tambour/Batterie', variants: ['djembé', 'batterie complète', 'batterie électronique'], note: 'Préciser le nombre de caissons pour batterie' },
-        { name: 'Pianos', variants: ['portatif', 'petit électrique', 'piano droit', 'piano à queue'] },
-        { name: 'Cajon', variants: [] }
+        { name: 'Guitare/violon/harpe', options: [] },
+        { 
+          name: 'Tambour/Batterie', 
+          options: [
+            { type: 'text', label: 'Nombre de caissons', placeholder: 'Indiquer le nombre...' }
+          ]
+        },
+        { 
+          name: 'Pianos', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['portatif', 'petit électrique', 'gros électrique', 'piano droit', 'piano à queue'] }
+          ]
+        },
+        { name: 'Cajon', options: [] }
       ]
     },
-    'vaisselle_objets_divers': {
-      id: 'vaisselle_objets_divers',
-      name: 'VAISSELLE ET OBJETS DIVERS',
+    'vaisselle_vetements_objets': {
+      id: 'vaisselle_vetements_objets',
+      name: 'VAISSELLE, VÊTEMENTS ET OBJETS DIVERS',
       icon: '📋',
+      note: 'Pour utiliser cette catégorie dans votre devis instantané, il conviendra de préparer les cartons/sacs avant notre passage et s\'assurer qu\'ils ne dépassent pas 12kg max chacun. Sinon, nous pouvons le faire mais il faudra faire votre demande de devis via des photos et non en instantané',
       items: [
-        { name: 'Carton/sac d\'objets divers', variants: ['petit carton', 'moyen carton', 'grand carton', 'sac'] },
-        { name: 'Carton de vaisselle', variants: ['service complet', 'assiettes seulement', 'verres seulement'] },
-        { name: 'Cartons/sac outils divers et bricolage', variants: ['boîte à outils', 'carton d\'outils', 'outillage professionnel'] },
-        { name: 'Carton/sac de produits ménagers', variants: ['produits d\'entretien', 'lessive', 'petit électroménager'] },
-        { name: 'Carton/sac de vêtements', variants: ['vêtements homme', 'vêtements femme', 'vêtements enfant', 'chaussures'] },
-        { name: 'Couette/couverture', variants: ['couette simple', 'couette double', 'couverture', 'plaid'] }
+        { name: 'Carton / sac cabas d\'objets divers', options: [] },
+        { name: 'Carton de vaisselle', options: [] },
+        { name: 'Cartons/sac cabas outils divers et bricolage', options: [] },
+        { name: 'Carton/sac cabas de produits ménagers', options: [] },
+        { name: 'Carton/sac de vêtements', options: [] },
+        { 
+          name: 'Couette/couverture', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['couette', 'couverture'] }
+          ]
+        },
+        { 
+          name: 'Coffres-forts', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petit', 'moyen', 'grand'] }
+          ]
+        },
+        { 
+          name: 'Aquariums', 
+          options: [
+            { type: 'checkbox', label: 'Option', choices: ['rempli d\'eau sans poisson'], defaultChecked: false }
+          ]
+        },
+        { name: 'Litière', options: [] },
+        { 
+          name: 'Cages pour animaux', 
+          options: [
+            { type: 'choice', label: 'Au choix', choices: ['petite', 'moyenne', 'grande'] }
+          ]
+        }
       ]
     }
   }
