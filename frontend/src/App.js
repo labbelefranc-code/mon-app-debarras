@@ -5745,7 +5745,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                           'Électroménager': '🏠',
                           'Électronique/multimédia': '📺',
                           'Électrique': '💡',
-                          'Chauffage/climatisation/ventilation': '🌡️'
+                          'Chauffage/climatisation/ventilation': '🌡️',
+                          'Décoration': '🖼️',
+                          'Accessoires': '🎒',
+                          'Sports et loisirs': '⚽',
+                          'Instruments de musique': '🎵',
+                          'Vaisselle, vêtements et objets divers': '📋'
                         };
                         
                         return (
