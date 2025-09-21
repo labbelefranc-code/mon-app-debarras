@@ -2227,8 +2227,9 @@ const expandItemVariants = (item, categoryId, categoryName, subcategoryName) => 
   const articles = [];
   const basePrice = 25; // Prix de base
   
+  // Gestion de l'ancien format avec variants ou du nouveau format avec options directes
   if (item.variants && item.variants.length > 0) {
-    // Créer un article distinct pour chaque variante
+    // Ancien format : créer un article distinct pour chaque variante
     item.variants.forEach(variant => {
       articles.push({
         id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${variant.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
@@ -2246,12 +2247,14 @@ const expandItemVariants = (item, categoryId, categoryName, subcategoryName) => 
       });
     });
   } else {
-    // Créer un article simple sans variante
+    // Nouveau format : créer un article simple avec options
     articles.push({
       id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+      article_id: `${categoryId}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
       name: item.name,
       base_name: item.name,
       variant: null,
+      category: categoryName,
       category_id: categoryId,
       category_name: categoryName,
       subcategory_name: subcategoryName,
