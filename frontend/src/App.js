@@ -2279,6 +2279,7 @@ const getDiversArticles = (categoryKey, subcategoryKey = null) => {
 };
 
   // Récupérer les articles pour la sous-sous-catégorie spécifiée
+  const subcategoryData = subcategoryMapping[subcategoryName];
   if (!subcategoryData) return [];
 
   const relevantMappings = subcategoryData[subSubcategoryName] || [];
