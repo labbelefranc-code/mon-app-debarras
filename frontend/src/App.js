@@ -1997,6 +1997,13 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     if (subcategoryName === 'Électronique/multimédia' || subcategoryName === 'Électrique') {
       return getElecArticles(subcategoryName, null);
     }
+    // Gestion des sous-sous-catégories spéciales pour accès direct
+    if (subSubcategoryName === 'Articles électronique/multimédia') {
+      return getElecArticles('Électronique/multimédia', null);
+    }
+    if (subSubcategoryName === 'Articles électrique') {
+      return getElecArticles('Électrique', null);
+    }
     return getElecArticles(subcategoryName, subSubcategoryName);
   }
 
