@@ -2058,10 +2058,16 @@ const getDiversArticles = (categoryKey, subcategoryKey = null) => {
     }));
   } else if (categoryKey === 'sports_loisirs' && subcategoryKey) {
     const sportsCategory = diversStructure.sports_loisirs;
-    if (!sportsCategory || !sportsCategory.subcategories) return [];
+    if (!sportsCategory || !sportsCategory.subcategories) {
+      console.error('Sports category or subcategories not found');
+      return [];
+    }
     
     const subcategory = sportsCategory.subcategories[subcategoryKey];
-    if (!subcategory || !subcategory.items) return [];
+    if (!subcategory || !subcategory.items) {
+      console.error(`Subcategory ${subcategoryKey} or its items not found`);
+      return [];
+    }
     
     return subcategory.items.map((item, index) => ({
       id: `divers_sports_${subcategoryKey}_${item.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${index}`,
