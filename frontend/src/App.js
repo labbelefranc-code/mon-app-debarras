@@ -726,20 +726,16 @@ const ABCD_CATEGORIES = {
     items: [
       'Décoration',
       'Accessoires',
-      'Instruments',
-      'Vaisselle',
-      'Objets divers',
-      'Encombrants',
-      'Cartons et sacs'
+      'Sports et loisirs',
+      'Instruments de musique',
+      'Vaisselle, vêtements et objets divers'
     ],
     subcategories: [
       'Décoration',
       'Accessoires',
-      'Instruments',
-      'Vaisselle',
-      'Objets divers',
-      'Encombrants',
-      'Cartons et sacs'
+      'Sports et loisirs',
+      'Instruments de musique',
+      'Vaisselle, vêtements et objets divers'
     ]
   }
 };
