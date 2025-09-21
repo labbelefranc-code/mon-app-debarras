@@ -2148,6 +2148,22 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     return getElecArticles(subcategoryName, subSubcategoryName);
   }
 
+  // Cas spécial pour AUTRES (D) - accès direct pour certaines catégories
+  if (abcdCategoryId === 'D' && subSubcategoryName) {
+    if (subSubcategoryName === 'Articles décoration') {
+      return getDiversArticles('decoration', null);
+    }
+    if (subSubcategoryName === 'Articles accessoires') {
+      return getDiversArticles('accessoires', null);
+    }
+    if (subSubcategoryName === 'Articles instruments de musique') {
+      return getDiversArticles('instruments_musique', null);
+    }
+    if (subSubcategoryName === 'Articles vaisselle, vêtements et objets divers') {
+      return getDiversArticles('vaisselle_vetements_objets', null);
+    }
+  }
+
   const { structure, subcategoryMapping } = mapping;
   let allArticles = [];
 
