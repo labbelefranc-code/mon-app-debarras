@@ -1990,6 +1990,11 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     return getJardinArticles(subcategoryName, subSubcategoryName);
   }
 
+  // Cas spécial pour ELEC
+  if (abcdCategoryId === 'C' && subcategoryName) {
+    return getElecArticles(subcategoryName, subSubcategoryName);
+  }
+
   const { structure, subcategoryMapping } = mapping;
   let allArticles = [];
 
