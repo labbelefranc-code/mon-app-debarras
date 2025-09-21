@@ -6415,11 +6415,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
         selectedABCDSubSubcategory
       );
 
-    // Debug logging
-    console.log('DEBUG availableArticles:', availableArticles);
-    console.log('DEBUG type:', typeof availableArticles);
-    console.log('DEBUG isArray:', Array.isArray(availableArticles));
-
     return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
