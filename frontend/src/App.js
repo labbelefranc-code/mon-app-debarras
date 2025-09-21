@@ -6134,8 +6134,15 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     // Si on est dans les articles de literie, retourner aux types de literie
                     setSelectedABCDSubSubSubcategory(null);
                   } else {
-                    // Sinon retourner aux types d'objets
-                    setSelectedABCDSubSubcategory(null);
+                    // Pour les catégories ELEC à accès direct, retourner directement aux sous-catégories principales
+                    if (selectedABCDCategory?.id === 'C' && 
+                        (selectedABCDSubcategory === 'Électronique/multimédia' || selectedABCDSubcategory === 'Électrique')) {
+                      setSelectedABCDSubcategory(null);
+                      setSelectedABCDSubSubcategory(null);
+                    } else {
+                      // Sinon retourner aux types d'objets
+                      setSelectedABCDSubSubcategory(null);
+                    }
                   }
                 }}
                 variant="outline"
