@@ -1938,6 +1938,16 @@ const getABCDCategoryMapping = (abcdCategoryId) => {
             { categoryKey: 'electromenager', subcategoryKey: 'electromenager_salle_de_bain' }
           ]
         },
+        'Électronique/multimédia': {
+          'Articles électronique/multimédia': [
+            { categoryKey: 'multimedia_electronique', subcategoryKey: null, directAccess: true }
+          ]
+        },
+        'Électrique': {
+          'Articles électrique': [
+            { categoryKey: 'electrique', subcategoryKey: null, directAccess: true }
+          ]
+        },
         'Chauffage/climatisation/ventilation': {
           'Chaud': [
             { categoryKey: 'chauffage_climatisation_ventilation', subcategoryKey: 'chaud' }
