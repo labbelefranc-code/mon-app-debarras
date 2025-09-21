@@ -2009,8 +2009,12 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
     return [];
   }
 
-  // Si aucune sous-sous-catégorie spécifiée, retourner vide (on veut forcer la navigation à 3 niveaux)
+  // Si aucune sous-sous-catégorie spécifiée, retourner vide sauf pour ELEC (cas spéciaux "Électronique/multimédia" et "Électrique")
   if (!subSubcategoryName) {
+    // Exception pour ELEC : certaines catégories peuvent être accédées directement
+    if (abcdCategoryId === 'C' && (subcategoryName === 'Électronique/multimédia' || subcategoryName === 'Électrique')) {
+      return getElecArticles(subcategoryName, null);
+    }
     return [];
   }
 
