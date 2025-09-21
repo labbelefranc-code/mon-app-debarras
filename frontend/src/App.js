@@ -6555,7 +6555,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                       >
                                         {choice}
                                       </button>
-                                    ))}
+                                    )) : null}
                                   </div>
                                 </div>
                               ))}
