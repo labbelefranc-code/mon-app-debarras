@@ -5606,11 +5606,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                   if (subcategoryName === 'Bricolage / matériaux / énergie') {
                                     setSelectedABCDSubSubcategory('Tout bricolage & matériaux');
                                   }
-                                  // Pour les catégories ELEC à accès direct, ne pas définir de sous-sous-catégorie
-                                  // car getElecArticles gère déjà l'accès direct pour ces catégories
-                                  if (subcategoryName === 'Électronique/multimédia' || subcategoryName === 'Électrique') {
-                                    // Ces catégories afficheront directement leurs articles
-                                    // grâce à la logique dans getElecArticles et getABCDCategoryArticles
+                                  // Pour les catégories ELEC à accès direct, aller directement aux articles
+                                  if (subcategoryName === 'Électronique/multimédia') {
+                                    setSelectedABCDSubSubcategory('Articles électronique/multimédia');
+                                  }
+                                  if (subcategoryName === 'Électrique') {
+                                    setSelectedABCDSubSubcategory('Articles électrique');
                                   }
                                 }}>
                             <CardContent className={`p-6 bg-gradient-to-r ${selectedABCDCategory.color} text-white`}>
