@@ -1994,7 +1994,7 @@ const getABCDCategoryArticles = (abcdCategoryId, subcategoryName = null, subSubc
 
   // Cas spécial pour ELEC
   if (abcdCategoryId === 'C' && subcategoryName) {
-    // Pour "Électronique/multimédia" et "Électrique", pas besoin de subSubcategoryName
+    // Pour "Électronique/multimédia" et "Électrique", accès direct aux articles
     if (subcategoryName === 'Électronique/multimédia' || subcategoryName === 'Électrique') {
       return getElecArticles(subcategoryName, null);
     }
