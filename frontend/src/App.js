@@ -6438,7 +6438,13 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 {selectedABCDSubSubSubcategory ? 'Retour aux types de literie' : 
                  (selectedABCDCategory?.id === 'C' && 
                   (selectedABCDSubcategory === 'Électronique/multimédia' || selectedABCDSubcategory === 'Électrique')) ? 
-                  'Retour aux sous-catégories' : 'Retour aux types d\'objets'}
+                  'Retour aux sous-catégories' :
+                  (selectedABCDCategory?.id === 'D' && 
+                   (selectedABCDSubcategory === 'Décoration' || 
+                    selectedABCDSubcategory === 'Accessoires' || 
+                    selectedABCDSubcategory === 'Instruments de musique' || 
+                    selectedABCDSubcategory === 'Vaisselle, vêtements et objets divers')) ? 
+                   'Retour aux sous-catégories' : 'Retour aux types d\'objets'}
               </Button>
             </div>
 
