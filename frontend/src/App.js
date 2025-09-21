@@ -1149,7 +1149,6 @@ const DIVERS_ADMIN_STRUCTURE = {
       id: 'vaisselle_vetements_objets',
       name: 'VAISSELLE, VÊTEMENTS ET OBJETS DIVERS',
       icon: '📋',
-      note: 'Pour utiliser cette catégorie dans votre devis instantané, il conviendra de préparer les cartons/sacs avant notre passage et s\'assurer qu\'ils ne dépassent pas 12kg max chacun. Sinon, nous pouvons le faire mais il faudra faire votre demande de devis via des photos et non en instantané',
       items: [
         { name: 'Carton / sac cabas d\'objets divers', options: [] },
         { name: 'Carton de vaisselle', options: [] },
