@@ -5623,11 +5623,11 @@ function App() {
           
           <Button
             onClick={() => setCurrentStep('abcd-categories')}
-            className="w-full h-20 text-2xl font-bold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
+            className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
           >
             <div className="text-center leading-tight">
               <div>Un ou plusieurs articles</div>
-              <div className="text-base font-medium opacity-90">(devis instantané & RDV en ligne)</div>
+              <div className="text-sm font-bold opacity-90">(devis instantané & RDV en ligne)</div>
             </div>
           </Button>
         </div>
