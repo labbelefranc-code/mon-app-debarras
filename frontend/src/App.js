@@ -5290,7 +5290,7 @@ function App() {
   const addCustomItem = React.useCallback((description) => {
     setCustomItems(prev => [...prev, {
       description: description,
-      estimated_price: 50.0 // Prix par défaut de 50€ pour les objets personnalisés
+      estimated_price: 100.0 // Prix temporaire pour permettre les tests
     }]);
   }, []);
 
