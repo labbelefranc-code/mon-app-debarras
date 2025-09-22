@@ -6219,7 +6219,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                     Choisissez une sous-catégorie
                   </h3>
                   
-                  {/* Note importante pour Vaisselle, vêtements et objets divers */}
+                  {/* Note importante pour Vaisselle, vêtements et objets divers - UNIQUEMENT pour la section AUTRES (violette) */}
+                  {selectedABCDCategory?.id === 'autres' && (
                   <div className="mb-6 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg shadow-md">
                     <div className="flex items-start space-x-2">
                       <div className="text-yellow-600 text-xl font-bold">⚠️</div>
@@ -6233,6 +6234,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       </div>
                     </div>
                   </div>
+                  )}
                   
                   <div className="space-y-4">
                     {(() => {
