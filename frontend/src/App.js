@@ -4827,6 +4827,8 @@ const GreenQuoteDisplayPage = ({
   calculateTotal, 
   selectedCity,
   setSelectedCity,
+  selectedTimeSlots,
+  setSelectedTimeSlots,
   showCustomCalendar,
   setShowCustomCalendar,
   onGoBack, 
@@ -4868,6 +4870,22 @@ const GreenQuoteDisplayPage = ({
       const endHour = parseInt(daySchedule.end.split(':')[0]);
       return hour >= startHour && hour < endHour;
     }
+  };
+  
+  const isSlotSelected = (dayName, hour, date) => {
+    const slotKey = `${dayName}-${hour}-${date.getDate()}/${date.getMonth() + 1}`;
+    return selectedTimeSlots.includes(slotKey);
+  };
+  
+  const toggleTimeSlot = (dayName, hour, date) => {
+    const slotKey = `${dayName}-${hour}-${date.getDate()}/${date.getMonth() + 1}`;
+    setSelectedTimeSlots(prev => {
+      if (prev.includes(slotKey)) {
+        return prev.filter(slot => slot !== slotKey);
+      } else {
+        return [...prev, slotKey];
+      }
+    });
   };
   
   const requiredHours = Math.ceil(total / 100); // 1h par tranche de 100€
