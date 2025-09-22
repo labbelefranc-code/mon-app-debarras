@@ -7438,13 +7438,17 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           onLoadAvailableSlots={loadAvailableSlots}
         />;
       case 'quote-display':
-        return <QuoteDisplayPage 
+        return <GreenQuoteDisplayPage 
           quoteForm={quoteForm}
           selectedItems={selectedItems}
           customItems={customItems}
           calculateTotal={calculateTotal}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
+          showCustomCalendar={showCustomCalendar}
+          setShowCustomCalendar={setShowCustomCalendar}
           onGoBack={() => setCurrentStep('quote-form')}
-          onAcceptQuote={() => alert('Calendrier de rendez-vous à venir !')}
+          onAcceptQuote={() => alert('Rendez-vous confirmé !')}
         />;
       case 'photo-quote':
         return <PhotoQuotePage 
