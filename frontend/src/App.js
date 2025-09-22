@@ -6500,6 +6500,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                   </CardContent>
                 </Card>
               </div>
+              )}
             </div>
           </div>
         </div>
