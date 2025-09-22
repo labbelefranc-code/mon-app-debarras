@@ -5070,25 +5070,6 @@ const GreenQuoteDisplayPage = ({
                 )}
               </div>
             )}
-            
-            {/* Récapitulatif des articles */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4">📋 Récapitulatif</h2>
-              <div className="space-y-2">
-                {selectedItems.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center py-2 border-b">
-                    <span>{item.name}</span>
-                    <span className="font-semibold">{item.base_price}€</span>
-                  </div>
-                ))}
-                {customItems.map((item, index) => (
-                  <div key={`custom-${index}`} className="flex justify-between items-center py-2 border-b">
-                    <span>{item.description}</span>
-                    <span className="font-semibold">{item.estimatedPrice}€</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </>
         )}
       </div>
