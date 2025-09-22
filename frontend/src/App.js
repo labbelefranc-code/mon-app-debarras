@@ -5036,6 +5036,43 @@ const GreenQuoteDisplayPage = ({
               </div>
             )}
             
+            {/* Affichage des créneaux sélectionnés */}
+            {selectedTimeSlots.length > 0 && (
+              <div className="mt-6 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                <h3 className="text-lg font-bold text-blue-800 mb-2">
+                  📅 Créneaux sélectionnés ({selectedTimeSlots.length}h)
+                </h3>
+                <div className="space-y-1 mb-4">
+                  {selectedTimeSlots.map((slot, index) => (
+                    <div key={index} className="text-sm text-blue-700">
+                      • {slot.replace('-', ' à ').replace('-', ' le ')}
+                    </div>
+                  ))}
+                </div>
+                {selectedTimeSlots.length >= requiredHours ? (
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => alert('Rendez-vous confirmé pour les créneaux sélectionnés!')}
+                      className="bg-green-500 hover:bg-green-600 text-white"
+                    >
+                      ✅ Confirmer le rendez-vous ({selectedTimeSlots.length}h)
+                    </Button>
+                    <Button 
+                      onClick={() => setSelectedTimeSlots([])}
+                      variant="outline"
+                      className="text-blue-600"
+                    >
+                      🗑️ Effacer la sélection
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-orange-600">
+                    ⚠️ Sélectionnez encore {requiredHours - selectedTimeSlots.length}h pour compléter votre réservation
+                  </p>
+                )}
+              </div>
+            )}
+            
             {/* Récapitulatif des articles */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-bold mb-4">📋 Récapitulatif</h2>
