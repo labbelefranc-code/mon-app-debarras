@@ -4849,7 +4849,7 @@ const GreenQuoteDisplayPage = ({
   }
   
   const getZoneForCity = (city) => CITY_ZONES[city] || 1;
-  const zone = selectedCity ? getZoneForCity(selectedCity) : 1;
+  const zone = quoteForm?.city ? getZoneForCity(quoteForm.city) : 1;
   
   const isSlotAvailable = (dayName, hour) => {
     const schedule = ZONE_SCHEDULES[zone];
