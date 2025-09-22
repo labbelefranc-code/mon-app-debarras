@@ -7035,7 +7035,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             <CustomItemInput onAddCustomItem={addCustomItem} />
           </div>
 
-          {/* Right side - Selection Summary */}
+          {/* Right side - Selection Summary - RETIRÉ : remplacé par le panier fixe */}
+          {false && (
           <div className="lg:col-span-1">
             <Card className="sticky top-8">
               <CardHeader>
