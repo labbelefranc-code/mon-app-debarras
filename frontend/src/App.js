@@ -4819,6 +4819,226 @@ const ModernAdminJardinPage = ({ onGoBack, createArticle, updateArticle, deleteA
   );
 };
 
+// Nouvelle page de devis verte avec calendrier intégré
+const GreenQuoteDisplayPage = ({ 
+  quoteForm, 
+  selectedItems, 
+  customItems, 
+  calculateTotal, 
+  selectedCity,
+  setSelectedCity,
+  showCustomCalendar,
+  setShowCustomCalendar,
+  onGoBack, 
+  onAcceptQuote 
+}) => {
+  const total = calculateTotal();
+  const currentDate = new Date();
+  const currentWeek = [];
+  
+  // Générer la semaine courante
+  const startOfWeek = new Date(currentDate);
+  startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Lundi
+  
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(startOfWeek);
+    date.setDate(startOfWeek.getDate() + i);
+    currentWeek.push(date);
+  }
+  
+  const getZoneForCity = (city) => CITY_ZONES[city] || 1;
+  const zone = selectedCity ? getZoneForCity(selectedCity) : 1;
+  
+  const isSlotAvailable = (dayName, hour) => {
+    const schedule = ZONE_SCHEDULES[zone];
+    const daySchedule = schedule[dayName.toLowerCase()];
+    
+    if (!daySchedule) return false;
+    
+    if (Array.isArray(daySchedule)) {
+      // Zone 3 avec créneaux multiples
+      return daySchedule.some(slot => {
+        const startHour = parseInt(slot.start.split(':')[0]);
+        const endHour = parseInt(slot.end.split(':')[0]);
+        return hour >= startHour && hour < endHour;
+      });
+    } else {
+      // Zone 1 et 2 avec créneau unique
+      const startHour = parseInt(daySchedule.start.split(':')[0]);
+      const endHour = parseInt(daySchedule.end.split(':')[0]);
+      return hour >= startHour && hour < endHour;
+    }
+  };
+  
+  const requiredHours = Math.ceil(total / 100); // 1h par tranche de 100€
+  
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <Button
+          onClick={onGoBack}
+          variant="outline"
+          className="mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour
+        </Button>
+        
+        {/* Section Devis Verte */}
+        <div className="bg-gradient-to-r from-green-400 to-green-600 text-white p-8 rounded-lg shadow-lg mb-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold mb-2">✅ Votre Devis</h1>
+            <div className="text-5xl font-bold mb-2">{total}€ TTC</div>
+            <p className="text-green-100 text-lg">
+              Prix tout compris - Intervention garantie
+            </p>
+            <div className="mt-4 bg-white/20 rounded-lg p-4">
+              <p className="text-sm">
+                🚚 Déplacement inclus • 🔧 Main d'œuvre incluse • ♻️ Évacuation incluse
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Sélection de ville obligatoire */}
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+          <h2 className="text-xl font-bold mb-4">📍 Sélectionnez votre ville</h2>
+          <select 
+            value={selectedCity} 
+            onChange={(e) => setSelectedCity(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg text-lg"
+            required
+          >
+            <option value="">Choisissez votre ville...</option>
+            {INTERVENTION_CITIES.map(city => (
+              <option key={city} value={city}>{city}</option>
+            ))}
+          </select>
+          {selectedCity && (
+            <p className="mt-2 text-sm text-gray-600">
+              Zone {getZoneForCity(selectedCity)} - Créneaux spécialisés disponibles
+            </p>
+          )}
+        </div>
+        
+        {selectedCity && (
+          <>
+            {/* Calendrier intégré */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+              <h2 className="text-xl font-bold mb-4">📅 Choisissez votre créneau</h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Durée nécessaire : {requiredHours}h ({requiredHours}h par tranche de 100€)
+              </p>
+              
+              <div className="grid grid-cols-7 gap-2 mb-4">
+                {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((day, index) => (
+                  <div key={day} className="text-center font-semibold p-2">
+                    {day}
+                    <div className="text-xs text-gray-500">
+                      {currentWeek[index]?.getDate()}/{currentWeek[index]?.getMonth() + 1}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="grid grid-cols-7 gap-2">
+                {currentWeek.map((date, dayIndex) => {
+                  const dayName = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][date.getDay()];
+                  const isWorkingDay = ['lundi', 'mardi', 'mercredi'].includes(dayName);
+                  
+                  return (
+                    <div key={dayIndex} className="space-y-1">
+                      {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map(hour => {
+                        const isAvailable = isWorkingDay && isSlotAvailable(dayName, hour);
+                        return (
+                          <button
+                            key={hour}
+                            className={`w-full p-1 text-xs rounded ${
+                              isAvailable 
+                                ? 'bg-green-100 hover:bg-green-200 text-green-800 border border-green-300' 
+                                : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'
+                            }`}
+                            disabled={!isAvailable}
+                            onClick={() => isAvailable && alert(`Créneau sélectionné: ${hour}h`)}
+                          >
+                            {hour}h
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            {/* Option "aucun créneau ne me convient" */}
+            <div className="bg-orange-50 border-2 border-orange-200 p-6 rounded-lg mb-6">
+              <h3 className="text-lg font-bold text-orange-800 mb-2">
+                🕐 Aucun créneau ne me convient
+              </h3>
+              <p className="text-sm text-orange-700 mb-4">
+                Sélectionnez vos propres créneaux avec aménagement de planning
+              </p>
+              <div className="space-y-2 text-sm text-orange-600 mb-4">
+                <p>• Supplément de +30% (hors 3 prochains jours)</p>
+                <p>• Supplément de +50% (dans les 3 prochains jours)</p>
+                <p>• {requiredHours}h nécessaires (1h par tranche de 100€)</p>
+                <p>• Validation administrative requise</p>
+              </div>
+              <Button 
+                onClick={() => setShowCustomCalendar(true)}
+                className="bg-orange-500 hover:bg-orange-600"
+              >
+                Choisir mes créneaux personnalisés
+              </Button>
+            </div>
+            
+            {/* Calendrier personnalisé */}
+            {showCustomCalendar && (
+              <div className="bg-red-50 border-2 border-red-200 p-6 rounded-lg mb-6">
+                <h3 className="text-lg font-bold text-red-800 mb-4">
+                  📋 Calendrier personnalisé
+                </h3>
+                <p className="text-sm text-red-700 mb-4">
+                  Coût total : {total}€ + {Math.floor(Date.now() / 86400000) % 3 === 0 ? '50%' : '30%'} = {total + (total * (Math.floor(Date.now() / 86400000) % 3 === 0 ? 0.5 : 0.3))}€ TTC
+                </p>
+                <div className="space-y-4">
+                  <p className="text-sm">Fonctionnalité en cours de développement...</p>
+                  <Button 
+                    onClick={() => setShowCustomCalendar(false)}
+                    variant="outline"
+                  >
+                    Annuler
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {/* Récapitulatif des articles */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold mb-4">📋 Récapitulatif</h2>
+              <div className="space-y-2">
+                {selectedItems.map((item, index) => (
+                  <div key={index} className="flex justify-between items-center py-2 border-b">
+                    <span>{item.name}</span>
+                    <span className="font-semibold">{item.base_price}€</span>
+                  </div>
+                ))}
+                {customItems.map((item, index) => (
+                  <div key={`custom-${index}`} className="flex justify-between items-center py-2 border-b">
+                    <span>{item.description}</span>
+                    <span className="font-semibold">{item.estimatedPrice}€</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // AdminLoginPage component - moved outside App to prevent re-creation on re-renders
 const AdminLoginPage = ({ adminAuth, onUsernameChange, onPasswordChange, onLogin, onGoHome }) => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
