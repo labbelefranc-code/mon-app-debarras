@@ -6088,16 +6088,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Retour aux catégories
           </Button>
-          
-          {(selectedItems.length > 0 || customItems.length > 0) && (
-            <Button
-              onClick={() => setCurrentStep('quote-form')}
-              className="bg-orange-500 hover:bg-orange-600"
-            >
-              <List className="mr-2 h-4 w-4" />
-              Ma liste ({selectedItems.length + customItems.length})
-            </Button>
-          )}
         </div>
 
         {/* Category Info */}
