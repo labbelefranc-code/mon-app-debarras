@@ -4875,6 +4875,8 @@ function App() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [customItems, setCustomItems] = useState([]);
   const [isPhotoQuote, setIsPhotoQuote] = useState(false);
+  const [selectedCity, setSelectedCity] = useState('');
+  const [showCustomCalendar, setShowCustomCalendar] = useState(false);
 
   // Stable updaters removed - using external component now
   const [zones, setZones] = useState({});
