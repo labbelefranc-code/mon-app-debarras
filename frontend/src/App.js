@@ -7842,7 +7842,26 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     }
   };
 
-  return <div className="App">{renderCurrentStep()}</div>;
+  return (
+    <div className="App">
+      {/* Panier fixe en haut à droite - visible uniquement si des articles sont sélectionnés */}
+      {(selectedItems.length > 0 || customItems.length > 0) && currentStep !== 'home' && currentStep !== 'admin-login' && (
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            onClick={() => setCurrentStep('quote-form')}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full shadow-lg transition-all duration-200 hover:scale-105"
+          >
+            <div className="flex items-center space-x-2">
+              <div className="text-lg">🛒</div>
+              <span className="font-semibold">Ma liste ({selectedItems.length + customItems.length})</span>
+            </div>
+          </Button>
+        </div>
+      )}
+      
+      {renderCurrentStep()}
+    </div>
+  );
 }
 
 export default App;
