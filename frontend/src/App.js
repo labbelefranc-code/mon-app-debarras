@@ -7845,16 +7845,33 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             {/* Détails des articles */}
             <div className="p-3 max-h-64 overflow-y-auto bg-gray-50 rounded-b-lg">
               {selectedItems.map((item, index) => (
-                <div key={`cart-${index}`} className="mb-2 text-xs text-gray-700">
-                  <div className="font-medium">{item.article_name}</div>
+                <div key={`cart-${index}`} className="mb-3 p-2 bg-white rounded border text-xs text-gray-700">
+                  <div className="font-medium text-gray-800">{item.article_name || 'Article sans nom'}</div>
                   {item.material && <div className="text-gray-500">• {item.material}</div>}
-                  <div className="text-orange-600">Qté: {item.quantity} | {item.unit_price}€</div>
+                  <div className="flex items-center justify-between mt-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-gray-600">Qté:</span>
+                      <select 
+                        value={item.quantity} 
+                        onChange={(e) => updateItemQuantity(index, parseInt(e.target.value))}
+                        className="border rounded px-1 py-0.5 text-xs"
+                      >
+                        {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                          <option key={num} value={num}>{num}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="text-orange-600 font-medium">{item.unit_price || 0}€</div>
+                  </div>
                 </div>
               ))}
               {customItems.map((item, index) => (
-                <div key={`cart-custom-${index}`} className="mb-2 text-xs text-gray-700">
-                  <div className="font-medium">{item.description}</div>
-                  <div className="text-orange-600">Estimation: {item.estimated_price}€</div>
+                <div key={`cart-custom-${index}`} className="mb-3 p-2 bg-white rounded border text-xs text-gray-700">
+                  <div className="font-medium text-gray-800">{item.description}</div>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-gray-600">Objet personnalisé</span>
+                    <div className="text-orange-600 font-medium">{item.estimated_price}€</div>
+                  </div>
                 </div>
               ))}
             </div>
