@@ -7821,18 +7821,41 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
 
   return (
     <div className="App">
-      {/* Panier fixe en haut à droite - visible uniquement si des articles sont sélectionnés */}
+      {/* Panier fixe en haut à droite avec détails - visible uniquement si des articles sont sélectionnés */}
       {(selectedItems.length > 0 || customItems.length > 0) && currentStep !== 'home' && currentStep !== 'admin-login' && (
-        <div className="fixed top-4 right-4 z-50">
-          <Button
-            onClick={() => setCurrentStep('quote-form')}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full shadow-lg transition-all duration-200 hover:scale-105"
-          >
-            <div className="flex items-center space-x-2">
-              <div className="text-lg">🛒</div>
-              <span className="font-semibold">Ma liste ({selectedItems.length + customItems.length})</span>
+        <div className="fixed top-4 right-4 z-50 max-w-sm">
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+            {/* En-tête du panier */}
+            <Button
+              onClick={() => setCurrentStep('quote-form')}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-t-lg transition-all duration-200"
+            >
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center space-x-2">
+                  <div className="text-lg">🛒</div>
+                  <span className="font-semibold">Ma liste ({selectedItems.length + customItems.length})</span>
+                </div>
+                <div className="text-sm opacity-80">Voir le devis →</div>
+              </div>
+            </Button>
+            
+            {/* Détails des articles */}
+            <div className="p-3 max-h-64 overflow-y-auto bg-gray-50 rounded-b-lg">
+              {selectedItems.map((item, index) => (
+                <div key={`cart-${index}`} className="mb-2 text-xs text-gray-700">
+                  <div className="font-medium">{item.article_name}</div>
+                  {item.material && <div className="text-gray-500">• {item.material}</div>}
+                  <div className="text-orange-600">Qté: {item.quantity} | {item.unit_price}€</div>
+                </div>
+              ))}
+              {customItems.map((item, index) => (
+                <div key={`cart-custom-${index}`} className="mb-2 text-xs text-gray-700">
+                  <div className="font-medium">{item.description}</div>
+                  <div className="text-orange-600">Estimation: {item.estimated_price}€</div>
+                </div>
+              ))}
             </div>
-          </Button>
+          </div>
         </div>
       )}
       
