@@ -4968,16 +4968,20 @@ const GreenQuoteDisplayPage = ({
                     <div key={dayIndex} className="space-y-1">
                       {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map(hour => {
                         const isAvailable = isWorkingDay && isSlotAvailable(dayName, hour);
+                        const isSelected = isSlotSelected(dayName, hour, date);
+                        
                         return (
                           <button
                             key={hour}
-                            className={`w-full p-1 text-xs rounded ${
-                              isAvailable 
-                                ? 'bg-green-100 hover:bg-green-200 text-green-800 border border-green-300' 
-                                : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'
+                            className={`w-full p-1 text-xs rounded transition-all ${
+                              isSelected
+                                ? 'bg-blue-500 text-white font-bold border-2 border-blue-600 shadow-md'
+                                : isAvailable 
+                                  ? 'bg-green-100 hover:bg-green-200 text-green-800 border border-green-300' 
+                                  : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'
                             }`}
                             disabled={!isAvailable}
-                            onClick={() => isAvailable && alert(`Créneau sélectionné: ${hour}h`)}
+                            onClick={() => isAvailable && toggleTimeSlot(dayName, hour, date)}
                           >
                             {hour}h
                           </button>
