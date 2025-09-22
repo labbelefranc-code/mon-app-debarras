@@ -5623,15 +5623,18 @@ function App() {
           
           <Button
             onClick={() => setCurrentStep('abcd-categories')}
-            className="w-full h-16 text-xl font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
+            className="w-full h-20 text-2xl font-bold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-black border-0 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
           >
-            Un ou plusieurs articles <span className="text-sm opacity-80">(devis instantané & RDV en ligne)</span>
+            <div className="text-center leading-tight">
+              <div>Un ou plusieurs articles</div>
+              <div className="text-base font-medium opacity-90">(devis instantané & RDV en ligne)</div>
+            </div>
           </Button>
         </div>
 
         {/* Alternative option */}
         <div className="mt-16 text-center">
-          <p className="text-white text-lg mb-4">Ou proposez un devis sur photos</p>
+          <p className="text-white text-xl mb-4 font-medium">J'ai une demande spéciale</p>
           <Button
             onClick={() => setCurrentStep('photo-quote')}
             className="bg-white text-teal-600 hover:bg-gray-100 font-semibold px-8 py-3 rounded-xl"
