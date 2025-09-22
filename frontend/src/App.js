@@ -3006,20 +3006,20 @@ const QuoteFormPage = ({
                 </div>
               )}
 
-              {/* Zone Selection */}
+              {/* Sélection de ville (remplace la sélection de zone) */}
               <div>
-                <label className="block text-sm font-medium mb-2">Zone d'intervention :</label>
+                <label className="block text-sm font-medium mb-2">Ville d'intervention :</label>
                 <Select 
-                  value={quoteForm.zone} 
-                  onValueChange={(value) => onUpdateQuoteForm('zone', value)}
+                  value={quoteForm.city} 
+                  onValueChange={(value) => onUpdateQuoteForm('city', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner votre zone" />
+                    <SelectValue placeholder="Sélectionner votre ville" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(zones).map(([key, zone]) => (
-                      <SelectItem key={key} value={key}>
-                        {zone.name}
+                    {INTERVENTION_CITIES.map(city => (
+                      <SelectItem key={city} value={city}>
+                        {city}
                       </SelectItem>
                     ))}
                   </SelectContent>
