@@ -4918,24 +4918,22 @@ const GreenQuoteDisplayPage = ({
           </div>
         </div>
         
-        {/* Sélection de ville obligatoire */}
+        {/* Affichage de la ville sélectionnée (depuis le formulaire) */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-bold mb-4">📍 Sélectionnez votre ville</h2>
-          <select 
-            value={selectedCity} 
-            onChange={(e) => setSelectedCity(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg text-lg"
-            required
-          >
-            <option value="">Choisissez votre ville...</option>
-            {INTERVENTION_CITIES.map(city => (
-              <option key={city} value={city}>{city}</option>
-            ))}
-          </select>
-          {selectedCity && (
-            <p className="mt-2 text-sm text-gray-600">
-              Zone {getZoneForCity(selectedCity)} - Créneaux spécialisés disponibles
-            </p>
+          <h2 className="text-xl font-bold mb-4">📍 Ville d'intervention</h2>
+          {quoteForm?.city ? (
+            <div className="bg-green-50 border-2 border-green-200 p-4 rounded-lg">
+              <div className="text-lg font-semibold text-green-800">{quoteForm.city}</div>
+              <p className="text-sm text-green-600">
+                Créneaux spécialisés disponibles pour votre secteur
+              </p>
+            </div>
+          ) : (
+            <div className="bg-orange-50 border-2 border-orange-200 p-4 rounded-lg">
+              <p className="text-orange-700">
+                ⚠️ Veuillez retourner au formulaire pour sélectionner votre ville
+              </p>
+            </div>
           )}
         </div>
         
