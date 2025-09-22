@@ -7725,6 +7725,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
           calculateTotal={calculateTotal}
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
+          selectedTimeSlots={selectedTimeSlots}
+          setSelectedTimeSlots={setSelectedTimeSlots}
           showCustomCalendar={showCustomCalendar}
           setShowCustomCalendar={setShowCustomCalendar}
           onGoBack={() => setCurrentStep('quote-form')}
