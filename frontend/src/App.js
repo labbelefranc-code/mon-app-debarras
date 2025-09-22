@@ -5,6 +5,53 @@ import {
   Truck, Phone, Calendar, MapPin, List, ArrowLeft, Check, Upload, 
   Plus, Minus, X, Home, Clock, User, Settings, AlertTriangle, ShoppingCart
 } from "lucide-react";
+
+// Configuration des zones d'intervention
+const INTERVENTION_CITIES = [
+  'Fréjus',
+  'Les Issambres', 
+  'Plan de la tour',
+  'Puget sur Argens',
+  'Roquebrune sur Argens',
+  'Saint Aygulf',
+  'Saint Raphaël',
+  'Sainte maxime'
+];
+
+const CITY_ZONES = {
+  'Puget sur Argens': 1,
+  'Fréjus': 1,
+  'Saint Raphaël': 1,
+  'Roquebrune sur Argens': 2,
+  'Plan de la tour': 2,
+  'Sainte maxime': 2,
+  'Les Issambres': 3,
+  'Saint Aygulf': 3
+};
+
+const ZONE_SCHEDULES = {
+  1: {
+    lundi: { start: '07:00', end: '13:00' },
+    mardi: { start: '13:00', end: '19:00' },
+    mercredi: { start: '06:00', end: '11:00' }
+  },
+  2: {
+    lundi: { start: '13:00', end: '19:00' },
+    mardi: { start: '07:00', end: '13:00' },
+    mercredi: { start: '16:00', end: '21:00' }
+  },
+  3: {
+    lundi: [
+      { start: '06:00', end: '07:00' },
+      { start: '19:00', end: '21:00' }
+    ],
+    mardi: [
+      { start: '06:00', end: '07:00' },
+      { start: '19:00', end: '21:00' }
+    ],
+    mercredi: { start: '11:00', end: '16:00' }
+  }
+};
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
