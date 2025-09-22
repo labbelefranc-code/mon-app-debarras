@@ -6160,8 +6160,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 </CardContent>
               </Card>
               
-              {/* Note spéciale pour Vaisselle, vêtements et objets divers */}
-              {subcategory.includes('Vaisselle') && (
+              {/* Note spéciale pour Vaisselle, vêtements et objets divers - UNIQUEMENT pour la section AUTRES (violette) */}
+              {selectedABCDCategory?.id === 'autres' && subcategory.includes('Vaisselle') && (
                 <div className="mt-4 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg shadow-md">
                   <div className="flex items-start space-x-2">
                     <div className="text-yellow-600 text-xl font-bold">⚠️</div>
