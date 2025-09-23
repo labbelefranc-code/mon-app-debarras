@@ -7840,10 +7840,16 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 // Construire le nom avec les options
                 let displayName = itemName;
                 const options = [];
+                
+                // Ajouter le matériau s'il y en a un
                 if (item.material) options.push(item.material);
-                if (item.options && item.options.length > 0) {
-                  options.push(...item.options);
+                
+                // Ajouter les options sélectionnées
+                if (item.selected_options && item.selected_options.length > 0) {
+                  options.push(...item.selected_options);
                 }
+                
+                // Afficher le nom avec les options entre parenthèses
                 if (options.length > 0) {
                   displayName = `${itemName} (${options.join(', ')})`;
                 }
