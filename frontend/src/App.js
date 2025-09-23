@@ -5723,7 +5723,15 @@ function App() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Button
-                onClick={() => setCurrentStep('subcategories')}
+                onClick={() => {
+                  // Pour JARDIN, retourner à abcd-objects (sous-catégories) 
+                  // car il n'y a pas de page "subcategories" pour JARDIN
+                  if (selectedABCDCategory?.id === 'B') {
+                    setCurrentStep('abcd-objects');
+                  } else {
+                    setCurrentStep('subcategories');
+                  }
+                }}
                 variant="outline"
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
