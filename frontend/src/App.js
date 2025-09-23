@@ -3139,6 +3139,60 @@ const QuoteFormPage = ({
           </Card>
         </div>
       </div>
+      
+      {/* Récapitulatif des articles en bas */}
+      {(selectedItems.length > 0 || customItems.length > 0) && (
+        <div className="mt-8 max-w-2xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <div className="text-lg">📋</div>
+                <span className="ml-2">Récapitulatif de votre sélection ({selectedItems.length + customItems.length} articles)</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {selectedItems.map((item, index) => {
+                  const itemName = item.article_name || item.name || 'Article sans nom';
+                  const itemPrice = item.unit_price || item.base_price || 0;
+                  
+                  // Construire le nom avec les options
+                  let displayName = itemName;
+                  const options = [];
+                  
+                  if (item.material) options.push(item.material);
+                  if (item.selected_options && item.selected_options.length > 0) {
+                    options.push(...item.selected_options);
+                  }
+                  
+                  if (options.length > 0) {
+                    displayName = `${itemName} (${options.join(', ')})`;
+                  }
+                  
+                  return (
+                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-200">
+                      <div>
+                        <span className="font-medium">{displayName}</span>
+                        <span className="text-gray-500 ml-2">× {item.quantity}</span>
+                      </div>
+                      <span className="font-semibold text-orange-600">{itemPrice * item.quantity}€</span>
+                    </div>
+                  );
+                })}
+                {customItems.map((item, index) => (
+                  <div key={`custom-${index}`} className="flex justify-between items-center py-2 border-b border-gray-200">
+                    <div>
+                      <span className="font-medium">{item.description}</span>
+                      <span className="text-gray-500 ml-2">(objet personnalisé)</span>
+                    </div>
+                    <span className="font-semibold text-orange-600">{item.estimated_price}€</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   </div>
 );
