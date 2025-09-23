@@ -6260,6 +6260,10 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                   if (subcategoryName === 'Bricolage / matériaux / énergie') {
                                     setSelectedABCDSubSubcategory('Tout bricolage & matériaux');
                                   }
+                                  // Pour "Jardin et extérieur", aller directement aux articles
+                                  if (subcategoryName === 'Jardin et extérieur') {
+                                    setSelectedABCDSubSubcategory('Articles jardin');
+                                  }
                                   // Pour les catégories ELEC à accès direct, aller directement aux articles
                                   if (subcategoryName === 'Électronique/multimédia') {
                                     setSelectedABCDSubSubcategory('Articles électronique/multimédia');
