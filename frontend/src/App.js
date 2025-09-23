@@ -6402,9 +6402,9 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       
                       const subSubcategories = Object.keys(mapping.subcategoryMapping[selectedABCDSubcategory] || {});
                       
-                      // Filtrer pour exclure "Tout jardin & extérieur" qui ne doit pas exister
+                      // Filtrer pour exclure "Tout jardin & extérieur" et "Tout bricolage & matériaux" qui ne doivent pas exister
                       const filteredSubSubcategories = subSubcategories.filter(name => 
-                        name !== 'Tout jardin & extérieur'
+                        name !== 'Tout jardin & extérieur' && name !== 'Tout bricolage & matériaux'
                       );
                       
                       return filteredSubSubcategories.map((subSubcategoryName) => {
