@@ -4993,52 +4993,53 @@ const GreenQuoteDisplayPage = ({
         
         {quoteForm?.city && (
           <>
-            {/* Calendrier intégré */}
+            {/* Calendrier simplifié avec créneaux uniques */}
             <div className="bg-white p-6 rounded-lg shadow-md mb-6">
               <h2 className="text-xl font-bold mb-4">📅 Choisissez votre créneau</h2>
-              <p className="text-sm text-gray-600 mb-4">
-                Durée nécessaire : {requiredHours}h ({requiredHours}h par tranche de 100€)
+              <p className="text-sm text-gray-600 mb-6">
+                Sélectionnez un créneau disponible pour votre intervention
               </p>
               
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map((day, index) => (
-                  <div key={day} className="text-center font-semibold p-2">
-                    {day}
-                    <div className="text-xs text-gray-500">
-                      {currentWeek[index]?.getDate()}/{currentWeek[index]?.getMonth() + 1}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="grid grid-cols-7 gap-2">
-                {currentWeek.map((date, dayIndex) => {
+              {/* Créneaux par jour de la semaine */}
+              <div className="space-y-4">
+                {currentWeek.filter((date, dayIndex) => {
                   const dayName = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][date.getDay()];
-                  const isWorkingDay = ['lundi', 'mardi', 'mercredi'].includes(dayName);
+                  return ['lundi', 'mardi', 'mercredi'].includes(dayName);
+                }).map((date, idx) => {
+                  const dayName = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][date.getDay()];
+                  const dayDisplayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                  const schedule = ZONE_SCHEDULES[zone];
+                  const daySchedule = schedule[dayName.toLowerCase()];
+                  
+                  if (!daySchedule) return null;
+                  
+                  // Gérer les créneaux multiples de la zone 3
+                  const slots = Array.isArray(daySchedule) ? daySchedule : [daySchedule];
                   
                   return (
-                    <div key={dayIndex} className="space-y-1">
-                      {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map(hour => {
-                        const isAvailable = isWorkingDay && isSlotAvailable(dayName, hour);
-                        const isSelected = isSlotSelected(dayName, hour, date);
-                        
-                        return (
-                          <button
-                            key={hour}
-                            className={`w-full p-1 text-xs rounded transition-all ${
-                              isSelected
-                                ? 'bg-blue-500 text-white font-bold border-2 border-blue-600 shadow-md'
-                                : isAvailable 
-                                  ? 'bg-green-100 hover:bg-green-200 text-green-800 border border-green-300' 
-                                  : 'bg-gray-100 text-gray-400 line-through cursor-not-allowed'
-                            }`}
-                            disabled={!isAvailable}
-                            onClick={() => isAvailable && toggleTimeSlot(dayName, hour, date)}
+                    <div key={dayName} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h3 className="font-semibold text-gray-800">{dayDisplayName}</h3>
+                          <p className="text-sm text-gray-500">{date.getDate()}/{date.getMonth() + 1}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {slots.map((slot, slotIdx) => (
+                          <Button
+                            key={slotIdx}
+                            variant="outline"
+                            className="h-auto py-3 px-4 text-left bg-green-50 hover:bg-green-100 border-green-300"
+                            onClick={() => alert(`Créneau sélectionné: ${dayDisplayName} ${slot.start} - ${slot.end}`)}
                           >
-                            {hour}h
-                          </button>
-                        );
-                      })}
+                            <div>
+                              <div className="font-semibold text-green-800">{slot.start} - {slot.end}</div>
+                              <div className="text-xs text-green-600">Disponible</div>
+                            </div>
+                          </Button>
+                        ))}
+                      </div>
                     </div>
                   );
                 })}
