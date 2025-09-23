@@ -6937,17 +6937,25 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                             <Button
                               onClick={() => {
                                 const existingItem = selectedItems.find(item => item.article_id === article.id);
+                                
+                                // Récupérer les options sélectionnées pour cet article
+                                const itemOptions = selectedItemOptions[article.id] || {};
+                                const selectedChoices = Object.values(itemOptions).filter(v => v && v !== 'material');
+                                const selectedMaterial = itemOptions.material;
+                                
                                 if (existingItem) {
                                   // Si déjà sélectionné, augmenter la quantité
                                   updateItemQuantity(selectedItems.indexOf(existingItem), existingItem.quantity + 1);
                                 } else {
-                                  // Ajouter nouvel item
+                                  // Ajouter nouvel item avec les options sélectionnées
                                   setSelectedItems(prev => [...prev, {
                                     article_id: article.id,
                                     name: article.name,
                                     base_price: article.base_price,
                                     quantity: 1,
                                     requires_dismantling: article.requires_dismantling || false,
+                                    material: selectedMaterial,
+                                    selected_options: selectedChoices,
                                     materials: article.materials || [],
                                     options: article.options || []
                                   }]);
