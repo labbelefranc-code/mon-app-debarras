@@ -5724,18 +5724,24 @@ function App() {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  // Pour JARDIN avec sous-catégories à accès direct, forcer le retour aux sous-catégories principales
-                  if (selectedABCDCategory?.id === 'B' && 
-                      (selectedABCDSubcategory === 'Jardin et extérieur' || selectedABCDSubcategory === 'Bricolage / matériaux / énergie')) {
-                    // Forcer explicitement le retour aux sous-catégories de JARDIN
+                  console.log('Bouton retour cliqué', { selectedABCDCategory, selectedABCDSubcategory, selectedABCDSubSubcategory });
+                  
+                  // Pour JARDIN avec "Jardin et extérieur", retourner aux sous-catégories de JARDIN
+                  if (selectedABCDCategory?.id === 'B' && selectedABCDSubcategory === 'Jardin et extérieur') {
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
-                    setCurrentStep('abcd-objects'); // Forcer le changement de step
-                  } else if (selectedABCDCategory?.id === 'B') {
-                    // Pour les autres sous-catégories de JARDIN
+                    console.log('Navigation retour JARDIN - Jardin et extérieur');
+                  } 
+                  // Pour JARDIN avec "Bricolage / matériaux / énergie", retourner aux sous-catégories de JARDIN
+                  else if (selectedABCDCategory?.id === 'B' && selectedABCDSubcategory === 'Bricolage / matériaux / énergie') {
+                    setSelectedABCDSubcategory(null);
+                    setSelectedABCDSubSubcategory(null);
+                    console.log('Navigation retour JARDIN - Bricolage');
+                  }
+                  // Pour toutes les autres catégories, navigation standard
+                  else {
                     setCurrentStep('subcategories');
-                  } else {
-                    setCurrentStep('subcategories');
+                    console.log('Navigation retour standard');
                   }
                 }}
                 variant="outline"
