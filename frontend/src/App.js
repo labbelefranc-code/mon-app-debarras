@@ -3054,25 +3054,25 @@ const QuoteFormPage = ({
                 </div>
               </div>
 
-              {/* Date Selection */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Date d'intervention souhaitée :</label>
-                <Input
-                  type="date"
-                  value={quoteForm.preferred_date}
-                  onChange={(e) => {
-                    onUpdateQuoteForm('preferred_date', e.target.value);
-                    if (e.target.value && quoteForm.zone) {
-                      onLoadAvailableSlots(e.target.value, quoteForm.zone);
-                    }
-                  }}
-                />
-                {!isPhotoQuote && (
-                  <p className="text-xs text-gray-600 mt-1">
-                    Disponibilités : Mardi, Mercredi, Jeudi de 7h à 20h
+              {/* Date Selection - UNIQUEMENT pour intervention d'urgence */}
+              {quoteForm.urgent && (
+                <div>
+                  <label className="block text-sm font-medium mb-2">Date d'intervention souhaitée :</label>
+                  <Input
+                    type="date"
+                    value={quoteForm.preferred_date}
+                    onChange={(e) => {
+                      onUpdateQuoteForm('preferred_date', e.target.value);
+                      if (e.target.value && quoteForm.zone) {
+                        onLoadAvailableSlots(e.target.value, quoteForm.zone);
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-orange-600 mt-1">
+                    ⚠️ Intervention d'urgence - Soumise à validation administrative (délai de confirmation: 24h)
                   </p>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Time Slots */}
               {availableSlots.length > 0 && !isPhotoQuote && (
