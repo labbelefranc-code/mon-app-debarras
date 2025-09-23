@@ -5724,10 +5724,11 @@ function App() {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  // Pour JARDIN, retourner aux sous-catégories (remettre selectedABCDSubcategory à null)
+                  // Pour JARDIN, retourner aux sous-catégories en remettant selectedABCDSubcategory à null
                   if (selectedABCDCategory?.id === 'B') {
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
+                    // Rester sur abcd-objects qui va afficher les sous-catégories de JARDIN
                   } else {
                     setCurrentStep('subcategories');
                   }
