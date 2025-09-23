@@ -6243,8 +6243,14 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                   if (subcategoryName === 'Bricolage / matériaux / énergie') {
                                     setSelectedABCDSubSubcategory('Tout bricolage & matériaux');
                                   }
-                                  // Pour "Bricolage / matériaux / énergie", laisser fonctionner normalement comme les autres
-                                  // (SUPPRESSION de l'exception - doit fonctionner comme "Mobilier de jardin")
+                                  // Pour "Jardin et extérieur", aller directement aux articles
+                                  if (subcategoryName === 'Jardin et extérieur') {
+                                    setSelectedABCDSubSubcategory('Articles jardin');
+                                  }
+                                  // Pour "Bricolage / matériaux / énergie", aller directement aux articles  
+                                  if (subcategoryName === 'Bricolage / matériaux / énergie') {
+                                    setSelectedABCDSubSubcategory('Articles bricolage');
+                                  }
                                   // Pour les catégories ELEC à accès direct, aller directement aux articles
                                   if (subcategoryName === 'Électronique/multimédia') {
                                     setSelectedABCDSubSubcategory('Articles électronique/multimédia');
