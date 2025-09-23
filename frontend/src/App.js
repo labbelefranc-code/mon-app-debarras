@@ -6369,14 +6369,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     }
 
     // Niveau 2 : Si nous avons sous-catégorie mais pas sous-sous-catégorie, afficher les sous-sous-catégories 
-    // EXCEPTION : Pour JARDIN "Jardin et extérieur", aller directement aux articles
     if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory) {
-      // Exception pour JARDIN : aller directement aux articles au lieu d'afficher la page intermédiaire
-      if (selectedABCDCategory.id === 'B' && selectedABCDSubcategory === 'Jardin et extérieur') {
-        // Forcer la définition de la sous-sous-catégorie pour aller aux articles
-        setSelectedABCDSubSubcategory('Articles jardin');
-        return null; // Laisser le système réagir au changement d'état
-      }
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
