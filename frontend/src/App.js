@@ -5135,6 +5135,7 @@ function App() {
   const [isPhotoQuote, setIsPhotoQuote] = useState(false);
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTimeSlots, setSelectedTimeSlots] = useState([]); // Nouveaux créneaux sélectionnés
+  const [selectedItemOptions, setSelectedItemOptions] = useState({}); // Options sélectionnées par article {articleId: {options: [], material: ''}}
   const [showCustomCalendar, setShowCustomCalendar] = useState(false);
 
   // Stable updaters removed - using external component now
