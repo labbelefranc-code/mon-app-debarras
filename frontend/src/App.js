@@ -5723,25 +5723,7 @@ function App() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Button
-                onClick={() => {
-                  console.log('🔙 BOUTON RETOUR CLIQUÉ - État actuel:', { 
-                    category: selectedABCDCategory?.id, 
-                    subcategory: selectedABCDSubcategory, 
-                    subsubcategory: selectedABCDSubSubcategory,
-                    currentStep 
-                  });
-                  
-                  // SOLUTION COMPLÈTE : Pour JARDIN, retourner aux sous-catégories ET changer le step
-                  if (selectedABCDCategory?.id === 'B') {
-                    console.log('🌿 Navigation JARDIN - Reset vers sous-catégories');
-                    setSelectedABCDSubcategory(null);
-                    setSelectedABCDSubSubcategory(null);
-                    setCurrentStep('abcd-subcategories'); // CORRECTION: éviter la boucle avec abcd-objects
-                  } else {
-                    console.log('📦 Navigation standard - Vers subcategories');
-                    setCurrentStep('subcategories');
-                  }
-                }}
+                onClick={() => setCurrentStep('subcategories')}
                 variant="outline"
                 className="bg-teal-600 text-white border-teal-600 hover:bg-teal-700"
               >
