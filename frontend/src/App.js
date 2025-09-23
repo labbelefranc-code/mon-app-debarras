@@ -2895,9 +2895,9 @@ const QuoteFormPage = ({
 }) => (
   <div className="min-h-screen bg-gray-50">
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left side - Form */}
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-8">
+        {/* Form */}
+        <div className="w-full max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <Button
