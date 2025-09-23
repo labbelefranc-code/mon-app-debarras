@@ -3100,44 +3100,6 @@ const QuoteFormPage = ({
             </CardContent>
           </Card>
         </div>
-
-        {/* Right side - Summary */}
-        <div className="lg:col-span-1">
-          <Card className="sticky top-8">
-            <CardHeader>
-              <CardTitle>Récapitulatif</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4">
-                <h4 className="font-medium mb-2">Articles sélectionnés :</h4>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {selectedItems.map((item, index) => (
-                    <div key={`summary-${item.article_id}-${index}`} className="text-sm p-2 bg-gray-100 rounded">
-                      • {item.article_name} {item.quantity > 1 && `(x${item.quantity})`}
-                    </div>
-                  ))}
-                  
-                  {customItems.map((item, index) => (
-                    <div key={`summary-custom-${item.description}-${index}`} className="text-sm p-2 bg-orange-100 rounded">
-                      • {item.description} <span className="text-orange-600">(Supplément à confirmer)</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="border-t pt-4">
-                <Button
-                  onClick={onViewQuote}
-                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3"
-                  disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
-                >
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Voir mon devis et prendre rendez-vous en ligne
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
       
       {/* Récapitulatif des articles en bas */}
@@ -3151,7 +3113,7 @@ const QuoteFormPage = ({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="space-y-3 mb-6">
                 {selectedItems.map((item, index) => {
                   const itemName = item.article_name || item.name || 'Article sans nom';
                   const itemPrice = item.unit_price || item.base_price || 0;
@@ -3188,6 +3150,18 @@ const QuoteFormPage = ({
                     <span className="font-semibold text-orange-600">{item.estimated_price}€</span>
                   </div>
                 ))}
+              </div>
+              
+              {/* Bouton Voir mon devis */}
+              <div className="border-t pt-4">
+                <Button
+                  onClick={onViewQuote}
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3"
+                  disabled={!quoteForm.client_name || !quoteForm.client_email || !quoteForm.client_phone || !quoteForm.address || !quoteForm.parking}
+                >
+                  <Calendar className="mr-2 h-5 w-5" />
+                  Voir mon devis et prendre rendez-vous en ligne
+                </Button>
               </div>
             </CardContent>
           </Card>
