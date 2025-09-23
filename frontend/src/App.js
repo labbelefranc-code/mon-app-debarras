@@ -5724,16 +5724,16 @@ function App() {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  // Pour JARDIN avec sous-catégories à accès direct, retourner aux sous-catégories principales
+                  // Pour JARDIN avec sous-catégories à accès direct, forcer le retour aux sous-catégories principales
                   if (selectedABCDCategory?.id === 'B' && 
                       (selectedABCDSubcategory === 'Jardin et extérieur' || selectedABCDSubcategory === 'Bricolage / matériaux / énergie')) {
+                    // Forcer explicitement le retour aux sous-catégories de JARDIN
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
-                    // Rester sur abcd-objects qui va afficher les sous-catégories de JARDIN
+                    setCurrentStep('abcd-objects'); // Forcer le changement de step
                   } else if (selectedABCDCategory?.id === 'B') {
                     // Pour les autres sous-catégories de JARDIN
-                    setSelectedABCDSubcategory(null);
-                    setSelectedABCDSubSubcategory(null);
+                    setCurrentStep('subcategories');
                   } else {
                     setCurrentStep('subcategories');
                   }
