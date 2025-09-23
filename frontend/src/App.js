@@ -7815,25 +7815,36 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
   return (
     <div className="App">
       {/* Panier fixe en haut à droite avec détails - visible uniquement si des articles sont sélectionnés */}
-      {(selectedItems.length > 0 || customItems.length > 0) && currentStep !== 'home' && currentStep !== 'admin-login' && (
+      {(selectedItems.length > 0 || customItems.length > 0) && currentStep !== 'home' && currentStep !== 'admin-login' && currentStep !== 'quote-form' && (
         <div className="fixed top-4 right-4 z-50 max-w-sm">
           <div className="bg-white rounded-lg shadow-lg border border-gray-200">
-            {/* En-tête du panier */}
-            <Button
-              onClick={() => setCurrentStep('quote-form')}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-t-lg transition-all duration-200"
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center space-x-2">
-                  <div className="text-lg">🛒</div>
-                  <span className="font-semibold">Ma liste ({selectedItems.length + customItems.length})</span>
+            {/* En-tête du panier avec bouton replier/déplier */}
+            <div className="flex">
+              <Button
+                onClick={() => setCurrentStep('quote-form')}
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-tl-lg transition-all duration-200"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center space-x-2">
+                    <div className="text-lg">🛒</div>
+                    <span className="font-semibold">Ma liste ({selectedItems.length + customItems.length})</span>
+                  </div>
+                  <div className="text-sm opacity-80">Voir le devis →</div>
                 </div>
-                <div className="text-sm opacity-80">Voir le devis →</div>
-              </div>
-            </Button>
+              </Button>
+              
+              <Button
+                onClick={() => setCartExpanded(!cartExpanded)}
+                className="bg-orange-600 hover:bg-orange-700 text-white px-2 py-3 rounded-tr-lg"
+                title={cartExpanded ? "Replier la liste" : "Déplier la liste"}
+              >
+                {cartExpanded ? '▲' : '▼'}
+              </Button>
+            </div>
             
-            {/* Détails des articles */}
-            <div className="p-3 max-h-64 overflow-y-auto bg-gray-50 rounded-b-lg">
+            {/* Détails des articles - conditionné par cartExpanded */}
+            {cartExpanded && (
+              <div className="p-3 max-h-64 overflow-y-auto bg-gray-50 rounded-b-lg">
               {selectedItems.map((item, index) => {
                 const itemName = item.article_name || item.name || 'Article sans nom';
                 const itemPrice = item.unit_price || item.base_price || 0;
