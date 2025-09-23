@@ -6396,18 +6396,6 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                         name !== 'Tout jardin & extérieur' && name !== 'Tout bricolage & matériaux'
                       );
                       
-                      // Si après filtrage il n'y a plus de sous-sous-catégories, aller directement aux articles
-                      if (filteredSubSubcategories.length === 0) {
-                        // Auto-définir une sous-sous-catégorie pour accéder aux articles
-                        React.useEffect(() => {
-                          if (selectedABCDSubcategory === 'Jardin et extérieur') {
-                            setSelectedABCDSubSubcategory('Articles jardin');
-                          } else if (selectedABCDSubcategory === 'Bricolage / matériaux / énergie') {
-                            setSelectedABCDSubSubcategory('Articles bricolage');
-                          }
-                        }, [selectedABCDSubcategory]);
-                      }
-                      
                       return filteredSubSubcategories.map((subSubcategoryName) => {
                         // Calculer le nombre d'articles pour chaque sous-sous-catégorie
                         const articles = getABCDCategoryArticles(selectedABCDCategory.id, selectedABCDSubcategory, subSubcategoryName);
