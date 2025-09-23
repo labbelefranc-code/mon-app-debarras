@@ -7897,6 +7897,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 </div>
               ))}
             </div>
+            )}
           </div>
         </div>
       )}
