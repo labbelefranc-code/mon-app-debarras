@@ -6391,7 +6391,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                       
                       const subSubcategories = Object.keys(mapping.subcategoryMapping[selectedABCDSubcategory] || {});
                       
-                      return subSubcategories.map((subSubcategoryName) => {
+                      // Filtrer pour supprimer les étapes inutiles "Tout jardin & extérieur" et "Tout bricolage & matériaux"
+                      const filteredSubSubcategories = subSubcategories.filter(name => 
+                        name !== 'Tout jardin & extérieur' && name !== 'Tout bricolage & matériaux'
+                      );
+                      
+                      return filteredSubSubcategories.map((subSubcategoryName) => {
                         // Calculer le nombre d'articles pour chaque sous-sous-catégorie
                         const articles = getABCDCategoryArticles(selectedABCDCategory.id, selectedABCDSubcategory, subSubcategoryName);
                         const articleCount = articles.length;
