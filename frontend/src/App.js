@@ -5731,12 +5731,12 @@ function App() {
                     currentStep 
                   });
                   
-                  // SOLUTION SIMPLE : Pour JARDIN, toujours retourner aux sous-catégories
+                  // SOLUTION COMPLÈTE : Pour JARDIN, retourner aux sous-catégories ET changer le step
                   if (selectedABCDCategory?.id === 'B') {
                     console.log('🌿 Navigation JARDIN - Reset vers sous-catégories');
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
-                    // Pas besoin de changer currentStep, on reste sur 'articles' mais avec les états resetés
+                    setCurrentStep('abcd-objects'); // FORCER le changement de step
                   } else {
                     console.log('📦 Navigation standard - Vers subcategories');
                     setCurrentStep('subcategories');
