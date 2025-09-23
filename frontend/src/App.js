@@ -6901,18 +6901,21 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                 {article.materials.map((material, idx) => (
                                   <button
                                     key={idx}
-                                    className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm rounded-full border border-blue-300 hover:border-blue-400 transition-colors"
+                                    className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                                      selectedItemOptions[article.id]?.material === material
+                                        ? 'bg-blue-500 text-white border-blue-600'
+                                        : 'bg-blue-100 hover:bg-blue-200 text-blue-800 border-blue-300 hover:border-blue-400'
+                                    }`}
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      // Toggle selection of material
-                                      const button = e.target;
-                                      if (button.classList.contains('bg-blue-500')) {
-                                        button.classList.remove('bg-blue-500', 'text-white');
-                                        button.classList.add('bg-blue-100', 'text-blue-800');
-                                      } else {
-                                        button.classList.remove('bg-blue-100', 'text-blue-800');
-                                        button.classList.add('bg-blue-500', 'text-white');
-                                      }
+                                      // Sauvegarder le matériau dans l'état React
+                                      setSelectedItemOptions(prev => ({
+                                        ...prev,
+                                        [article.id]: {
+                                          ...prev[article.id],
+                                          material: prev[article.id]?.material === material ? null : material
+                                        }
+                                      }));
                                     }}
                                   >
                                     {material}
