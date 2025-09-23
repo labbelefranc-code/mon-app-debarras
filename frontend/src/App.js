@@ -6867,25 +6867,21 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                                     {(optionGroup.choices && Array.isArray(optionGroup.choices)) ? optionGroup.choices.map((choice, choiceIdx) => (
                                       <button
                                         key={choiceIdx}
-                                        className="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 text-sm rounded-full border border-green-300 hover:border-green-400 transition-colors"
+                                        className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                                          selectedItemOptions[article.id]?.[optionGroup.label] === choice
+                                            ? 'bg-green-500 text-white border-green-600'
+                                            : 'bg-green-100 hover:bg-green-200 text-green-800 border-green-300 hover:border-green-400'
+                                        }`}
                                         onClick={(e) => {
                                           e.stopPropagation();
-                                          // Toggle selection of choice
-                                          const button = e.target;
-                                          if (button.classList.contains('bg-green-500')) {
-                                            button.classList.remove('bg-green-500', 'text-white');
-                                            button.classList.add('bg-green-100', 'text-green-800');
-                                          } else {
-                                            // Deselect other choices in this group first (radio behavior)
-                                            const siblings = button.parentElement.querySelectorAll('button');
-                                            siblings.forEach(sibling => {
-                                              sibling.classList.remove('bg-green-500', 'text-white');
-                                              sibling.classList.add('bg-green-100', 'text-green-800');
-                                            });
-                                            // Select this choice
-                                            button.classList.remove('bg-green-100', 'text-green-800');
-                                            button.classList.add('bg-green-500', 'text-white');
-                                          }
+                                          // Sauvegarder le choix dans l'état React
+                                          setSelectedItemOptions(prev => ({
+                                            ...prev,
+                                            [article.id]: {
+                                              ...prev[article.id],
+                                              [optionGroup.label]: prev[article.id]?.[optionGroup.label] === choice ? null : choice
+                                            }
+                                          }));
                                         }}
                                       >
                                         {choice}
