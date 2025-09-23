@@ -5724,24 +5724,22 @@ function App() {
             <div className="flex items-center justify-between mb-8">
               <Button
                 onClick={() => {
-                  console.log('Bouton retour cliqué', { selectedABCDCategory, selectedABCDSubcategory, selectedABCDSubSubcategory });
+                  console.log('🔙 BOUTON RETOUR CLIQUÉ - État actuel:', { 
+                    category: selectedABCDCategory?.id, 
+                    subcategory: selectedABCDSubcategory, 
+                    subsubcategory: selectedABCDSubSubcategory,
+                    currentStep 
+                  });
                   
-                  // Pour JARDIN avec "Jardin et extérieur", retourner aux sous-catégories de JARDIN
-                  if (selectedABCDCategory?.id === 'B' && selectedABCDSubcategory === 'Jardin et extérieur') {
+                  // SOLUTION SIMPLE : Pour JARDIN, toujours retourner aux sous-catégories
+                  if (selectedABCDCategory?.id === 'B') {
+                    console.log('🌿 Navigation JARDIN - Reset vers sous-catégories');
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
-                    console.log('Navigation retour JARDIN - Jardin et extérieur');
-                  } 
-                  // Pour JARDIN avec "Bricolage / matériaux / énergie", retourner aux sous-catégories de JARDIN
-                  else if (selectedABCDCategory?.id === 'B' && selectedABCDSubcategory === 'Bricolage / matériaux / énergie') {
-                    setSelectedABCDSubcategory(null);
-                    setSelectedABCDSubSubcategory(null);
-                    console.log('Navigation retour JARDIN - Bricolage');
-                  }
-                  // Pour toutes les autres catégories, navigation standard
-                  else {
+                    // Pas besoin de changer currentStep, on reste sur 'articles' mais avec les états resetés
+                  } else {
+                    console.log('📦 Navigation standard - Vers subcategories');
                     setCurrentStep('subcategories');
-                    console.log('Navigation retour standard');
                   }
                 }}
                 variant="outline"
