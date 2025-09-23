@@ -6370,7 +6370,9 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     }
 
     // Niveau 2 : Si nous avons sous-catégorie mais pas sous-sous-catégorie, afficher les sous-sous-catégories 
-    if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory) {
+    // SAUF pour les cas à accès direct : "Jardin et extérieur" et "Bricolage / matériaux / énergie"
+    if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory && 
+        !(selectedABCDCategory.id === 'B' && (selectedABCDSubcategory === 'Jardin et extérieur' || selectedABCDSubcategory === 'Bricolage / matériaux / énergie'))) {
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
