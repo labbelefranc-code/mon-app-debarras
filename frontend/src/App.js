@@ -5136,6 +5136,7 @@ function App() {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedTimeSlots, setSelectedTimeSlots] = useState([]); // Nouveaux créneaux sélectionnés
   const [selectedItemOptions, setSelectedItemOptions] = useState({}); // Options sélectionnées par article {articleId: {options: [], material: ''}}
+  const [cartExpanded, setCartExpanded] = useState(false); // État pour replier/déplier le panier
   const [showCustomCalendar, setShowCustomCalendar] = useState(false);
 
   // Stable updaters removed - using external component now
