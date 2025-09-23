@@ -6360,9 +6360,7 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
     }
 
     // Niveau 2 : Si nous avons sous-catégorie mais pas sous-sous-catégorie, afficher les sous-sous-catégories 
-    // EXCEPTION : Ne PAS afficher cette page pour JARDIN 
-    if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory && 
-        !(selectedABCDCategory.id === 'B' && selectedABCDSubcategory === 'Jardin et extérieur')) {
+    if (selectedABCDCategory && selectedABCDSubcategory && !selectedABCDSubSubcategory) {
       return (
         <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
