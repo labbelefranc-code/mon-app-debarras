@@ -5736,7 +5736,7 @@ function App() {
                     console.log('🌿 Navigation JARDIN - Reset vers sous-catégories');
                     setSelectedABCDSubcategory(null);
                     setSelectedABCDSubSubcategory(null);
-                    setCurrentStep('abcd-objects'); // FORCER le changement de step
+                    setCurrentStep('abcd-subcategories'); // CORRECTION: éviter la boucle avec abcd-objects
                   } else {
                     console.log('📦 Navigation standard - Vers subcategories');
                     setCurrentStep('subcategories');
