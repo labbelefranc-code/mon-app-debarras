@@ -6055,15 +6055,8 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 setSelectedABCDSubSubcategory(null);
                 setSelectedABCDSubSubSubcategory(null);
                 
-                // Exception pour JARDIN : aller directement aux articles
-                if (category.id === 'B') {
-                  // Pour JARDIN, définir automatiquement la sous-catégorie et aller aux articles
-                  setSelectedABCDSubcategory('Jardin et extérieur');
-                  setCurrentStep('articles');
-                } else {
-                  // Les autres catégories vont vers abcd-objects pour un affichage harmonieux avec les grandes cartes
-                  setCurrentStep('abcd-objects');
-                }
+                // Toutes les catégories vont vers abcd-objects pour un affichage harmonieux avec les grandes cartes
+                setCurrentStep('abcd-objects');
               }}
             >
               <CardContent className={`p-4 text-center bg-gradient-to-r ${category.color} text-white h-60 flex flex-col`} style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
