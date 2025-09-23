@@ -6099,9 +6099,12 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
                 className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 border-2"
                 onClick={() => {
                   setSelectedABCDSubcategory(subcategory);
-                  // Special case for Électroménager
+                  // Special cases for direct navigation to articles
                   if (subcategory === 'Électroménager') {
                     setCurrentStep('electromenager-types');
+                  } else if (subcategory === 'Jardin et extérieur') {
+                    // For JARDIN, go directly to articles instead of another intermediate page
+                    setCurrentStep('articles');
                   } else {
                     setCurrentStep('abcd-objects');
                   }
