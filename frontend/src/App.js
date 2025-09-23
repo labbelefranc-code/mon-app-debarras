@@ -7825,27 +7825,42 @@ const PhotoQuotePage = ({ onGoHome, onPhotosValidated }) => {
             
             {/* Détails des articles */}
             <div className="p-3 max-h-64 overflow-y-auto bg-gray-50 rounded-b-lg">
-              {selectedItems.map((item, index) => (
-                <div key={`cart-${index}`} className="mb-3 p-2 bg-white rounded border text-xs text-gray-700">
-                  <div className="font-medium text-gray-800">{item.article_name || 'Article sans nom'}</div>
-                  {item.material && <div className="text-gray-500">• {item.material}</div>}
-                  <div className="flex items-center justify-between mt-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-gray-600">Qté:</span>
-                      <select 
-                        value={item.quantity} 
-                        onChange={(e) => updateItemQuantity(index, parseInt(e.target.value))}
-                        className="border rounded px-1 py-0.5 text-xs"
-                      >
-                        {[1,2,3,4,5,6,7,8,9,10].map(num => (
-                          <option key={num} value={num}>{num}</option>
-                        ))}
-                      </select>
+              {selectedItems.map((item, index) => {
+                const itemName = item.article_name || item.name || 'Article sans nom';
+                const itemPrice = item.unit_price || item.base_price || 0;
+                
+                // Construire le nom avec les options
+                let displayName = itemName;
+                const options = [];
+                if (item.material) options.push(item.material);
+                if (item.options && item.options.length > 0) {
+                  options.push(...item.options);
+                }
+                if (options.length > 0) {
+                  displayName = `${itemName} (${options.join(', ')})`;
+                }
+                
+                return (
+                  <div key={`cart-${index}`} className="mb-3 p-2 bg-white rounded border text-xs text-gray-700">
+                    <div className="font-medium text-gray-800">{displayName}</div>
+                    <div className="flex items-center justify-between mt-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-gray-600">Qté:</span>
+                        <select 
+                          value={item.quantity} 
+                          onChange={(e) => updateItemQuantity(index, parseInt(e.target.value))}
+                          className="border rounded px-1 py-0.5 text-xs"
+                        >
+                          {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                            <option key={num} value={num}>{num}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="text-orange-600 font-medium">{itemPrice}€</div>
                     </div>
-                    <div className="text-orange-600 font-medium">{item.unit_price || 0}€</div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {customItems.map((item, index) => (
                 <div key={`cart-custom-${index}`} className="mb-3 p-2 bg-white rounded border text-xs text-gray-700">
                   <div className="font-medium text-gray-800">{item.description}</div>
